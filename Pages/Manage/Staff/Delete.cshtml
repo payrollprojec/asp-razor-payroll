@@ -1,0 +1,38 @@
+﻿@page "{Id}"
+@model PayrollAppRazorPages.Pages.Manage.Staff.DeleteModel
+@{
+    ViewData["Title"] = "Delete";
+}
+
+<h1>Delete Admin</h1>
+
+<h3>Are you sure you want to delete user - @Html.DisplayFor(model => model.applicationUser.UserName)</h3>
+<div>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.applicationUser.FullName)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.applicationUser.FullName)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.applicationUser.Email)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.applicationUser.Email)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.applicationUser.ICNo)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.applicationUser.ICNo)
+        </dd>
+    </dl>
+
+    <form method="post">
+        <input type="hidden" asp-for="@Model.applicationUser.Id" />
+        <input type="submit" value="Delete" class="btn btn-danger" /> |
+        <a asp-page="./Index">Back to List</a>
+    </form>
+</div>

@@ -1,0 +1,48 @@
+﻿@page "{Id}"
+@model PayrollAppRazorPages.Pages.Manage.Staff.EditModel
+@{
+    ViewData["Title"] = "Edit Admin";
+}
+
+<h1>Edit Admin</h1>
+
+
+<div class="row">
+    <div class="col-md-4">
+        <form method="post">
+            <hr />
+            <div class="form-group">
+                <label asp-for="Input.UserName"></label>
+                <input asp-for="Input.UserName" class="form-control" disabled/>
+                <span asp-validation-for="Input.UserName" class="text-danger"></span>
+            </div>
+            <input type="hidden" asp-for="Input.UserName" />
+
+            <div asp-validation-summary="All" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Input.FullName"></label>
+                <input asp-for="Input.FullName" class="form-control" />
+                <span asp-validation-for="Input.FullName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Input.ICNo"></label>
+                <input asp-for="Input.ICNo" class="form-control" />
+                <span asp-validation-for="Input.ICNo" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Input.Email"></label>
+                <input asp-for="Input.Email" class="form-control" />
+                <span asp-validation-for="Input.Email" class="text-danger"></span>
+            </div>
+
+            <hr />
+
+
+
+            <button type="submit" class="btn btn-primary">Edit</button>
+        </form>
+    </div>
+</div>
+<div>
+    <a asp-page="./Index">Back to List</a>
+</div>
