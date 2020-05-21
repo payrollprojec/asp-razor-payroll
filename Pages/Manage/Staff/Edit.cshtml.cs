@@ -45,6 +45,26 @@ namespace PayrollAppRazorPages.Pages.Manage.Staff
             [Display(Name = "Login username")]
             public string UserName { get; set; }
 
+            // Staff extra details
+            [Required]
+            [Display(Name = "Date of Birth")]
+            [DataType(DataType.Date)]
+            public DateTime? DOB { get; set; }
+
+            [Required]
+            [Display(Name = "Date Joined")]
+            [DataType(DataType.Date)]
+            public DateTime? DateJoined { get; set; }
+
+            [Display(Name = "Tax No")]
+            public string TaxNo { get; set; }
+
+            [Display(Name = "EPF No")]
+            public string EPFNo { get; set; }
+
+            [Display(Name = "SOCSO No")]
+            public string SocsoNo { get; set; }
+
             //[Required]
             //[StringLength(100, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 6)]
             //[DataType(DataType.Password)]
@@ -68,6 +88,14 @@ namespace PayrollAppRazorPages.Pages.Manage.Staff
             Input.ICNo = applicationUser.ICNo;
             Input.Email = applicationUser.Email;
             Input.UserName = applicationUser.UserName;
+
+            Input.DOB = applicationUser.DOB;
+            Input.DateJoined = applicationUser.DateJoined;
+            Input.EPFNo = applicationUser.EPFNo;
+            Input.TaxNo = applicationUser.TaxNo;
+            Input.SocsoNo = applicationUser.SocsoNo;
+
+
             return Page();
         }
 
@@ -86,6 +114,12 @@ namespace PayrollAppRazorPages.Pages.Manage.Staff
                 applicationUser.ICNo = Input.ICNo;
                 applicationUser.Email = Input.Email;
                 applicationUser.NormalizedEmail = Input.Email.ToUpper();
+
+                applicationUser.DOB = Input.DOB;
+                applicationUser.DateJoined = Input.DateJoined;
+                applicationUser.TaxNo = Input.TaxNo;
+                applicationUser.EPFNo = Input.EPFNo;
+                applicationUser.SocsoNo = Input.SocsoNo;
 
 
                 var result = await _userManager.UpdateAsync(applicationUser);

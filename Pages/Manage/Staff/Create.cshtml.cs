@@ -46,6 +46,26 @@ namespace PayrollAppRazorPages.Pages.Manage.Staff
             [Required]
             public string UserName { get; set; }
 
+            // Staff extra details
+            [Required]
+            [Display(Name = "Date of Birth")]
+            [DataType(DataType.Date)]
+            public DateTime? DOB { get; set; }
+
+            [Required]
+            [Display(Name = "Date Joined")]
+            [DataType(DataType.Date)]
+            public DateTime? DateJoined { get; set; }
+
+            [Display(Name = "Tax No")]
+            public string TaxNo { get; set; }
+
+            [Display(Name = "EPF No")]
+            public string EPFNo { get; set; }
+
+            [Display(Name = "SOCSO No")]
+            public string SocsoNo { get; set; }
+
             //[Required]
             //[StringLength(100, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 6)]
             //[DataType(DataType.Password)]
@@ -72,7 +92,13 @@ namespace PayrollAppRazorPages.Pages.Manage.Staff
                     FullName = Input.FullName,
                     ICNo = Input.ICNo,
                     EmailConfirmed = true,
-                    NormalizedEmail = Input.Email.ToUpper()
+                    NormalizedEmail = Input.Email.ToUpper(),
+
+                    DOB = Input.DOB,
+                    DateJoined = Input.DateJoined,
+                    TaxNo = Input.TaxNo,
+                    EPFNo = Input.EPFNo,
+                    SocsoNo = Input.SocsoNo
                 };
                 var result = await _userManager.CreateAsync(user, Input.UserName);
                 if (result.Succeeded)
