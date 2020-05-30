@@ -1,0 +1,17 @@
+﻿@page
+@model PayrollAppRazorPages.Pages.Manage.Staff.CreateConfirmationModel
+@{
+    ViewData["Title"] = "CreateConfirmation";
+}
+
+<h1>Staff account created</h1>
+<p>Login Details</p>
+<hr />
+<p>Username: @Model.Username</p>
+<p>Password: @Model.Password</p>
+
+<br />
+<br />
+<div>
+    <a asp-page="./Index">Back to List</a>
+</div>

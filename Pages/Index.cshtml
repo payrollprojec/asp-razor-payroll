@@ -1,0 +1,31 @@
+﻿@page
+@model IndexModel
+@{
+    ViewData["Title"] = "Home page";
+}
+
+    <div class="text-center">
+        @if (User.IsInRole("superadmin"))
+        {
+            <p>superadmin</p>
+
+            <a asp-page="./Manage/Admin/Index">Manage Admin</a>
+            <a asp-page="./Manage/Staff/Index">Manage Staff</a>
+
+        }
+        @if (User.IsInRole("admin"))
+        {
+            <a asp-page="./Manage/Staff/Index">Manage Staff</a>
+            <a asp-page="./Manage/StaffAttendance/Index">Record Attendance</a>
+
+
+
+            <p>admin</p>
+        }
+        @if (User.IsInRole("staff"))
+        {
+            <p>staff</p>
+        }
+        @*<h1 class="display-4">Welcome</h1>
+        <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>*@
+    </div>
