@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
+using PayrollAppRazorPages.Data;
 using PayrollAppRazorPages.Models;
 
 namespace PayrollAppRazorPages.Pages.Manage.Staff
@@ -16,10 +17,12 @@ namespace PayrollAppRazorPages.Pages.Manage.Staff
     public class CreateModel : PageModel
     {
         private readonly UserManager<ApplicationUser> _userManager;
+        private readonly ApplicationDbContext _context;
 
-        public CreateModel(UserManager<ApplicationUser> userManager)
+        public CreateModel(UserManager<ApplicationUser> userManager, ApplicationDbContext context)
         {
             _userManager = userManager;
+            _context = context;
         }
 
         [BindProperty]
@@ -86,24 +89,36 @@ namespace PayrollAppRazorPages.Pages.Manage.Staff
         {
             if (ModelState.IsValid)
             {
-                var user = new ApplicationUser {
+                var user = new ApplicationUser 
+                {
                     UserName = Input.UserName,
                     Email = Input.Email,
                     FullName = Input.FullName,
                     ICNo = Input.ICNo,
                     EmailConfirmed = true,
                     NormalizedEmail = Input.Email.ToUpper(),
-
-                    DOB = Input.DOB,
-                    DateJoined = Input.DateJoined,
-                    TaxNo = Input.TaxNo,
-                    EPFNo = Input.EPFNo,
-                    SocsoNo = Input.SocsoNo
                 };
+
                 var result = await _userManager.CreateAsync(user, Input.UserName);
+
+
                 if (result.Succeeded)
                 {
                     await _userManager.AddToRoleAsync(user, "staff");
+
+                    var staffData = new StaffData
+                    {
+                        DOB = Input.DOB,
+                        DateJoined = Input.DateJoined,
+                        TaxNo = Input.TaxNo,
+                        EPFNo = Input.EPFNo,
+                        SocsoNo = Input.SocsoNo,
+                        ApplicationUser = user
+                    };
+
+                    await _context.StaffData.AddAsync(staffData);
+                    await _context.SaveChangesAsync();
+
                     return RedirectToPage("CreateConfirmation", new { username = Input.UserName, password = Input.UserName});
                 }
                 foreach (var error in result.Errors)

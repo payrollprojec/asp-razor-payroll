@@ -162,20 +162,8 @@ namespace PayrollAppRazorPages.Data.Migrations
                     b.Property<int>("AccessFailedCount")
                         .HasColumnType("int");
 
-                    b.Property<decimal?>("BasicSalary")
-                        .HasColumnType("decimal(18, 2)");
-
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime?>("DOB")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime?>("DateJoined")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("EPFNo")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Email")
@@ -215,12 +203,6 @@ namespace PayrollAppRazorPages.Data.Migrations
                         .HasColumnType("bit");
 
                     b.Property<string>("SecurityStamp")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("SocsoNo")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("TaxNo")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("TwoFactorEnabled")
@@ -283,6 +265,43 @@ namespace PayrollAppRazorPages.Data.Migrations
                     b.ToTable("AttendanceStatus");
                 });
 
+            modelBuilder.Entity("PayrollAppRazorPages.Models.StaffData", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("ApplicationUserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<decimal?>("BasicSalary")
+                        .HasColumnType("decimal(18, 2)");
+
+                    b.Property<DateTime?>("DOB")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("DateJoined")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("EPFNo")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("SocsoNo")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("TaxNo")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ApplicationUserId")
+                        .IsUnique();
+
+                    b.ToTable("StaffData");
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
@@ -343,6 +362,15 @@ namespace PayrollAppRazorPages.Data.Migrations
                     b.HasOne("PayrollAppRazorPages.Models.AttendanceStatus", "AttendanceStatus")
                         .WithMany()
                         .HasForeignKey("AttendanceStatusId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("PayrollAppRazorPages.Models.StaffData", b =>
+                {
+                    b.HasOne("PayrollAppRazorPages.Models.ApplicationUser", "ApplicationUser")
+                        .WithOne("StaffData")
+                        .HasForeignKey("PayrollAppRazorPages.Models.StaffData", "ApplicationUserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });

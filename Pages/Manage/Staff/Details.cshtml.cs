@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.EntityFrameworkCore;
 using PayrollAppRazorPages.Models;
 
 namespace PayrollAppRazorPages.Pages.Manage.Staff
@@ -22,12 +23,22 @@ namespace PayrollAppRazorPages.Pages.Manage.Staff
         public ApplicationUser applicationUser{ get; set; }
         public async Task<IActionResult> OnGetAsync(string Id)
         {
-            applicationUser = await _userManager.FindByIdAsync(Id);
+            //applicationUser = await _userManager.FindByIdAsync(Id);
+            applicationUser = await _userManager.Users.Include(x => x.StaffData).SingleOrDefaultAsync(x => x.Id == Id);
+
             if (applicationUser == null)
+            {
+                return NotFound();
+            }
+            bool isStaff = await _userManager.IsInRoleAsync(applicationUser, "staff");
+
+            if (!isStaff)
             {
                 return NotFound();
             }
             return Page();
         }
+
+
     }
 }

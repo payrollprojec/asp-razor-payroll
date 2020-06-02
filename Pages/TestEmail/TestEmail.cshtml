@@ -1,0 +1,16 @@
+﻿@page
+@model PayrollAppRazorPages.Pages.TestEmail.TestEmailModel
+@{
+    ViewData["Title"] = "TestEmail";
+}
+
+<h1>TestEmail</h1>
+
+<form method="post">
+    <div asp-validation-summary="All" class="text-danger"></div>
+    <div class="form-group">
+        @*<input type="hidden" asp-for="Input.Id" />*@
+    </div>
+    <button type="submit" class="btn btn-primary">Send Email</button>
+</form>
+

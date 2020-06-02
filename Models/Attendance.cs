@@ -10,10 +10,11 @@ namespace PayrollAppRazorPages.Models
     {
         public int Id { get; set; }
 
-        [Display(Name = "Staff ID")]
+        [Display(Name = "ID")]
         public string ApplicationUserId { get; set; }
         public ApplicationUser ApplicationUser { get; set; }
 
+        [DisplayFormat(DataFormatString = "{0:dd-MM-yyyy}", ApplyFormatInEditMode = true)]
         [Display(Name = "Date")]
         [DataType(DataType.Date)]
         public DateTime? PunchDate { get; set; }

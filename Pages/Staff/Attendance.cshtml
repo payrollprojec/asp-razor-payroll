@@ -1,0 +1,87 @@
+﻿@page
+@model PayrollAppRazorPages.Pages.Staff.AttendanceModel
+@{
+    ViewData["Title"] = "Attendance";
+}
+
+<h4>Attendance</h4>
+
+<form>
+    <p>
+        <select class="mr-md-3" asp-for="SelectedMonth" asp-items="Model.Months">
+        </select>
+        <select class="mr-md-3" asp-for="SelectedYear" asp-items="Model.Years">
+        </select>
+        <input type="submit" value="Filter" />
+
+    </p>
+</form>
+
+@if (Model.UserAttendance.Count == 0)
+{
+    <p>No attendance found.</p>
+}
+else
+{
+    Dictionary<string, int> dict = new Dictionary<string, int>();
+    dict.Add("Present", 0);
+    dict.Add("Absent", 0);
+    dict.Add("Leave", 0);
+    dict.Add("Sick", 0);
+
+    foreach (var item in Model.UserAttendance)
+    {
+        dict[item.AttendanceStatus.Status] += 1;
+    }
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>Present</th>
+                <th>Absent</th>
+                <th>Leave</th>
+                <th>Sick</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>@dict["Present"]</td>
+                <td>@dict["Absent"]</td>
+                <td>@dict["Leave"]</td>
+                <td>@dict["Sick"]</td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    Day
+                </th>
+                <th>
+                    Date
+                </th>
+                <th>
+                    Status
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.UserAttendance)
+            {
+            <tr>
+                <td>
+                    @(item.PunchDate.Value.DayOfWeek)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.PunchDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.AttendanceStatus.Status)
+                </td>
+            </tr>
+            }
+
+        </tbody>
+    </table>
+
+}

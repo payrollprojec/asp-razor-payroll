@@ -9,22 +9,26 @@
         {
             <p>superadmin</p>
 
-            <a asp-page="./Manage/Admin/Index">Manage Admin</a>
-            <a asp-page="./Manage/Staff/Index">Manage Staff</a>
+            <a asp-page="./Manage/Admin/Index">Manage Admin</a><br />
+            <a asp-page="./Manage/Staff/Index">Manage Staff</a><br />
+            <a asp-page="./Manage/Attendances/Index">Manage Staff Attendance</a><br />
+
 
         }
         @if (User.IsInRole("admin"))
         {
-            <a asp-page="./Manage/Staff/Index">Manage Staff</a>
-            <a asp-page="./Manage/StaffAttendance/Index">Record Attendance</a>
-
-
-
             <p>admin</p>
+
+            <a asp-page="./Manage/Staff/Index">Manage Staff</a><br />
+            <a asp-page="./Manage/Attendances/Index">Manage Staff Attendance</a><br />
+
         }
         @if (User.IsInRole("staff"))
         {
             <p>staff</p>
+            <a asp-page="./Staff/Salary">Check Salary</a><br />
+            <a asp-page="./Staff/Attendance">Check Attendance</a><br />
+
         }
         @*<h1 class="display-4">Welcome</h1>
         <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>*@

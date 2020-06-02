@@ -1,0 +1,114 @@
+﻿@page
+@model PayrollAppRazorPages.Pages.Manage.Attendances.EditModel
+@{
+    ViewData["Title"] = "Edit";
+}
+@{
+    var parms = new Dictionary<string, string>
+{
+                    {"SelectedMonth", Model.SelectedMonth },
+                    {"SelectedYear", Model.SelectedYear }
+                };
+}
+<a asp-page="./Index" asp-all-route-data="parms">Back to List</a>
+<h4>Attendance for @Model.applicationUser.FullName (@Model.SelectedMonth/@Model.SelectedYear)</h4>
+
+<div class="card">
+    <div class="card-header">Add Attendance</div>
+    <div class="card-body">
+        <form method="post">
+            <div asp-validation-summary="All" class="text-danger"></div>
+            <div class="form-group">
+                <input type="hidden" asp-for="Input.Id" />
+                <label asp-for="Input.PunchDate"></label>
+                <input value="@Model.MinDate.ToString("yyyy-MM-dd")" class="mr-md-3" asp-for="Input.PunchDate" />
+                <span asp-validation-for="Input.PunchDate" class="text-danger"></span>
+                <select class="mr-md-3" asp-for="SelectedStatus" asp-items="Model.AttendanceStatus"></select>
+            </div>
+            <button type="submit" class="btn btn-primary">Add</button>
+        </form>
+    </div>
+</div>
+
+@if (Model.UserAttendance.Count == 0)
+{
+    <p>No attendance found.</p>
+}
+else
+{
+    Dictionary<string, int> dict = new Dictionary<string, int>();
+    dict.Add("Present", 0);
+    dict.Add("Absent", 0);
+    dict.Add("Leave", 0);
+    dict.Add("Sick", 0);
+
+    foreach (var item in Model.UserAttendance)
+    {
+        dict[item.AttendanceStatus.Status] += 1;
+    }
+    <table class="table table-bordered">
+
+        <thead>
+            <tr>
+                <th>Present</th>
+                <th>Absent</th>
+                <th>Leave</th>
+                <th>Sick</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>@dict["Present"]</td>
+                <td>@dict["Absent"]</td>
+                <td>@dict["Leave"]</td>
+                <td>@dict["Sick"]</td>
+            </tr>
+        </tbody>
+    </table>
+    <br />
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    Day
+                </th>
+                <th>
+                    Date
+                </th>
+                <th>
+                    Status
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.UserAttendance)
+            {
+                <tr>
+                    <td>
+                        @(item.PunchDate.Value.DayOfWeek)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.PunchDate)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.AttendanceStatus.Status)
+                    </td>
+                    <td>
+                        <form asp-page-handler="delete" method="post">
+                            <input type="hidden" asp-for="DeleteId" value="@item.Id" />
+                            <input type="hidden" asp-for="SelectedMonth" />
+                            <input type="hidden" asp-for="SelectedYear" />
+
+
+                            <button class="btn btn-link">Delete</button>
+                        </form>
+                    </td>
+                </tr>
+            }
+
+        </tbody>
+    </table>
+
+}
+

@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.EntityFrameworkCore;
 using PayrollAppRazorPages.Models;
 
 namespace PayrollAppRazorPages.Pages.Manage.Staff
@@ -78,8 +79,16 @@ namespace PayrollAppRazorPages.Pages.Manage.Staff
         }
         public async Task<IActionResult> OnGetAsync(string Id)
         {
-            applicationUser = await _userManager.FindByIdAsync(Id);
+            //applicationUser = await _userManager.FindByIdAsync(Id);
+            applicationUser = await _userManager.Users.Include(x => x.StaffData).SingleOrDefaultAsync(x => x.Id == Id);
+
             if (applicationUser == null)
+            {
+                return NotFound();
+            }
+            bool isStaff = await _userManager.IsInRoleAsync(applicationUser, "staff");
+
+            if (!isStaff)
             {
                 return NotFound();
             }
@@ -89,11 +98,11 @@ namespace PayrollAppRazorPages.Pages.Manage.Staff
             Input.Email = applicationUser.Email;
             Input.UserName = applicationUser.UserName;
 
-            Input.DOB = applicationUser.DOB;
-            Input.DateJoined = applicationUser.DateJoined;
-            Input.EPFNo = applicationUser.EPFNo;
-            Input.TaxNo = applicationUser.TaxNo;
-            Input.SocsoNo = applicationUser.SocsoNo;
+            Input.DOB = applicationUser.StaffData.DOB;
+            Input.DateJoined = applicationUser.StaffData.DateJoined;
+            Input.EPFNo = applicationUser.StaffData.EPFNo;
+            Input.TaxNo = applicationUser.StaffData.TaxNo;
+            Input.SocsoNo = applicationUser.StaffData.SocsoNo;
 
 
             return Page();
@@ -103,9 +112,17 @@ namespace PayrollAppRazorPages.Pages.Manage.Staff
         {
             if (ModelState.IsValid)
             {
-                applicationUser = await _userManager.FindByNameAsync(Input.UserName);
+                //applicationUser = await _userManager.FindByNameAsync(Input.UserName);
+                applicationUser = await _userManager.Users.Include(x => x.StaffData).SingleOrDefaultAsync(x => x.UserName == Input.UserName);
+
 
                 if (applicationUser == null)
+                {
+                    return NotFound();
+                }
+                bool isStaff = await _userManager.IsInRoleAsync(applicationUser, "staff");
+
+                if (!isStaff)
                 {
                     return NotFound();
                 }
@@ -115,11 +132,11 @@ namespace PayrollAppRazorPages.Pages.Manage.Staff
                 applicationUser.Email = Input.Email;
                 applicationUser.NormalizedEmail = Input.Email.ToUpper();
 
-                applicationUser.DOB = Input.DOB;
-                applicationUser.DateJoined = Input.DateJoined;
-                applicationUser.TaxNo = Input.TaxNo;
-                applicationUser.EPFNo = Input.EPFNo;
-                applicationUser.SocsoNo = Input.SocsoNo;
+                applicationUser.StaffData.DOB = Input.DOB;
+                applicationUser.StaffData.DateJoined = Input.DateJoined;
+                applicationUser.StaffData.TaxNo = Input.TaxNo;
+                applicationUser.StaffData.EPFNo = Input.EPFNo;
+                applicationUser.StaffData.SocsoNo = Input.SocsoNo;
 
 
                 var result = await _userManager.UpdateAsync(applicationUser);
