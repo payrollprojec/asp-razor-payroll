@@ -1,0 +1,83 @@
+﻿@page
+@model PayrollAppRazorPages.Pages.Manage.Staff.CreateModel
+@{
+    ViewData["Title"] = "Create Staff Profile";
+}
+
+<h1>Create new Staff</h1>
+
+<form method="post">
+    <hr />
+    <div class="row">
+
+        <div class="col-md-4">
+            <h4>Personal Details</h4>
+            <hr />
+            <div asp-validation-summary="All" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Input.FullName"></label>
+                <input asp-for="Input.FullName" class="form-control" />
+                <span asp-validation-for="Input.FullName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Input.ICNo"></label>
+                <input asp-for="Input.ICNo" class="form-control" />
+                <span asp-validation-for="Input.ICNo" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Input.Email"></label>
+                <input asp-for="Input.Email" class="form-control" />
+                <span asp-validation-for="Input.Email" class="text-danger"></span>
+            </div>
+
+
+
+            <hr />
+
+            <div class="form-group">
+                <label asp-for="Input.UserName"></label>
+                <input asp-for="Input.UserName" class="form-control" />
+                <span asp-validation-for="Input.UserName" class="text-danger"></span>
+            </div>
+
+        </div>
+        <div class="col-md-4 offset-md-2 ">
+
+            <h4>Employee Details</h4>
+            <hr />
+
+            <div class="form-group">
+                <label asp-for="Input.DOB"></label>
+                <input asp-for="Input.DOB" class="form-control" />
+                <span asp-validation-for="Input.DOB" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Input.DateJoined"></label>
+                <input asp-for="Input.DateJoined" class="form-control" />
+                <span asp-validation-for="Input.DateJoined" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Input.TaxNo"></label>
+                <input asp-for="Input.TaxNo" class="form-control" />
+                <span asp-validation-for="Input.TaxNo" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Input.EPFNo"></label>
+                <input asp-for="Input.EPFNo" class="form-control" />
+                <span asp-validation-for="Input.EPFNo" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Input.SocsoNo"></label>
+                <input asp-for="Input.SocsoNo" class="form-control" />
+                <span asp-validation-for="Input.SocsoNo" class="text-danger"></span>
+            </div>
+            <button type="submit" class="btn btn-primary">Next</button>
+        </div>
+    </div>
+
+
+</form>
+<br /><br />
+<div>
+    <a asp-page="./Index">Back to List</a>
+</div>
