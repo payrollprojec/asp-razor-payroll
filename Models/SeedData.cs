@@ -16,6 +16,17 @@ namespace PayrollAppRazorPages.Models
             using var context = new ApplicationDbContext(serviceProvider.GetRequiredService<
                 DbContextOptions<ApplicationDbContext>>());
 
+            if (context.AttendanceStatus.Any()) { }
+            else
+            {
+                await context.AttendanceStatus.AddAsync(new AttendanceStatus { Status = "Present" });
+                await context.AttendanceStatus.AddAsync(new AttendanceStatus { Status = "Absent" });
+                await context.AttendanceStatus.AddAsync(new AttendanceStatus { Status = "Leave" });
+                await context.AttendanceStatus.AddAsync(new AttendanceStatus { Status = "Sick" });
+
+                await context.SaveChangesAsync();
+            }
+
             if (context.Users.Any())
             {
                 return;

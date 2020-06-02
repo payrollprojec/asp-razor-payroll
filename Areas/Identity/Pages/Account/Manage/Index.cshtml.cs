@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.EntityFrameworkCore;
 using PayrollAppRazorPages.Models;
 
 namespace PayrollAppRazorPages.Areas.Identity.Pages.Account.Manage
@@ -45,20 +46,40 @@ namespace PayrollAppRazorPages.Areas.Identity.Pages.Account.Manage
             [Phone]
             [Display(Name = "Phone number")]
             public string PhoneNumber { get; set; }
+
+            // Staff extra details
+            //[Required]
+            //[Display(Name = "Date of Birth")]
+            //[DataType(DataType.Date)]
+            //public DateTime? DOB { get; set; }
+
+
+            //[Display(Name = "Tax No")]
+            //public string TaxNo { get; set; }
+
+            //[Display(Name = "EPF No")]
+            //public string EPFNo { get; set; }
+
+            //[Display(Name = "SOCSO No")]
+            //public string SocsoNo { get; set; }
         }
 
         private async Task LoadAsync(ApplicationUser user)
         {
             var userName = await _userManager.GetUserNameAsync(user);
             var phoneNumber = await _userManager.GetPhoneNumberAsync(user);
-
             Username = userName;
 
             Input = new InputModel
             {
                 PhoneNumber = phoneNumber,
                 ICNo = user.ICNo,
-                FullName = user.FullName
+                FullName = user.FullName,
+                //DOB = user.StaffData.DOB,
+                //TaxNo = user.StaffData.TaxNo,
+                //EPFNo = user.StaffData.EPFNo,
+                //SocsoNo = user.StaffData.SocsoNo
+
             };
         }
 

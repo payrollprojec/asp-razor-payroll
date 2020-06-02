@@ -30,39 +30,39 @@
         </dd>
 
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.applicationUser.DOB)
+            @Html.DisplayNameFor(model => model.applicationUser.StaffData.DOB)
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.applicationUser.DOB)
+            @Html.DisplayFor(model => model.applicationUser.StaffData.DOB)
         </dd>
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.applicationUser.DateJoined)
+            @Html.DisplayNameFor(model => model.applicationUser.StaffData.DateJoined)
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.applicationUser.DateJoined)
+            @Html.DisplayFor(model => model.applicationUser.StaffData.DateJoined)
         </dd>
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.applicationUser.TaxNo)
+            @Html.DisplayNameFor(model => model.applicationUser.StaffData.TaxNo)
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.applicationUser.TaxNo)
+            @Html.DisplayFor(model => model.applicationUser.StaffData.TaxNo)
         </dd>
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.applicationUser.EPFNo)
+            @Html.DisplayNameFor(model => model.applicationUser.StaffData.EPFNo)
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.applicationUser.EPFNo)
+            @Html.DisplayFor(model => model.applicationUser.StaffData.EPFNo)
         </dd>
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.applicationUser.SocsoNo)
+            @Html.DisplayNameFor(model => model.applicationUser.StaffData.SocsoNo)
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.applicationUser.SocsoNo)
+            @Html.DisplayFor(model => model.applicationUser.StaffData.SocsoNo)
         </dd>
     </dl>
 
     <form method="post">
-        <input type="hidden" asp-for="@Model.applicationUser.Id" />
+        <input type="hidden" asp-for="applicationUser.Id" />
         <input type="submit" value="Delete" class="btn btn-danger" /> |
         <a asp-page="./Index">Back to List</a>
     </form>

@@ -1,0 +1,59 @@
+﻿@page
+@model PayrollAppRazorPages.Pages.Manage.Attendances.IndexModel
+@{
+    ViewData["Title"] = "Manage Attendance";
+}
+
+<h1>Manage Attendance</h1>
+
+<form>
+    <p>
+        Name: <input class="mr-md-3" type="text" asp-for="SearchString" placeholder="Search" />
+        <select class="mr-md-3" asp-for="SelectedMonth" asp-items="Model.Months">
+        </select>
+        <select class="mr-md-3" asp-for="SelectedYear" asp-items="Model.Years">
+        </select>
+        <input type="submit" value="Filter" />
+
+    </p>
+</form>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Users[0].FullName)
+            </th>
+            <th>
+                Days Recorded (@Model.SelectedDate)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.UserAttendances)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DaysRecorded)
+                </td>
+                <td>
+                    @{
+                        var parms = new Dictionary<string, string>
+                                {
+                            {"Id", item.Id },
+                            {"SelectedMonth", Model.SelectedMonth },
+                            {"SelectedYear", Model.SelectedYear }
+                        };
+                    }
+@*                    <a asp-page="./Edit" asp-route-id="@item.Id">Edit</a>*@
+                    <a asp-page="./Edit" asp-all-route-data="parms">Edit</a>
+
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
