@@ -12,6 +12,16 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Include="Pages\Manage\Salary\Create.cshtml" />
+    <None Include="Pages\Manage\Salary\CreatePayroll.cshtml" />
+    <None Include="Pages\Manage\Salary\Delete.cshtml" />
+    <None Include="Pages\Manage\Salary\Details.cshtml" />
+    <None Include="Pages\Manage\Salary\Edit.cshtml" />
+    <None Include="Pages\Manage\Salary\Index.cshtml" />
+    <None Include="Pages\Manage\Salary\SalaryPDF.cshtml" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="jsreport.AspNetCore" Version="2.1.0" />
     <PackageReference Include="jsreport.Binary" Version="2.7.1" />
     <PackageReference Include="jsreport.Local" Version="2.2.2" />

@@ -80,7 +80,7 @@ namespace PayrollAppRazorPages.Pages.Manage.Attendances
                 .Where(a => a.ApplicationUserId == Id && a.PunchDate.Value.Month == int.Parse(SelectedMonth) && a.PunchDate.Value.Year == int.Parse(SelectedYear))
                 .OrderBy(a => a.PunchDate).ToListAsync();
 
-            if (UserAttendance.Last().PunchDate.HasValue)
+            if (UserAttendance.Count() != 0 && UserAttendance.Last().PunchDate.HasValue)
                 MaxDate = UserAttendance.Last().PunchDate.Value.AddDays(1);
 
             else
@@ -113,7 +113,7 @@ namespace PayrollAppRazorPages.Pages.Manage.Attendances
             UserAttendance = await _context.Attendance.Include(a => a.AttendanceStatus)
                 .Where(a => a.ApplicationUserId == Input.Id && a.PunchDate.Value.Month == int.Parse(SelectedMonth) && a.PunchDate.Value.Year == int.Parse(SelectedYear))
                 .OrderBy(a => a.PunchDate).ToListAsync();
-            if (UserAttendance.Last().PunchDate.HasValue)
+            if (UserAttendance.Count() != 0 && UserAttendance.Last().PunchDate.HasValue)
                 MaxDate = UserAttendance.Last().PunchDate.Value.AddDays(1);
             else
                 MaxDate = DateTime.Parse(SelectedYear + "-" + SelectedMonth + "-01");

@@ -1,0 +1,143 @@
+﻿@page
+@model PayrollAppRazorPages.IndexModel
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+@*<PackageReference Include="jQuery.UI.Combined" Version="1.12.1" />*@
+@*<script src="https://code.jquery.com/jquery-3.5.1.min.js" integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>*@
+@*<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js">*@
+@*<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js" integrity="sha256-VazP97ZCwtekAsvgPBSUwPFKdrwD3unUfSGVYrahUqU=" crossorigin="anonymous"></script>*@
+
+<h1>Payroll Record</h1>
+
+<p>
+    <a asp-page="CreatePayroll">Create New Payroll</a>
+</p>
+
+<div class="row">
+    <form asp-page-handler="edit" method="post">
+        <div class="col-md-12">
+            @*<input type="number" name="mmonth" placeholder="Month" />*@
+            <select name="mmonth">
+                <option value="">- Select a month -</option>
+                <option value="1">Jan</option>
+                <option value="2">Feb</option>
+                <option value="3">Mar</option>
+                <option value="4">Apr</option>
+                <option value="5">May</option>
+                <option value="6">Jun</option>
+                <option value="7">Jul</option>
+                <option value="8">Aug</option>
+                <option value="9">Sep</option>
+                <option value="10">Oct</option>
+                <option value="11">Nov</option>
+                <option value="12">Dec</option>
+            </select>
+            <input name="yyear" placeholder="Year (eg. 2020)" />
+            <button type="submit" class="btn-primary btn-sm">Go</button>
+        </div><br />
+        @*<div class="col-md-4">
+                <input type="submit" />
+            </div><br />*@
+    </form>
+</div>
+
+@if(@Model.flag == 1){
+<div>
+    <h4>Payroll for @Model.month / @Model.year</h4>
+</div>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Staff Name
+                @*@Html.DisplayNameFor(model => model.StaffSalary[0].staffID)*@
+            </th>
+            @*<th>
+                    @Html.DisplayNameFor(model => model.StaffSalary[0].Year)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.StaffSalary[0].Month)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.StaffSalary[0].BasicSalary)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.StaffSalary[0].Bonus)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.StaffSalary[0].Allowances)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.StaffSalary[0].EPF)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.StaffSalary[0].Socso)
+                </th>*@
+            @*<th>
+                        @Html.DisplayNameFor(model => model.StaffSalary[0].Tax)
+                </th>*@
+            @*<th>
+                    @Html.DisplayNameFor(model => model.StaffSalary[0].AdvSalary)
+                </th>*@
+            <th>
+                Gross Salary
+                @*@Html.DisplayNameFor(model => model.StaffSalary[0].GrossSalary)*@
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.StaffSalary)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.staff.FullName)
+                </td>
+                @*<td>
+                        @Html.DisplayFor(modelItem => item.Year)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Month)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.BasicSalary)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Bonus)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Allowances)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.EPF)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Socso)
+                    </td>*@
+                @*<td>
+                    @Html.DisplayFor(modelItem => item.Tax)
+                    </td>*@
+                @*<td>
+                        @Html.DisplayFor(modelItem => item.AdvSalary)
+                    </td>*@
+                <td>
+                    @Html.DisplayFor(modelItem => item.GrossSalary)
+                </td>
+                <td>
+                    <a asp-page="./Edit" asp-route-id="@item.salaryID">Edit</a> |
+                    <a asp-page="./Details" asp-route-id="@item.salaryID">Details</a> |
+                    <a asp-page="./SalaryPDF" target="_blank" asp-route-id="@item.salaryID">Print PDF</a> |
+                    <a asp-page="./Delete" asp-route-id="@item.salaryID">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+}
+else{
+    <p>No records</p>
+}

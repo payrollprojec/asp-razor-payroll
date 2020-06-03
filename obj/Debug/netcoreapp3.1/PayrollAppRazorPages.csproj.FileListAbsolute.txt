@@ -504,3 +504,10 @@ C:\Users\Wen\source\repos\PayrollAppRazorPages\obj\Debug\netcoreapp3.1\PayrollAp
 C:\Users\Wen\source\repos\PayrollAppRazorPages\obj\Debug\netcoreapp3.1\PayrollAppRazorPages.MvcApplicationPartsAssemblyInfo.cache
 C:\Users\Wen\source\repos\PayrollAppRazorPages\obj\Debug\netcoreapp3.1\Razor\Pages\Staff\TestPdf.cshtml.g.cs
 C:\Users\Wen\source\repos\PayrollAppRazorPages\obj\Debug\netcoreapp3.1\Razor\Pages\TestSendMail.cshtml.g.cs
+C:\Users\Wen\source\repos\PayrollAppRazorPages\obj\Debug\netcoreapp3.1\Razor\Pages\Manage\Salary\Create.cshtml.g.cs
+C:\Users\Wen\source\repos\PayrollAppRazorPages\obj\Debug\netcoreapp3.1\Razor\Pages\Manage\Salary\CreatePayroll.cshtml.g.cs
+C:\Users\Wen\source\repos\PayrollAppRazorPages\obj\Debug\netcoreapp3.1\Razor\Pages\Manage\Salary\Delete.cshtml.g.cs
+C:\Users\Wen\source\repos\PayrollAppRazorPages\obj\Debug\netcoreapp3.1\Razor\Pages\Manage\Salary\Details.cshtml.g.cs
+C:\Users\Wen\source\repos\PayrollAppRazorPages\obj\Debug\netcoreapp3.1\Razor\Pages\Manage\Salary\Edit.cshtml.g.cs
+C:\Users\Wen\source\repos\PayrollAppRazorPages\obj\Debug\netcoreapp3.1\Razor\Pages\Manage\Salary\Index.cshtml.g.cs
+C:\Users\Wen\source\repos\PayrollAppRazorPages\obj\Debug\netcoreapp3.1\Razor\Pages\Manage\Salary\SalaryPDF.cshtml.g.cs

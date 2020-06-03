@@ -17,6 +17,7 @@ namespace PayrollAppRazorPages.Data
         public DbSet<PayrollAppRazorPages.Models.StaffData> StaffData { get; set; }
         public DbSet<PayrollAppRazorPages.Models.Attendance> Attendance { get; set; }
         public DbSet<PayrollAppRazorPages.Models.AttendanceStatus> AttendanceStatus { get; set; }
+        public DbSet<PayrollAppRazorPages.Models.StaffSalary> StaffSalary { get; set; }
 
     }
 }
