@@ -49,17 +49,24 @@ namespace PayrollAppRazorPages
         public async Task OnGetAsync()
         {
             Staff = await _userManager.GetUsersInRoleAsync("staff");
-            if(year == 0 && month == 0){
-                year = (from c in _context.StaffSalary select c).Max(c => c.Year);
-                month = (from c in _context.StaffSalary where c.Year == year select c).Max(c => c.Month);
-            }
-            if(year != 0 && month != 0)
+            if (_context.StaffSalary.Any())
             {
-                StaffSalary = await _context.StaffSalary.Where(x => x.Year == year).Where(x => x.Month == month).ToListAsync();
-            }
-            if(StaffSalary.Any())
-            {
-                flag = 1;
+                if(year == 0 && month == 0){
+                    year = (from c in _context.StaffSalary select c).Max(c => c.Year);
+                    month = (from c in _context.StaffSalary select c).Max(c => c.Month);
+                }
+                if(year != 0 && month != 0)
+                {
+                    StaffSalary = await _context.StaffSalary.Where(x => x.Year == year).Where(x => x.Month == month).ToListAsync();
+                    if(StaffSalary.Any())
+                    {
+                        flag = 1;
+                    }
+                }
+                else
+                {
+                    StaffSalary = new List<StaffSalary>();
+                }
             }
             else
             {
