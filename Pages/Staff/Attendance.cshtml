@@ -4,18 +4,32 @@
     ViewData["Title"] = "Attendance";
 }
 
-<h4>Attendance</h4>
+@*<div class="row">
+    <h4 class="col">Attendance</h4>
+    <form>
+        <p>
+            <select class="mr-md-3" asp-for="SelectedMonth" asp-items="Model.Months">
+            </select>
+            <select class="mr-md-3" asp-for="SelectedYear" asp-items="Model.Years">
+            </select>
+            <input type="submit" value="Filter" />
+        </p>
+    </form>
+</div>*@
+<div class="row">
+    <div class="col"><h2>Attendance</h2></div><br />
+    <div class="col">
+        <form class="form-inline">
+            <select class="form-control-sm mr-sm-3" asp-for="SelectedMonth" asp-items="Model.Months">
+            </select>
+            <select class="form-control-sm mr-sm-3" asp-for="SelectedYear" asp-items="Model.Years">
+            </select>
+            <input type="submit" value="Filter" />
+        </form>
+    </div>
+</div>
+<br />
 
-<form>
-    <p>
-        <select class="mr-md-3" asp-for="SelectedMonth" asp-items="Model.Months">
-        </select>
-        <select class="mr-md-3" asp-for="SelectedYear" asp-items="Model.Years">
-        </select>
-        <input type="submit" value="Filter" />
-
-    </p>
-</form>
 
 @if (Model.UserAttendance.Count == 0)
 {
@@ -33,8 +47,8 @@ else
     {
         dict[item.AttendanceStatus.Status] += 1;
     }
-    <table class="table table-bordered">
-        <thead>
+    <table class="table table-bordered table-sm text-center">
+        <thead class="thead-light">
             <tr>
                 <th>Present</th>
                 <th>Absent</th>
@@ -51,8 +65,8 @@ else
             </tr>
         </tbody>
     </table>
-    <table class="table">
-        <thead>
+    <table class="table table-bordered table-sm text-center">
+        <thead class="thead-light">
             <tr>
                 <th>
                     Day
@@ -68,17 +82,17 @@ else
         <tbody>
             @foreach (var item in Model.UserAttendance)
             {
-            <tr>
-                <td>
-                    @(item.PunchDate.Value.DayOfWeek)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.PunchDate)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.AttendanceStatus.Status)
-                </td>
-            </tr>
+                <tr>
+                    <td>
+                        @(item.PunchDate.Value.DayOfWeek)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.PunchDate)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.AttendanceStatus.Status)
+                    </td>
+                </tr>
             }
 
         </tbody>

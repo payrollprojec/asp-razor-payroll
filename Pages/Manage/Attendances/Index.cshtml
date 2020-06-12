@@ -4,22 +4,34 @@
     ViewData["Title"] = "Manage Attendance";
 }
 
-<h1>Manage Attendance</h1>
+@*<h1>Manage Attendance</h1>
+    <form>
+        <p>
+            Name: <input class="mr-md-3" type="text" asp-for="SearchString" placeholder="Search" />
+            <select class="mr-md-3" asp-for="SelectedMonth" asp-items="Model.Months">
+            </select>
+            <select class="mr-md-3" asp-for="SelectedYear" asp-items="Model.Years">
+            </select>
+            <input type="submit" value="Go" />
+        </p>
+    </form>*@
+<div class="row">
+    <div class="col-auto"><h3>Manage Attendance</h3></div><br />
+    <div class="col-auto">
+        <form class="form-inline">
+            <input id="name" class="form-control-sm mr-sm-3" type="text" asp-for="SearchString" placeholder="Search Name" />
+            <select class="form-control-sm mr-sm-3" asp-for="SelectedMonth" asp-items="Model.Months">
+            </select>
+            <select class="form-control-sm mr-sm-3" asp-for="SelectedYear" asp-items="Model.Years">
+            </select>
+            <input type="submit" value="Filter" />
+        </form>
+    </div>
+</div>
+<br />
 
-<form>
-    <p>
-        Name: <input class="mr-md-3" type="text" asp-for="SearchString" placeholder="Search" />
-        <select class="mr-md-3" asp-for="SelectedMonth" asp-items="Model.Months">
-        </select>
-        <select class="mr-md-3" asp-for="SelectedYear" asp-items="Model.Years">
-        </select>
-        <input type="submit" value="Filter" />
-
-    </p>
-</form>
-
-<table class="table">
-    <thead>
+<table class="table table-hover">
+    <thead class="thead-light"s>
         <tr>
             <th>
                 @Html.DisplayNameFor(model => model.Users[0].FullName)
@@ -43,13 +55,13 @@
                 <td>
                     @{
                         var parms = new Dictionary<string, string>
-                                {
+                                        {
                             {"Id", item.Id },
                             {"SelectedMonth", Model.SelectedMonth },
                             {"SelectedYear", Model.SelectedYear }
                         };
                     }
-@*                    <a asp-page="./Edit" asp-route-id="@item.Id">Edit</a>*@
+                    @*                    <a asp-page="./Edit" asp-route-id="@item.Id">Edit</a>*@
                     <a asp-page="./Edit" asp-all-route-data="parms">Edit</a>
 
                 </td>

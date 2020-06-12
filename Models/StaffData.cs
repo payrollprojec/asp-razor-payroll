@@ -30,11 +30,56 @@ namespace PayrollAppRazorPages.Models
         [Display(Name = "SOCSO No")]
         public string SocsoNo { get; set; }
 
-        [DataType(DataType.Currency)]
-        [Display(Name = "Basic Salary")]
+        //[DataType(DataType.Currency)]
+        [Display(Name = "Basic Salary (RM)")]
         [Column(TypeName = "decimal(18, 2)")]
-        public decimal? BasicSalary { get; set; }
+        public decimal BasicSalary { get; set; }
 
+        //[DataType(DataType.Currency)]
+        [Display(Name = "Fixed Allowance (RM)")]
+        [Column(TypeName = "decimal(18, 2)")]
+        public decimal Allowances { get; set; }
+
+
+        [Display(Name = "Socso Category")]
+        public int Socso { get; set; }
+
+
+        //[DataType(DataType.Currency)]
+        [Column(TypeName = "decimal(18, 2)")]
+        [Display(Name = "Tax (RM)")]
+        public decimal Tax { get; set; }
+
+        //[DataType(DataType.Currency)]
+        [Column(TypeName = "decimal(18, 2)")]
+        [Display(Name = "Employee EPF (RM)")]
+        public decimal EPF { get; set; }
+
+        //[DataType(DataType.Currency)]
+        [Column(TypeName = "decimal(18, 2)")]
+        [Display(Name = "Employer EPF (RM)")]
+        public decimal EREPF { get; set; }
+
+
+        //[DataType(DataType.Currency)]
+        [Column(TypeName = "decimal(18, 2)")]
+        [Display(Name = "Employee Socso (RM)")]
+        public decimal SocsoRm { get; set; }
+
+        //[DataType(DataType.Currency)]
+        [Column(TypeName = "decimal(18, 2)")]
+        [Display(Name = "Employer Socso (RM)")]
+        public decimal ERSocsoRm { get; set; }
+
+        //[DataType(DataType.Currency)]
+        [Column(TypeName = "decimal(18, 2)")]
+        [Display(Name = "Employee EIS (RM)")]
+        public decimal EIS { get; set; }
+
+        //[DataType(DataType.Currency)]
+        [Column(TypeName = "decimal(18, 2)")]
+        [Display(Name = "Employer EIS (RM)")]
+        public decimal EREIS { get; set; }
 
         public string ApplicationUserId { get; set; }
         [Required]

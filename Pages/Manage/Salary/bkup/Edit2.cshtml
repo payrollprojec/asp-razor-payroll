@@ -1,0 +1,85 @@
+﻿@page
+@model PayrollAppRazorPages.Pages.Manage.Salary.EditModel
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h1>Edit</h1>
+
+<h4>StaffSalary</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="StaffSalary.salaryID" />
+            <input type="hidden" asp-for="StaffSalary.staffID" />
+            <input type="hidden" asp-for="StaffSalary.Year" />
+            <input type="hidden" asp-for="StaffSalary.Month" />
+            @*<div class="form-group">
+                    <label asp-for="StaffSalary.staffID" class="control-label"></label>
+                    <input asp-for="StaffSalary.staffID" class="form-control" />
+                    <span asp-validation-for="StaffSalary.staffID" class="text-danger"></span>
+                </div>*@
+            @*<div class="form-group">
+                    <label asp-for="StaffSalary.ValidFrom" class="control-label"></label>
+                    <input asp-for="StaffSalary.ValidFrom" class="form-control" />
+                    <span asp-validation-for="StaffSalary.ValidFrom" class="text-danger"></span>
+                </div>*@
+            <div class="form-group">
+                <label asp-for="StaffSalary.BasicSalary" class="control-label"></label>
+                <input asp-for="StaffSalary.BasicSalary" class="form-control" />
+                <span asp-validation-for="StaffSalary.BasicSalary" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="StaffSalary.Bonus" class="control-label"></label>
+                <input asp-for="StaffSalary.Bonus" class="form-control" />
+                <span asp-validation-for="StaffSalary.Bonus" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="StaffSalary.Allowances" class="control-label"></label>
+                <input asp-for="StaffSalary.Allowances" class="form-control" />
+                <span asp-validation-for="StaffSalary.Allowances" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="StaffSalary.EPF" class="control-label"></label>
+                <input asp-for="StaffSalary.EPF" class="form-control" />
+                <span asp-validation-for="StaffSalary.EPF" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="StaffSalary.Socso" class="control-label"></label>
+                @*<input asp-for="StaffSalary.Socso" class="form-control" />*@
+                <select asp-for="StaffSalary.Socso" class="form-control">
+                    <option value="">- Select a category -</option>
+                    <option value="1">First Category(Employment Injury Scheme and Invalidity Scheme)</option>
+                    <option value="2">Second Category(Employment Injury Scheme)</option>
+                </select>
+                <span asp-validation-for="StaffSalary.Socso" class="text-danger"></span>
+            </div>
+            @*<div class="form-group">
+                    <label asp-for="StaffSalary.Tax" class="control-label"></label>
+                    <input asp-for="StaffSalary.Tax" class="form-control" />
+                    <span asp-validation-for="StaffSalary.Tax" class="text-danger"></span>
+                </div>*@
+            <div class="form-group">
+                <label asp-for="StaffSalary.AdvSalary" class="control-label"></label>
+                <input asp-for="StaffSalary.AdvSalary" class="form-control" />
+                <span asp-validation-for="StaffSalary.AdvSalary" class="text-danger"></span>
+            </div>
+            @*<div class="form-group">
+                    <label asp-for="StaffSalary.GrossSalary" class="control-label"></label>
+                    <input asp-for="StaffSalary.GrossSalary" class="form-control" />
+                    <span asp-validation-for="StaffSalary.GrossSalary" class="text-danger"></span>
+                </div>*@
+            <input type="hidden" asp-for="StaffSalary.GrossSalary" />
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-page="./Index">Back to List</a>
+</div>

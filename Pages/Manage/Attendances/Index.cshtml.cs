@@ -83,12 +83,18 @@ namespace PayrollAppRazorPages.Pages.Manage.Attendances
             }
             SelectedDate = DateTime.Parse(SelectedYear + "-" + SelectedMonth + "-01").ToString("MMMM yyyy");
 
+            //var results = from c in _context.Users.AsNoTracking().Include(u => u.StaffData).AsNoTracking()
+            //                join ur in _context.UserRoles.AsNoTracking() on c.Id equals ur.UserId
+            //                join r in _context.Roles.AsNoTracking() on ur.RoleId equals r.Id
+            //              where r.Name == "staff"
+            //              select c;
             Users = await _userManager.GetUsersInRoleAsync("staff");
-
             UserAttendances = new List<ViewModel>();
-
+            var numList = await _context.Attendance.Where(
+                    a => a.PunchDate.Value.Month == int.Parse(SelectedMonth) &&
+                    a.PunchDate.Value.Year == int.Parse(SelectedYear)).ToListAsync();
             // for each of the users with role "staff", count the number of attendance rows with year and month specified
-            foreach(var u in Users)
+            foreach (var u in Users)
             {
                 if (!string.IsNullOrEmpty(SearchString))
                 {
@@ -96,13 +102,10 @@ namespace PayrollAppRazorPages.Pages.Manage.Attendances
                     if (!u.FullName.ToLower().Contains(SearchString.ToLower()))
                         continue;
                 }
-                var num = await _context.Attendance.Where(
-                    a => a.PunchDate.Value.Month == int.Parse(SelectedMonth) &&
-                    a.PunchDate.Value.Year == int.Parse(SelectedYear) &&
-                    a.ApplicationUserId == u.Id).ToListAsync();
+                var num = numList.FindAll(n => n.ApplicationUserId == u.Id);
 
                 _logger.LogInformation(u.Id);
-                UserAttendances.Add(new ViewModel { Id=u.Id, Name = u.FullName, DaysRecorded = num.Count() });
+                UserAttendances.Add(new ViewModel { Id = u.Id, Name = u.FullName, DaysRecorded = num.Count() });
             }
         }
     }

@@ -1,0 +1,123 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.EntityFrameworkCore;
+using PayrollAppRazorPages.Data;
+using PayrollAppRazorPages.Models;
+
+namespace PayrollAppRazorPages.Pages.Manage.Salary
+{
+    [Authorize(Roles ="superadmin,admin")]
+    public class CreateSalaryModel : PageModel
+    {
+        private readonly UserManager<ApplicationUser> _userManager;
+        private readonly ApplicationDbContext _context;
+
+        public CreateSalaryModel(UserManager<ApplicationUser> userManager, ApplicationDbContext context)
+        {
+            _userManager = userManager;
+            _context = context;
+        }
+
+        [BindProperty(SupportsGet = true)]
+        public string SelectedMonth { get; set; }
+        [BindProperty(SupportsGet = true)]
+        public string SelectedYear { get; set; }
+        public string SelectedDate { get; set; }
+        public List<Attendance> UserAttendance { get; set; }
+
+        [BindProperty]
+        public StaffSalary StaffSalary { get; set; }
+        public ApplicationUser applicationUser { get; set; }
+
+        public async Task<IActionResult> OnGetAsync(string Id)
+        {
+            //applicationUser = await _userManager.FindByIdAsync(Id);
+            applicationUser = await _userManager.Users.Include(u => u.StaffData).Where(u => u.Id == Id).SingleOrDefaultAsync();
+
+            if (applicationUser == null)
+            {
+                return NotFound();
+            }
+            bool isStaff = await _userManager.IsInRoleAsync(applicationUser, "staff");
+            if (!isStaff)
+            {
+                return NotFound();
+            }
+
+            if (string.IsNullOrEmpty(SelectedYear) || string.IsNullOrEmpty(SelectedMonth))
+            {
+                SelectedMonth = DateTime.Now.Month.ToString();
+                SelectedYear = DateTime.Now.Year.ToString();
+            }
+            SelectedDate = DateTime.Parse(SelectedYear + "-" + SelectedMonth + "-01").ToString("MMMM yyyy");
+            // get attendance for this month
+            UserAttendance = await _context.Attendance.Include(a => a.AttendanceStatus)
+                .Where(a => a.ApplicationUserId == Id && a.PunchDate.Value.Month == int.Parse(SelectedMonth) && a.PunchDate.Value.Year == int.Parse(SelectedYear))
+                .OrderBy(a => a.PunchDate).ToListAsync();
+
+            // initialize a new salary object with staff data default salary info
+            StaffSalary = new StaffSalary
+            {
+                staffID = applicationUser.Id,
+                BasicSalary = applicationUser.StaffData.BasicSalary,
+                Allowances = applicationUser.StaffData.Allowances,
+                EPF = applicationUser.StaffData.EPF,
+                SocsoRm = applicationUser.StaffData.SocsoRm,
+                EIS = applicationUser.StaffData.EIS,
+                Tax = applicationUser.StaffData.Tax,
+                EREPF = applicationUser.StaffData.EREPF,
+                ERSocsoRm = applicationUser.StaffData.ERSocsoRm,
+                EREIS = applicationUser.StaffData.EREIS,
+                Socso = applicationUser.StaffData.Socso,
+                Month = int.Parse(SelectedMonth),
+                Year = int.Parse(SelectedYear)
+            };
+
+            return Page();
+        }
+
+        public async Task<IActionResult> OnPostAsync()
+        {
+            //applicationUser = await _userManager.FindByIdAsync(Id);
+            applicationUser = await _userManager.Users.Include(u => u.StaffData).Where(u => u.Id == StaffSalary.staffID).SingleOrDefaultAsync();
+
+            if (applicationUser == null)
+            {
+                return NotFound();
+            }
+            bool isStaff = await _userManager.IsInRoleAsync(applicationUser, "staff");
+            if (!isStaff)
+            {
+                return NotFound();
+            }
+
+            if (string.IsNullOrEmpty(SelectedYear) || string.IsNullOrEmpty(SelectedMonth))
+            {
+                SelectedMonth = DateTime.Now.Month.ToString();
+                SelectedYear = DateTime.Now.Year.ToString();
+            }
+            SelectedDate = DateTime.Parse(SelectedYear + "-" + SelectedMonth + "-01").ToString("MMMM yyyy");
+            // get attendance for this month
+            UserAttendance = await _context.Attendance.Include(a => a.AttendanceStatus)
+                .Where(a => a.ApplicationUserId == StaffSalary.staffID && a.PunchDate.Value.Month == int.Parse(SelectedMonth) && a.PunchDate.Value.Year == int.Parse(SelectedYear))
+                .OrderBy(a => a.PunchDate).ToListAsync();
+            ModelState.Remove("StaffSalary.staff");
+            if (!ModelState.IsValid)
+            {
+                return Page();
+            }
+            StaffSalary.MailNum = 0;
+            StaffSalary.DateCreated = DateTime.Now;
+            _context.StaffSalary.Add(StaffSalary);
+            await _context.SaveChangesAsync();
+
+            return RedirectToPage("./Index", new { SelectedMonth, SelectedYear});
+        }
+    }
+}

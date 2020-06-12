@@ -4,12 +4,17 @@
     ViewData["Title"] = "Manage Staff";
 }
 
-<h1>Manage Staff</h1>
-<p>
-    <a asp-page="Create">Create New Staff</a>
-</p>
-<table class="table">
-    <thead>
+@*<h1>Manage Staff</h1>
+    <p>
+        <a asp-page="Create">Create New Staff</a>
+    </p>*@
+<div class="container row ">
+    <h1 class="col">Manage Staff</h1>
+    <p><a class="btn btn-info " asp-page="Create">Create New Staff</a></p>
+</div>
+<br />
+<table class="table table-hover">
+    <thead class="thead-light">
         <tr>
             <th>
                 @Html.DisplayNameFor(model => model.Users[0].UserName)

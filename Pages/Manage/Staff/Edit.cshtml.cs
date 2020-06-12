@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
@@ -29,6 +30,8 @@ namespace PayrollAppRazorPages.Pages.Manage.Staff
 
         public class InputModel
         {
+            public string Id { get; set; }
+
             [StringLength(60, MinimumLength = 3)]
             [Display(Name = "Name")]
             [Required]
@@ -66,6 +69,57 @@ namespace PayrollAppRazorPages.Pages.Manage.Staff
             [Display(Name = "SOCSO No")]
             public string SocsoNo { get; set; }
 
+            [DataType(DataType.Currency)]
+            [Display(Name = "Basic Salary")]
+            [Column(TypeName = "decimal(18, 2)")]
+            public decimal BasicSalary { get; set; }
+
+            [DataType(DataType.Currency)]
+            [Display(Name = "Fixed Allowance")]
+            [Column(TypeName = "decimal(18, 2)")]
+            public decimal Allowances { get; set; }
+
+
+            [Display(Name = "Socso Category")]
+            public int Socso { get; set; }
+
+
+            [DataType(DataType.Currency)]
+            [Column(TypeName = "decimal(18, 2)")]
+            [Display(Name = "Tax (RM)")]
+            public decimal Tax { get; set; }
+
+            [DataType(DataType.Currency)]
+            [Column(TypeName = "decimal(18, 2)")]
+            [Display(Name = "Employee EPF (RM)")]
+            public decimal EPF { get; set; }
+
+            [DataType(DataType.Currency)]
+            [Column(TypeName = "decimal(18, 2)")]
+            [Display(Name = "Employer EPF (RM)")]
+            public decimal EREPF { get; set; }
+
+
+            [DataType(DataType.Currency)]
+            [Column(TypeName = "decimal(18, 2)")]
+            [Display(Name = "Employee Socso (RM)")]
+            public decimal SocsoRm { get; set; }
+
+            [DataType(DataType.Currency)]
+            [Column(TypeName = "decimal(18, 2)")]
+            [Display(Name = "Employer Socso (RM)")]
+            public decimal ERSocsoRm { get; set; }
+
+            [DataType(DataType.Currency)]
+            [Column(TypeName = "decimal(18, 2)")]
+            [Display(Name = "Employee EIS (RM)")]
+            public decimal EIS { get; set; }
+
+            [DataType(DataType.Currency)]
+            [Column(TypeName = "decimal(18, 2)")]
+            [Display(Name = "Employer EIS (RM)")]
+            public decimal EREIS { get; set; }
+
             //[Required]
             //[StringLength(100, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 6)]
             //[DataType(DataType.Password)]
@@ -93,6 +147,7 @@ namespace PayrollAppRazorPages.Pages.Manage.Staff
                 return NotFound();
             }
             Input = new InputModel();
+            Input.Id = applicationUser.Id;
             Input.FullName = applicationUser.FullName;
             Input.ICNo = applicationUser.ICNo;
             Input.Email = applicationUser.Email;
@@ -104,6 +159,19 @@ namespace PayrollAppRazorPages.Pages.Manage.Staff
             Input.TaxNo = applicationUser.StaffData.TaxNo;
             Input.SocsoNo = applicationUser.StaffData.SocsoNo;
 
+            Input.BasicSalary = applicationUser.StaffData.BasicSalary;
+            Input.Allowances = applicationUser.StaffData.Allowances;
+            Input.EPF = applicationUser.StaffData.EPF;
+            Input.EREPF = applicationUser.StaffData.EREPF;
+
+            Input.Socso = applicationUser.StaffData.Socso;
+            Input.SocsoRm = applicationUser.StaffData.SocsoRm;
+            Input.ERSocsoRm = applicationUser.StaffData.ERSocsoRm;
+
+            Input.EIS = applicationUser.StaffData.EIS;
+            Input.EREIS = applicationUser.StaffData.EREIS;
+
+            Input.Tax = applicationUser.StaffData.Tax;
 
             return Page();
         }
@@ -138,6 +206,19 @@ namespace PayrollAppRazorPages.Pages.Manage.Staff
                 applicationUser.StaffData.EPFNo = Input.EPFNo;
                 applicationUser.StaffData.SocsoNo = Input.SocsoNo;
 
+                applicationUser.StaffData.BasicSalary = Input.BasicSalary;
+                applicationUser.StaffData.Allowances = Input.Allowances;
+                applicationUser.StaffData.EPF = Input.EPF;
+                applicationUser.StaffData.EREPF = Input.EREPF;
+
+                applicationUser.StaffData.Socso = Input.Socso;
+                applicationUser.StaffData.SocsoRm = Input.SocsoRm;
+                applicationUser.StaffData.ERSocsoRm = Input.ERSocsoRm;
+
+                applicationUser.StaffData.EIS = Input.EIS;
+                applicationUser.StaffData.EREIS = Input.EREIS;
+
+                applicationUser.StaffData.Tax = Input.Tax;
 
                 var result = await _userManager.UpdateAsync(applicationUser);
                 if (result.Succeeded)

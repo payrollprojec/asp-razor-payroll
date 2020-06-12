@@ -11,6 +11,8 @@ namespace PayrollAppRazorPages.Models
         public int Id { get; set; }
 
         public string ApplicationUserId { get; set; }
+
+        [Required]
         public ApplicationUser ApplicationUser { get; set; }
 
         [DisplayFormat(DataFormatString = "{0:dd-MM-yyyy}", ApplyFormatInEditMode = true)]

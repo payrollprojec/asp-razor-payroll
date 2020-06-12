@@ -14,6 +14,7 @@ namespace PayrollAppRazorPages.Models
 
         public string staffID { get; set; }
 
+        [Required]
         [ForeignKey("staffID")]
         public virtual ApplicationUser staff { get; set; }
 
@@ -29,40 +30,75 @@ namespace PayrollAppRazorPages.Models
 
         public int Year { get; set; }
 
-        [DataType(DataType.Currency)]
-        [Display(Name = "Basic Salary")]
-        [Column(TypeName = "decimal(18, 2)")]
-        public decimal? BasicSalary { get; set; }
-
-        [DataType(DataType.Currency)]
-        [Display(Name = "Bonus")]
-        [Column(TypeName = "decimal(18, 2)")]
-        public decimal? Bonus { get; set; }
-
-        [DataType(DataType.Currency)]
-        [Display(Name = "Allowances")]
-        [Column(TypeName = "decimal(18, 2)")]
-        public decimal? Allowances { get; set; }
-
-        [Display(Name = "EPF (%)")]
-        public int? EPF { get; set; }
+        [Display(Name = "Generated On")]
+        [DataType(DataType.Date)]
+        public DateTime DateCreated { get; set; }
 
         [Display(Name = "Socso Category")]
-        public int? Socso { get; set; }
+        public int Socso { get; set; }
 
         //[DataType(DataType.Currency)]
-        //[Display(Name = "Tax")]
-        //[Column(TypeName = "decimal(18, 2)")]
-        //public decimal? Tax { get; set; }
-
-        [DataType(DataType.Currency)]
-        [Display(Name = "Advanced Salary")]
+        [Display(Name = "Basic Salary")]
         [Column(TypeName = "decimal(18, 2)")]
-        public decimal? AdvSalary { get; set; }
+        public decimal BasicSalary { get; set; }
 
-        [DataType(DataType.Currency)]
-        [Display(Name = "Gross Salary")]
+        //[DataType(DataType.Currency)]
+        [Display(Name = "Bonus")]
         [Column(TypeName = "decimal(18, 2)")]
-        public decimal? GrossSalary { get; set; }
+        public decimal Bonus { get; set; }
+
+        //[DataType(DataType.Currency)]
+        [Display(Name = "Fixed Allowance")]
+        [Column(TypeName = "decimal(18, 2)")]
+        public decimal Allowances { get; set; }
+
+        //[DataType(DataType.Currency)]
+        [Column(TypeName = "decimal(18, 2)")]
+        [Display(Name = "Tax (RM)")]
+        public decimal Tax { get; set; }
+
+        //[DataType(DataType.Currency)]
+        [Column(TypeName = "decimal(18, 2)")]
+        [Display(Name = "Employee EPF (RM)")]
+        public decimal EPF { get; set; }
+
+        //[DataType(DataType.Currency)]
+        [Column(TypeName = "decimal(18, 2)")]
+        [Display(Name = "Employer EPF (RM)")]
+        public decimal EREPF { get; set; }
+
+
+        //[DataType(DataType.Currency)]
+        [Column(TypeName = "decimal(18, 2)")]
+        [Display(Name = "Employee Socso (RM)")]
+        public decimal SocsoRm { get; set; }
+
+        //[DataType(DataType.Currency)]
+        [Column(TypeName = "decimal(18, 2)")]
+        [Display(Name = "Employer Socso (RM)")]
+        public decimal ERSocsoRm { get; set; }
+
+        //[DataType(DataType.Currency)]
+        [Column(TypeName = "decimal(18, 2)")]
+        [Display(Name = "Employee EIS (RM)")]
+        public decimal EIS { get; set; }
+
+        //[DataType(DataType.Currency)]
+        [Column(TypeName = "decimal(18, 2)")]
+        [Display(Name = "Employer EIS (RM)")]
+        public decimal EREIS { get; set; }
+
+        //[DataType(DataType.Currency)]
+        [Display(Name = "Gross Salary (RM)")]
+        [Column(TypeName = "decimal(18, 2)")]
+        public decimal AdvSalaryPlus { get; set; }
+
+        //[DataType(DataType.Currency)]
+        [Display(Name = "Advanced Salary (RM)")]
+        [Column(TypeName = "decimal(18, 2)")]
+        public decimal AdvSalary { get; set; }
+
+
+        public int MailNum { get; set; }
     }
 }

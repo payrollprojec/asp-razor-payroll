@@ -1,9 +1,10 @@
 {
   "version": 2,
-  "dgSpecHash": "ue495D3V/McEVdmF7im0Lzf/aEYydfsBV+8JbfsKfcDeT09cZimwZKMkQRKGrxAFzDmGMWQ+T4vzP+pyrvnDGQ==",
+  "dgSpecHash": "H5lIkAw8BbEblvJ3dx+7y02VNCn61/QOwiDiZHfP+8gZU0rEOXzTcpZ5DeUgpq6wJMcw/YOFg7yTVVZRGmEsEQ==",
   "success": true,
-  "projectFilePath": "C:\\Users\\Wen\\source\\repos\\PayrollAppRazorPages\\PayrollAppRazorPages.csproj",
+  "projectFilePath": "C:\\Users\\Wen\\source\\repos\\PayrollAppRazorPages5\\PayrollAppRazorPages.csproj",
   "expectedPackageFiles": [
+    "C:\\Users\\Wen\\.nuget\\packages\\itextsharp\\5.5.13.1\\itextsharp.5.5.13.1.nupkg.sha512",
     "C:\\Users\\Wen\\.nuget\\packages\\jsreport.aspnetcore\\2.1.0\\jsreport.aspnetcore.2.1.0.nupkg.sha512",
     "C:\\Users\\Wen\\.nuget\\packages\\jsreport.binary\\2.7.1\\jsreport.binary.2.7.1.nupkg.sha512",
     "C:\\Users\\Wen\\.nuget\\packages\\jsreport.client\\3.0.1\\jsreport.client.3.0.1.nupkg.sha512",
@@ -74,6 +75,7 @@
     "C:\\Users\\Wen\\.nuget\\packages\\netstandard.library\\1.6.1\\netstandard.library.1.6.1.nupkg.sha512",
     "C:\\Users\\Wen\\.nuget\\packages\\newtonsoft.json\\12.0.2\\newtonsoft.json.12.0.2.nupkg.sha512",
     "C:\\Users\\Wen\\.nuget\\packages\\nuget.frameworks\\4.7.0\\nuget.frameworks.4.7.0.nupkg.sha512",
+    "C:\\Users\\Wen\\.nuget\\packages\\razorengine\\4.5.1-alpha001\\razorengine.4.5.1-alpha001.nupkg.sha512",
     "C:\\Users\\Wen\\.nuget\\packages\\runtime.debian.8-x64.runtime.native.system.security.cryptography.openssl\\4.3.0\\runtime.debian.8-x64.runtime.native.system.security.cryptography.openssl.4.3.0.nupkg.sha512",
     "C:\\Users\\Wen\\.nuget\\packages\\runtime.fedora.23-x64.runtime.native.system.security.cryptography.openssl\\4.3.0\\runtime.fedora.23-x64.runtime.native.system.security.cryptography.openssl.4.3.0.nupkg.sha512",
     "C:\\Users\\Wen\\.nuget\\packages\\runtime.fedora.24-x64.runtime.native.system.security.cryptography.openssl\\4.3.0\\runtime.fedora.24-x64.runtime.native.system.security.cryptography.openssl.4.3.0.nupkg.sha512",
@@ -185,5 +187,26 @@
     "C:\\Users\\Wen\\.nuget\\packages\\system.xml.xmldocument\\4.3.0\\system.xml.xmldocument.4.3.0.nupkg.sha512",
     "C:\\Users\\Wen\\.nuget\\packages\\system.xml.xmlserializer\\4.3.0\\system.xml.xmlserializer.4.3.0.nupkg.sha512"
   ],
-  "logs": []
+  "logs": [
+    {
+      "code": "NU1701",
+      "level": "Warning",
+      "warningLevel": 1,
+      "message": "Package 'iTextSharp 5.5.13.1' was restored using '.NETFramework,Version=v4.6.1, .NETFramework,Version=v4.6.2, .NETFramework,Version=v4.7, .NETFramework,Version=v4.7.1, .NETFramework,Version=v4.7.2, .NETFramework,Version=v4.8' instead of the project target framework '.NETCoreApp,Version=v3.1'. This package may not be fully compatible with your project.",
+      "libraryId": "iTextSharp",
+      "targetGraphs": [
+        ".NETCoreApp,Version=v3.1"
+      ]
+    },
+    {
+      "code": "NU1701",
+      "level": "Warning",
+      "warningLevel": 1,
+      "message": "Package 'RazorEngine 4.5.1-alpha001' was restored using '.NETFramework,Version=v4.6.1, .NETFramework,Version=v4.6.2, .NETFramework,Version=v4.7, .NETFramework,Version=v4.7.1, .NETFramework,Version=v4.7.2, .NETFramework,Version=v4.8' instead of the project target framework '.NETCoreApp,Version=v3.1'. This package may not be fully compatible with your project.",
+      "libraryId": "RazorEngine",
+      "targetGraphs": [
+        ".NETCoreApp,Version=v3.1"
+      ]
+    }
+  ]
 }

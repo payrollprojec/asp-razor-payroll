@@ -233,6 +233,7 @@ namespace PayrollAppRazorPages.Data.Migrations
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("ApplicationUserId")
+                        .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<int>("AttendanceStatusId")
@@ -272,11 +273,14 @@ namespace PayrollAppRazorPages.Data.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<decimal>("Allowances")
+                        .HasColumnType("decimal(18, 2)");
+
                     b.Property<string>("ApplicationUserId")
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<decimal?>("BasicSalary")
+                    b.Property<decimal>("BasicSalary")
                         .HasColumnType("decimal(18, 2)");
 
                     b.Property<DateTime?>("DOB")
@@ -285,11 +289,35 @@ namespace PayrollAppRazorPages.Data.Migrations
                     b.Property<DateTime?>("DateJoined")
                         .HasColumnType("datetime2");
 
+                    b.Property<decimal>("EIS")
+                        .HasColumnType("decimal(18, 2)");
+
+                    b.Property<decimal>("EPF")
+                        .HasColumnType("decimal(18, 2)");
+
                     b.Property<string>("EPFNo")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<decimal>("EREIS")
+                        .HasColumnType("decimal(18, 2)");
+
+                    b.Property<decimal>("EREPF")
+                        .HasColumnType("decimal(18, 2)");
+
+                    b.Property<decimal>("ERSocsoRm")
+                        .HasColumnType("decimal(18, 2)");
+
+                    b.Property<int>("Socso")
+                        .HasColumnType("int");
+
                     b.Property<string>("SocsoNo")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<decimal>("SocsoRm")
+                        .HasColumnType("decimal(18, 2)");
+
+                    b.Property<decimal>("Tax")
+                        .HasColumnType("decimal(18, 2)");
 
                     b.Property<string>("TaxNo")
                         .HasColumnType("nvarchar(max)");
@@ -309,34 +337,59 @@ namespace PayrollAppRazorPages.Data.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<decimal?>("AdvSalary")
+                    b.Property<decimal>("AdvSalary")
                         .HasColumnType("decimal(18, 2)");
 
-                    b.Property<decimal?>("Allowances")
+                    b.Property<decimal>("AdvSalaryPlus")
                         .HasColumnType("decimal(18, 2)");
 
-                    b.Property<decimal?>("BasicSalary")
+                    b.Property<decimal>("Allowances")
                         .HasColumnType("decimal(18, 2)");
 
-                    b.Property<decimal?>("Bonus")
+                    b.Property<decimal>("BasicSalary")
                         .HasColumnType("decimal(18, 2)");
 
-                    b.Property<int?>("EPF")
+                    b.Property<decimal>("Bonus")
+                        .HasColumnType("decimal(18, 2)");
+
+                    b.Property<DateTime>("DateCreated")
+                        .HasColumnType("datetime2");
+
+                    b.Property<decimal>("EIS")
+                        .HasColumnType("decimal(18, 2)");
+
+                    b.Property<decimal>("EPF")
+                        .HasColumnType("decimal(18, 2)");
+
+                    b.Property<decimal>("EREIS")
+                        .HasColumnType("decimal(18, 2)");
+
+                    b.Property<decimal>("EREPF")
+                        .HasColumnType("decimal(18, 2)");
+
+                    b.Property<decimal>("ERSocsoRm")
+                        .HasColumnType("decimal(18, 2)");
+
+                    b.Property<int>("MailNum")
                         .HasColumnType("int");
-
-                    b.Property<decimal?>("GrossSalary")
-                        .HasColumnType("decimal(18, 2)");
 
                     b.Property<int>("Month")
                         .HasColumnType("int");
 
-                    b.Property<int?>("Socso")
+                    b.Property<int>("Socso")
                         .HasColumnType("int");
+
+                    b.Property<decimal>("SocsoRm")
+                        .HasColumnType("decimal(18, 2)");
+
+                    b.Property<decimal>("Tax")
+                        .HasColumnType("decimal(18, 2)");
 
                     b.Property<int>("Year")
                         .HasColumnType("int");
 
                     b.Property<string>("staffID")
+                        .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
                     b.HasKey("salaryID");
@@ -401,7 +454,9 @@ namespace PayrollAppRazorPages.Data.Migrations
                 {
                     b.HasOne("PayrollAppRazorPages.Models.ApplicationUser", "ApplicationUser")
                         .WithMany("Attendances")
-                        .HasForeignKey("ApplicationUserId");
+                        .HasForeignKey("ApplicationUserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("PayrollAppRazorPages.Models.AttendanceStatus", "AttendanceStatus")
                         .WithMany()
@@ -423,7 +478,9 @@ namespace PayrollAppRazorPages.Data.Migrations
                 {
                     b.HasOne("PayrollAppRazorPages.Models.ApplicationUser", "staff")
                         .WithMany()
-                        .HasForeignKey("staffID");
+                        .HasForeignKey("staffID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 #pragma warning restore 612, 618
         }

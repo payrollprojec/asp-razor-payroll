@@ -31,6 +31,7 @@ namespace PayrollAppRazorPages.Pages.Manage.Attendances
         public string SelectedMonth { get; set; }
         [BindProperty(SupportsGet = true)]
         public string SelectedYear { get; set; }
+        public string SelectedDate { get; set; }
 
         [BindProperty]
         public InputModel Input { get; set; }
@@ -69,7 +70,9 @@ namespace PayrollAppRazorPages.Pages.Manage.Attendances
                 SelectedMonth = DateTime.Now.Month.ToString();
                 SelectedYear = DateTime.Now.Year.ToString();
             }
-            
+            SelectedDate = DateTime.Parse(SelectedYear + "-" + SelectedMonth + "-01").ToString("MMMM yyyy");
+
+
             Input = new InputModel()
             {
                 Id = applicationUser.Id
@@ -107,6 +110,7 @@ namespace PayrollAppRazorPages.Pages.Manage.Attendances
                 SelectedMonth = DateTime.Now.Month.ToString();
                 SelectedYear = DateTime.Now.Year.ToString();
             }
+
 
             AttendanceStatus = new SelectList(await _context.AttendanceStatus.Select(a => a.Status).ToListAsync());
 

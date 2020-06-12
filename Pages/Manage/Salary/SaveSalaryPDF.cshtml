@@ -1,0 +1,96 @@
+﻿@page
+@model PayrollAppRazorPages.Pages.Manage.Salary.SaveSalaryPDFModel
+@{
+    ViewData["Title"] = "SalaryPDF";
+    Layout = "_Layout";
+}
+
+<hr style="height:2px; color:black; background-color:black;" />
+<h1 style="text-align: center;">V3X Malaysia Sdn. Bhd.</h1>
+<hr style="height:2px; color:black; background-color:black;" />
+<br />
+
+<h4 style="text-align: center;">Salary Slip (@Model.SalaryDate)</h4>
+@*@Html.DisplayFor(model => model.StaffSalary.Month) / @Html.DisplayFor(model => model.StaffSalary.Year*@
+<hr />
+
+<div>
+
+    <dl class="row" style="margin: 0 auto;">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.applicationUser.FullName)
+        </dt>
+        <dd class="col-sm-10">
+            @*@Html.DisplayFor(model => model.StaffSalary.staff.FullName)*@
+            @Html.DisplayFor(model => model.applicationUser.FullName)
+        </dd>
+        @*
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.StaffSalary.Year)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.StaffSalary.Year)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.StaffSalary.Month)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.StaffSalary.Month)
+            </dd>*@
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.StaffSalary.BasicSalary)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.StaffSalary.BasicSalary)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.StaffSalary.Bonus)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.StaffSalary.Bonus)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.StaffSalary.Allowances)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.StaffSalary.Allowances)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.StaffSalary.EPF)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.StaffSalary.EPF)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.StaffSalary.Socso)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.StaffSalary.Socso)
+        </dd>
+        <dt class="col-sm-2">
+            SIP(%)
+        </dt>
+        <dd class="col-sm-10">
+            0.2
+        </dd>
+        @*
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.StaffSalary.Tax)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.StaffSalary.Tax)
+            </dd>*@
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.StaffSalary.AdvSalary)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.StaffSalary.AdvSalary)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.StaffSalary.GrossSalary)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.StaffSalary.GrossSalary)
+        </dd>
+    </dl>
+</div>

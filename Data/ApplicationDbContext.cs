@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using PayrollAppRazorPages.Models;
@@ -19,5 +20,9 @@ namespace PayrollAppRazorPages.Data
         public DbSet<PayrollAppRazorPages.Models.AttendanceStatus> AttendanceStatus { get; set; }
         public DbSet<PayrollAppRazorPages.Models.StaffSalary> StaffSalary { get; set; }
 
+        internal Task UpdateAsync(StaffSalary staffSalary)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

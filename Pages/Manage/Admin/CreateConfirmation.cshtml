@@ -5,13 +5,16 @@
 }
 
 <h1>Admin account created</h1>
-<p>Login Details</p>
-<hr />
-<p>Username: @Model.Username</p>
-<p>Password: @Model.Password</p>
+<br />
+<div class="card">
+    <h4 class="card-header">Login Details</h4>
+    <div class="card-body">
+        <p>Username: @Model.Username</p>
+        <p>Password: @Model.Password</p>
+    </div>
+</div>
+<br />
 
-<br />
-<br />
 <div>
-    <a asp-page="./Index">Back to List</a>
+    <a class="btn btn-secondary" asp-page="./Index">Back to List</a>
 </div>

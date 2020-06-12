@@ -1,0 +1,30 @@
+﻿@page "{Id}"
+@model PayrollAppRazorPages.Pages.Manage.Salary.SendEmailModel
+@{
+    ViewData["Title"] = "SendEmail";
+}
+<h1>Email Salary Slip of @Model.SalaryDate</h1>
+<br />
+
+<div class="card">
+    <h4 class="card-header">Send Salary Slip to @Html.DisplayFor(model => model.applicationUser.Email) </h4>
+    <div class="card-body">
+        <p>
+            @Html.DisplayFor(model => model.applicationUser.FullName)
+
+        </p>
+        <form method="post">
+            <div asp-validation-summary="All" class="text-danger"></div>
+            <div class="form-group">
+                @*<input type="hidden" asp-for="Input.Id" />*@
+            </div>
+            <a class="btn btn-light" asp-page="./SalaryPDF" target="_blank" asp-route-id="@Model.StaffSalary.salaryID">Preview pdf</a>
+            <button class="btn btn-primary" type="submit">Send Email</button>
+        </form>
+    </div>
+</div><br />
+
+<a class="btn btn-secondary" asp-page="./Index" >Back to List</a>
+
+
+

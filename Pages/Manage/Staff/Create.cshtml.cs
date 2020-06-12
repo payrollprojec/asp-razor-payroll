@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
@@ -69,6 +70,57 @@ namespace PayrollAppRazorPages.Pages.Manage.Staff
             [Display(Name = "SOCSO No")]
             public string SocsoNo { get; set; }
 
+            [DataType(DataType.Currency)]
+            [Display(Name = "Basic Salary (RM)")]
+            [Column(TypeName = "decimal(18, 2)")]
+            public decimal BasicSalary { get; set; }
+
+            [DataType(DataType.Currency)]
+            [Display(Name = "Fixed Allowance (RM)")]
+            [Column(TypeName = "decimal(18, 2)")]
+            public decimal Allowances { get; set; }
+
+
+            [Display(Name = "Socso Category")]
+            public int Socso { get; set; }
+
+
+            [DataType(DataType.Currency)]
+            [Column(TypeName = "decimal(18, 2)")]
+            [Display(Name = "Tax (RM)")]
+            public decimal Tax { get; set; }
+
+            [DataType(DataType.Currency)]
+            [Column(TypeName = "decimal(18, 2)")]
+            [Display(Name = "Employee EPF (RM)")]
+            public decimal EPF { get; set; }
+
+            [DataType(DataType.Currency)]
+            [Column(TypeName = "decimal(18, 2)")]
+            [Display(Name = "Employer EPF (RM)")]
+            public decimal EREPF { get; set; }
+
+
+            [DataType(DataType.Currency)]
+            [Column(TypeName = "decimal(18, 2)")]
+            [Display(Name = "Employee Socso (RM)")]
+            public decimal SocsoRm { get; set; }
+
+            [DataType(DataType.Currency)]
+            [Column(TypeName = "decimal(18, 2)")]
+            [Display(Name = "Employer Socso (RM)")]
+            public decimal ERSocsoRm { get; set; }
+
+            [DataType(DataType.Currency)]
+            [Column(TypeName = "decimal(18, 2)")]
+            [Display(Name = "Employee EIS (RM)")]
+            public decimal EIS { get; set; }
+
+            [DataType(DataType.Currency)]
+            [Column(TypeName = "decimal(18, 2)")]
+            [Display(Name = "Employer EIS (RM)")]
+            public decimal EREIS { get; set; }
+
             //[Required]
             //[StringLength(100, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 6)]
             //[DataType(DataType.Password)]
@@ -113,13 +165,25 @@ namespace PayrollAppRazorPages.Pages.Manage.Staff
                         TaxNo = Input.TaxNo,
                         EPFNo = Input.EPFNo,
                         SocsoNo = Input.SocsoNo,
-                        ApplicationUser = user
+                        ApplicationUser = user,
+
+                        BasicSalary = Input.BasicSalary,
+                        Allowances = Input.Allowances,
+                        EPF = Input.EPF,
+                        EREPF = Input.EREPF,
+                        Socso = Input.Socso,
+                        SocsoRm = Input.SocsoRm,
+                        ERSocsoRm = Input.ERSocsoRm,
+                        EIS = Input.EIS,
+                        EREIS = Input.EREIS,
+                        Tax = Input.Tax
                     };
 
                     await _context.StaffData.AddAsync(staffData);
                     await _context.SaveChangesAsync();
 
-                    return RedirectToPage("CreateConfirmation", new { username = Input.UserName, password = Input.UserName});
+                    return RedirectToPage("CreateConfirmation", new { username = Input.UserName, password = Input.UserName });
+                    //return RedirectToPage("../Salary/Create", new { username = Input.UserName, password = Input.UserName, userid = user.Id });
                 }
                 foreach (var error in result.Errors)
                 {

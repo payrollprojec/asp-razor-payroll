@@ -2,6 +2,15 @@
   "version": 3,
   "targets": {
     ".NETCoreApp,Version=v3.1": {
+      "iTextSharp/5.5.13.1": {
+        "type": "package",
+        "compile": {
+          "lib/itextsharp.dll": {}
+        },
+        "runtime": {
+          "lib/itextsharp.dll": {}
+        }
+      },
       "jsreport.AspNetCore/2.1.0": {
         "type": "package",
         "dependencies": {
@@ -1128,6 +1137,15 @@
         },
         "runtime": {
           "lib/netstandard1.6/NuGet.Frameworks.dll": {}
+        }
+      },
+      "RazorEngine/4.5.1-alpha001": {
+        "type": "package",
+        "compile": {
+          "lib/net451/RazorEngine.dll": {}
+        },
+        "runtime": {
+          "lib/net451/RazorEngine.dll": {}
         }
       },
       "runtime.debian.8-x64.runtime.native.System.Security.Cryptography.OpenSsl/4.3.0": {
@@ -2938,6 +2956,22 @@
     }
   },
   "libraries": {
+    "iTextSharp/5.5.13.1": {
+      "sha512": "xqzsYEYW/nMDjCtAXM5cl9fWil/Ju3HEGbsmoTKtltJc3M/9HNJzg++bCIOHm5uZITvRmZJWMO+S2u1yNG0gQg==",
+      "type": "package",
+      "path": "itextsharp/5.5.13.1",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "LICENSE.md",
+        "gnu-agpl-v3.0.md",
+        "itextsharp.5.5.13.1.nupkg.sha512",
+        "itextsharp.nuspec",
+        "lib/iTextSharp.xml",
+        "lib/itextsharp.dll",
+        "notice.txt"
+      ]
+    },
     "jsreport.AspNetCore/2.1.0": {
       "sha512": "blCOjYA0v4mZy/0olcQ43KM8UNlYERCeVM6Hxcuh1xfhbW+QaBydJJ5DR5nHrHApJHT5/kFkdpu+kzftwDfF6w==",
       "type": "package",
@@ -4685,6 +4719,20 @@
         "lib/netstandard1.6/NuGet.Frameworks.xml",
         "nuget.frameworks.4.7.0.nupkg.sha512",
         "nuget.frameworks.nuspec"
+      ]
+    },
+    "RazorEngine/4.5.1-alpha001": {
+      "sha512": "bmJbSsckHuw1R2aRQUXL/x9pwojLCfTOKUGYfsfhUn5RVZaCaTFfP7P1DOU0fObakgoVBFlnF5tkGOLexZpU6w==",
+      "type": "package",
+      "path": "razorengine/4.5.1-alpha001",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "LICENSE.md",
+        "lib/net451/RazorEngine.dll",
+        "lib/net451/RazorEngine.xml",
+        "razorengine.4.5.1-alpha001.nupkg.sha512",
+        "razorengine.nuspec"
       ]
     },
     "runtime.debian.8-x64.runtime.native.System.Security.Cryptography.OpenSsl/4.3.0": {
@@ -9151,6 +9199,8 @@
       "Microsoft.EntityFrameworkCore.Sqlite >= 3.1.4",
       "Microsoft.EntityFrameworkCore.Tools >= 3.1.4",
       "Microsoft.VisualStudio.Web.CodeGeneration.Design >= 3.1.3",
+      "RazorEngine >= 4.5.1-alpha001",
+      "iTextSharp >= 5.5.13.1",
       "jsreport.AspNetCore >= 2.1.0",
       "jsreport.Binary >= 2.7.1",
       "jsreport.Local >= 2.2.2"
@@ -9162,11 +9212,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Wen\\source\\repos\\PayrollAppRazorPages\\PayrollAppRazorPages.csproj",
+      "projectUniqueName": "C:\\Users\\Wen\\source\\repos\\PayrollAppRazorPages5\\PayrollAppRazorPages.csproj",
       "projectName": "PayrollAppRazorPages",
-      "projectPath": "C:\\Users\\Wen\\source\\repos\\PayrollAppRazorPages\\PayrollAppRazorPages.csproj",
+      "projectPath": "C:\\Users\\Wen\\source\\repos\\PayrollAppRazorPages5\\PayrollAppRazorPages.csproj",
       "packagesPath": "C:\\Users\\Wen\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Wen\\source\\repos\\PayrollAppRazorPages\\obj\\",
+      "outputPath": "C:\\Users\\Wen\\source\\repos\\PayrollAppRazorPages5\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\Wen\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -9225,6 +9275,14 @@
             "target": "Package",
             "version": "[3.1.3, )"
           },
+          "RazorEngine": {
+            "target": "Package",
+            "version": "[4.5.1-alpha001, )"
+          },
+          "iTextSharp": {
+            "target": "Package",
+            "version": "[5.5.13.1, )"
+          },
           "jsreport.AspNetCore": {
             "target": "Package",
             "version": "[2.1.0, )"
@@ -9259,5 +9317,27 @@
         "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.202\\RuntimeIdentifierGraph.json"
       }
     }
-  }
+  },
+  "logs": [
+    {
+      "code": "NU1701",
+      "level": "Warning",
+      "warningLevel": 1,
+      "message": "Package 'iTextSharp 5.5.13.1' was restored using '.NETFramework,Version=v4.6.1, .NETFramework,Version=v4.6.2, .NETFramework,Version=v4.7, .NETFramework,Version=v4.7.1, .NETFramework,Version=v4.7.2, .NETFramework,Version=v4.8' instead of the project target framework '.NETCoreApp,Version=v3.1'. This package may not be fully compatible with your project.",
+      "libraryId": "iTextSharp",
+      "targetGraphs": [
+        ".NETCoreApp,Version=v3.1"
+      ]
+    },
+    {
+      "code": "NU1701",
+      "level": "Warning",
+      "warningLevel": 1,
+      "message": "Package 'RazorEngine 4.5.1-alpha001' was restored using '.NETFramework,Version=v4.6.1, .NETFramework,Version=v4.6.2, .NETFramework,Version=v4.7, .NETFramework,Version=v4.7.1, .NETFramework,Version=v4.7.2, .NETFramework,Version=v4.8' instead of the project target framework '.NETCoreApp,Version=v3.1'. This package may not be fully compatible with your project.",
+      "libraryId": "RazorEngine",
+      "targetGraphs": [
+        ".NETCoreApp,Version=v3.1"
+      ]
+    }
+  ]
 }

@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore;
 using PayrollAppRazorPages.Data;
 using PayrollAppRazorPages.Models;
 
-namespace PayrollAppRazorPages
+namespace PayrollAppRazorPages.Pages.Manage.Salary
 {
     [Authorize(Roles = "superadmin,admin")]
 
@@ -32,7 +32,7 @@ namespace PayrollAppRazorPages
                 return NotFound();
             }
 
-            StaffSalary = await _context.StaffSalary.FirstOrDefaultAsync(m => m.salaryID == id);
+            StaffSalary = await _context.StaffSalary.Include(m => m.staff).FirstOrDefaultAsync(m => m.salaryID == id);
 
             if (StaffSalary == null)
             {
@@ -56,7 +56,7 @@ namespace PayrollAppRazorPages
                 await _context.SaveChangesAsync();
             }
 
-            return RedirectToPage("./Index");
+            return RedirectToPage("./Index", new { SelectedMonth = StaffSalary.Month, SelectedYear = StaffSalary.Year });
         }
     }
 }

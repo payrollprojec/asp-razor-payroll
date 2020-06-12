@@ -3,33 +3,222 @@
 @{
     ViewData["Title"] = "Home page";
 }
+@*<script src="https://kit.fontawesome.com/29acf2f727.js" crossorigin="anonymous"></script>*@
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.0-2/css/all.min.css" integrity="sha256-46r060N2LrChLLb5zowXQ72/iKKNiw/lAmygmHExk/o=" crossorigin="anonymous" />
 
-    <div class="text-center">
-        @if (User.IsInRole("superadmin"))
-        {
-            <p>superadmin</p>
+<style>
+    .btn {
+        padding: 0;
+    }
 
-            <a asp-page="./Manage/Admin/Index">Manage Admin</a><br />
+    .card-footer {
+        padding: 10px;
+    }
+    /*.col h1 i{
+            font-size:50px;
+            padding:0;
+        }*/
+
+</style>
+
+<div class="text-center">
+    @if (User.IsInRole("superadmin"))
+    {
+
+        <h3>Superadmin</h3><br />
+        <div class="card-deck text-left  ">
+            <div class="card text-white bg-info">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col">
+                            <h1>@Model.AdminNum </h1>
+                        </div>
+                        <div class="col">
+                            <h1 class="text-right"><i class="fas fa-user-tie"></i></h1>
+                        </div>
+                    </div>
+                    <p>Admin(s)</p>
+                </div>
+                <div class="card-footer">
+                    <a class="btn text-white" asp-page="./Manage/Admin/Index">Manage Admin  <i class="fas fa-arrow-circle-right"></i></a>
+                </div>
+
+            </div>
+
+            <div class="card text-left ">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col">
+                            <h1>@Model.StaffNum</h1>
+
+                        </div>
+                        <div class="col">
+                            <h1 class="text-right"><i class="fas fa-users"></i> </h1>
+                        </div>
+                    </div>
+                    <p>Staff</p>
+                </div>
+                <div class="card-footer">
+                    <a class="btn" asp-page="./Manage/Staff/Index">Manage Staff  <i class="fas fa-arrow-circle-right"></i></a>
+                </div>
+            </div>
+        </div><br />
+        <div class="card-deck text-left ">
+            <div class="card text-white bg-secondary ">
+                <div class="card-body ">
+                    <div class="row">
+                        <div class="col">
+                            @*<p>Salary</p>*@
+                        </div>
+                        <div class="col">
+                            <h1 class="text-right"><i class="fas fa-file-invoice-dollar"></i></h1>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-footer text-left">
+                    <a class="btn text-white" asp-page="./Manage/Salary/Index">Manage Salary  <i class="fas fa-arrow-circle-right"></i></a>
+                </div>
+            </div>
+            <div class="card  text-white bg-dark text-left ">
+                <div class="card-body ">
+                    <div class="row">
+                        <div class="col">
+                            <h1 style="display:inline;">@Model.AttendanceCount</h1>
+                            <p style="display:inline;">/ @Model.StaffNum</p>
+                        </div>
+                        <div class="col">
+                            <h1 class="text-right"><i class="fas fa-clipboard-list"></i> </h1>
+                        </div>
+                    </div>
+                    <p>Today's Attandance Record </p>
+                </div>
+                <div class="card-footer">
+                    <a class="btn text-white" asp-page="./Manage/Attendances/Index">Staff Attendance  <i class="fas fa-arrow-circle-right"></i></a>
+                </div>
+            </div>
+        </div>
+    }
+    @if (User.IsInRole("admin"))
+    {
+        @*<p>admin</p>
             <a asp-page="./Manage/Staff/Index">Manage Staff</a><br />
-            <a asp-page="./Manage/Attendances/Index">Manage Staff Attendance</a><br />
+            <a asp-page="./Manage/Attendances/Index">Manage Staff Attendance</a><br />*@
+
+        <h3>Admin</h3><br />
+        <div class="card-deck text-left  ">
+            <div class="card text-white bg-info">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col">
+                            <h1>@Model.AdminNum </h1>
+                        </div>
+                        <div class="col">
+                            <h1 class="text-right"><i class="fas fa-user-tie"></i></h1>
+                        </div>
+                    </div>
+                    <p>Admin(s)</p>
+                </div>
+                <div class="card-footer">
+                    <a class="btn text-white" asp-page="./Manage/Admin/Index">Manage Admin  <i class="fas fa-arrow-circle-right"></i></a>
+                </div>
+
+            </div>
+
+            <div class="card text-left ">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col">
+                            <h1>@Model.StaffNum</h1>
+
+                        </div>
+                        <div class="col">
+                            <h1 class="text-right"><i class="fas fa-users"></i> </h1>
+                        </div>
+                    </div>
+                    <p>Staff</p>
+                </div>
+                <div class="card-footer">
+                    <a class="btn" asp-page="./Manage/Staff/Index">Manage Staff  <i class="fas fa-arrow-circle-right"></i></a>
+                </div>
+            </div>
+        </div><br />
+        <div class="card-deck text-left ">
+            <div class="card text-white bg-secondary ">
+                <div class="card-body ">
+                    <div class="row">
+                        <div class="col">
+                            @*<p>Salary</p>*@
+                        </div>
+                        <div class="col">
+                            <h1 class="text-right"><i class="fas fa-file-invoice-dollar"></i></h1>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-footer text-left">
+                    <a class="btn text-white" asp-page="./Manage/Salary/Index">Manage Salary  <i class="fas fa-arrow-circle-right"></i></a>
+                </div>
+            </div>
+            <div class="card  text-white bg-dark text-left ">
+                <div class="card-body ">
+                    <div class="row">
+                        <div class="col">
+                            <h1 style="display:inline;">@Model.AttendanceCount</h1>
+                            <p style="display:inline;">/ @Model.StaffNum</p>
+                        </div>
+                        <div class="col">
+                            <h1 class="text-right"><i class="fas fa-clipboard-list"></i> </h1>
+                        </div>
+                    </div>
+                    <p>Today's Attandance Record </p>
+                </div>
+                <div class="card-footer">
+                    <a class="btn text-white" asp-page="./Manage/Attendances/Index">Staff Attendance  <i class="fas fa-arrow-circle-right"></i></a>
+                </div>
+            </div>
+        </div>
+
+    }
+    @if (User.IsInRole("staff"))
+    {
+        @*<p>staff</p>
+            <a asp-page="./Staff/Salary">Check Salary</a>
+            <br />
+            <a asp-page="./Staff/Attendance">Check Attendance</a>
+            <br />*@
+        <h1 class="text-center">Staff</h1><br />
+
+        <div class="card-deck">
+
+            <div class="card bg-primary text-white">
+                <div class="card-body">
+                    <h1 style="display:inline;"> @Model.TodayDate </h1>
+                    @*<h1 class="text-right" style="display:inline;"><i class="fas fa-clipboard-list"></i></h1>*@
+
+                    <p>@Model.RecordStatus</p>
+                </div>
+                <div class="card-footer">
+                    <a class="btn text-white" asp-page="./Staff/Attendance">Check Attendance <i class="fas fa-arrow-circle-right"></i></a>
+                </div>
+            </div>
+
+            <div class="card bg-info text-white">
+                <div class="card-body">
+                    <div class="col">
+                        @*<p>Salary</p>*@
+                    </div>
+                    <div class="col">
+                        <h1 class="text-right"><i class="fas fa-file-invoice-dollar"></i></h1>
+                    </div>
+                </div>
+                <div class="card-footer">
+                    <a class="btn text-white" asp-page="./Staff/Salary">Check Salary <i class="fas fa-arrow-circle-right"></i></a>
+                </div>
+            </div>
 
 
-        }
-        @if (User.IsInRole("admin"))
-        {
-            <p>admin</p>
+        </div>
 
-            <a asp-page="./Manage/Staff/Index">Manage Staff</a><br />
-            <a asp-page="./Manage/Attendances/Index">Manage Staff Attendance</a><br />
-
-        }
-        @if (User.IsInRole("staff"))
-        {
-            <p>staff</p>
-            <a asp-page="./Staff/Salary">Check Salary</a><br />
-            <a asp-page="./Staff/Attendance">Check Attendance</a><br />
-
-        }
-        @*<h1 class="display-4">Welcome</h1>
+    }
+    @*<h1 class="display-4">Welcome</h1>
         <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>*@
-    </div>
+</div>
