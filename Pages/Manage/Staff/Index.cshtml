@@ -9,10 +9,10 @@
         <a asp-page="Create">Create New Staff</a>
     </p>*@
 <div class="container row ">
-    <h1 class="col">Manage Staff</h1>
+    <h4 class="col">Manage Staff</h4>
     <p><a class="btn btn-info " asp-page="Create">Create New Staff</a></p>
 </div>
-<br />
+
 <table class="table table-hover">
     <thead class="thead-light">
         <tr>
@@ -50,7 +50,8 @@
                 <td>
                     <a asp-page="./Edit" asp-route-id="@item.Id">Edit</a> |
                     <a asp-page="./Details" asp-route-id="@item.Id">Details</a> |
-                    <a asp-page="./Delete" asp-route-id="@item.Id">Delete</a>
+                    <a asp-page="./Delete" asp-route-id="@item.Id">Delete</a> |
+                    <a asp-page="./ResetPw" asp-route-id="@item.Id">Reset Password</a>
                 </td>
             </tr>
         }

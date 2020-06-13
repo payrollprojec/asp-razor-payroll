@@ -74,11 +74,12 @@ namespace PayrollAppRazorPages.Pages.Manage.Admin
                     EmailConfirmed = true,
                     NormalizedEmail = Input.Email.ToUpper()
                 };
-                var result = await _userManager.CreateAsync(user, Input.UserName);
+                string pw = "123456";
+                var result = await _userManager.CreateAsync(user, pw);
                 if (result.Succeeded)
                 {
                     await _userManager.AddToRoleAsync(user, "admin");
-                    return RedirectToPage("CreateConfirmation", new { username = Input.UserName, password = Input.UserName});
+                    return RedirectToPage("CreateConfirmation", new { username = Input.UserName, password = pw});
                 }
                 foreach (var error in result.Errors)
                 {

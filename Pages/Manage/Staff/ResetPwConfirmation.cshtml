@@ -1,9 +1,10 @@
 ﻿@page
-@model PayrollAppRazorPages.Pages.Manage.Staff.CreateConfirmationModel
+@model PayrollAppRazorPages.Pages.Manage.Staff.ResetPwConfirmationModel
 @{
-    ViewData["Title"] = "CreateConfirmation";
+    ViewData["Title"] = "ResetPwConfirmation";
 }
-<h4 >Staff account created</h4><br />
+<h4>Staff password reset</h4>
+<br />
 
 <div class="card">
     <h4 class="card-header">Login Details</h4>
@@ -11,8 +12,11 @@
         <p>Username: @Model.Username</p>
         <p>Password: @Model.Password</p>
     </div>
-</div><br />
+</div>
+<br />
 
 <div>
     <a class="btn btn-secondary" asp-page="./Index">Back to List</a>
 </div>
+
+

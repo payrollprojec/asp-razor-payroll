@@ -150,8 +150,9 @@ namespace PayrollAppRazorPages.Pages.Manage.Staff
                     EmailConfirmed = true,
                     NormalizedEmail = Input.Email.ToUpper(),
                 };
+                string pw = "123456";
 
-                var result = await _userManager.CreateAsync(user, Input.UserName);
+                var result = await _userManager.CreateAsync(user, pw);
 
 
                 if (result.Succeeded)
@@ -182,7 +183,7 @@ namespace PayrollAppRazorPages.Pages.Manage.Staff
                     await _context.StaffData.AddAsync(staffData);
                     await _context.SaveChangesAsync();
 
-                    return RedirectToPage("CreateConfirmation", new { username = Input.UserName, password = Input.UserName });
+                    return RedirectToPage("CreateConfirmation", new { username = Input.UserName, password = pw });
                     //return RedirectToPage("../Salary/Create", new { username = Input.UserName, password = Input.UserName, userid = user.Id });
                 }
                 foreach (var error in result.Errors)

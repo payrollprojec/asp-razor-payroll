@@ -22,9 +22,16 @@
             <button class="btn btn-primary" type="submit">Send Email</button>
         </form>
     </div>
-</div><br />
-
-<a class="btn btn-secondary" asp-page="./Index" >Back to List</a>
+</div>
+<br />
+@{
+    var parms = new Dictionary<string, string>
+{
+                    {"SelectedMonth", Model.StaffSalary.Month.ToString() },
+                    {"SelectedYear", Model.StaffSalary.Year.ToString() }
+                };
+}
+<a class="btn btn-secondary" asp-page="./Index" asp-all-route-data="parms">Back to List</a>
 
 
 

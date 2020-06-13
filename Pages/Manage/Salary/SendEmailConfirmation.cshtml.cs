@@ -28,6 +28,10 @@ namespace PayrollAppRazorPages.Pages.Manage.Salary
 
         public string Name { get; set; }
         public string Email { get; set; }
+        [BindProperty(SupportsGet =true)]
+        public string Month { get; set; }
+        [BindProperty(SupportsGet =true)]
+        public string Year{ get; set; }
 
         public async Task<IActionResult> OnGetAsync(string name, string email)
         {

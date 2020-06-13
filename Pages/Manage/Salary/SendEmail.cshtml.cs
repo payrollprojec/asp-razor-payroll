@@ -11,18 +11,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using PayrollAppRazorPages.Data;
 using PayrollAppRazorPages.Models;
-using jsreport.AspNetCore;
-using jsreport.Types;
-using Microsoft.AspNetCore.Mvc.ViewEngines;
-using Microsoft.AspNetCore.Mvc.Razor;
-using Microsoft.AspNetCore.Mvc.ViewFeatures;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Routing;
-using Microsoft.AspNetCore.Mvc.Abstractions;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using RazorEngine;
-using RazorEngine.Templating;
-using System.Dynamic;
+
 
 namespace PayrollAppRazorPages.Pages.Manage.Salary
 {
@@ -92,52 +81,44 @@ namespace PayrollAppRazorPages.Pages.Manage.Salary
 
             // Send Email 
             string body = "Dear " + applicationUser.FullName + ", this is the summary of your salary  in " + SalaryDate + ".<br><br><hr>" +
-                            "<h3> Salary Slip in " + SalaryDate + "</h3>" + 
+                            "<h3> Salary Slip in " + SalaryDate + "</h3>" +
                             "<hr><br>" +
-                            "<table>" +
+                            "<table cellspacing='0' cellpadding='10' border='1'>" +
+                            "<tr><th>Earning</th><th>Deduction</th></tr>" +
                             "<tr>" +
-                            "<td><b>Basic Salary: </b></td>" +
-                            "<td>" + StaffSalary.BasicSalary +"</td>" +
-                            "</tr>" +
-                            "<tr>" +
-                             "<td><b>Bonus: </b></td>" +
-                             "<td>" + StaffSalary.Bonus + "</td>" +
-                            "</tr>" +
-                            "<tr>" +
-                            "<td><b>Allowances: </b></td>" +
-                            "<td>" + StaffSalary.Allowances + "</td>" +
-                            "</tr>" +
-                            "<tr>" +
-                            "<tr>" +
-                            "<td><b>Allowances: </b></td>" +
-                            "<td>" + StaffSalary.AdvSalaryPlus + "</td>" +
-                            "</tr>" +
-                            "<tr>" +
-                            "<td><b>EPF: </b></td>" +
-                            "<td>" + StaffSalary.EPF + "</td>" +
+                            "<td>" +
+                            "<b>Basic Salary: </b>" + StaffSalary.BasicSalary + "<br>" +
+                            "<b>Allowance: </b>" + StaffSalary.Allowances + "<br>" +
+                            "<b>Bonus: </b>" + StaffSalary.Bonus + "<br>" +
+                            "<b>Adv. Salary: </b>" + StaffSalary.AdvSalaryPlus + "<br>" +
+                            "</td>" +
+                            "<td>" +
+                            "<b>EPF: </b>" + StaffSalary.EPF + "<br>" +
+                            "<b>SOCSO: </b>" + StaffSalary.SocsoRm + "<br>" +
+                            "<b>EIS: </b>" + StaffSalary.EIS + "<br>" +
+                            "<b>TAX: </b>" + StaffSalary.Tax + "<br>" +
+                            "<b>Adv. Salary: </b>" + StaffSalary.AdvSalary + "<br>" +
+                            "</td>" +
                             "</tr>" +
                             "<tr>" +
-                            "<td><b>Socso: </b></td>" +
-                            "<td>" + StaffSalary.SocsoRm + "</td>" +
+                            "<td colspan='2'>" +
+                            "<b>Net Pay: </b>" + (StaffSalary.BasicSalary + StaffSalary.Allowances + StaffSalary.Bonus + StaffSalary.AdvSalaryPlus - StaffSalary.EPF - StaffSalary.SocsoRm - StaffSalary.EIS - StaffSalary.Tax - StaffSalary.AdvSalary) + "<br>" +
+                            "</td>" +
                             "</tr>" +
-                             "<tr>" +
-                            "<td><b>Advanced Salary: </b></td>" +
-                            "<td>" + StaffSalary.AdvSalary + "</td>" +
-                            "</tr>" +
-                             "<tr>" +
-                            "<td><b>Gross Salary: </b></td>" +
-                            //"<td>" + StaffSalary.GrossSalary + "</td>" +
-                            "</tr>" +
-                "</table><br> <hr> <br>" +
-                "For more information, please visit: <br><b>" +
-                "https://localhost:44379/Staff/SalaryDetails/"+ id+ "?key="+ applicationUser.Id + "</b>";
+                            "<tr>" +
+                            "<td colspan='2'>" +
+                            "For more information, please visit: <br><b>" +
+                            "https://localhost:44379/Staff/SalaryDetails/" + id + "?key=" + applicationUser.Id + "</b><br>" +
+                            "Sent on - " + DateTime.Now.ToString("dddd, dd MMMM yyyy h:mm:ss tt") + // insert different string so gmail wont trim email content
+                            "</td>" +
+                            "</tr></table>";
 
 
               using (var message = new MailMessage())
             {
                 message.To.Add(new MailAddress(applicationUser.Email, applicationUser.Email));
                 message.From = new MailAddress("formailingapp@gmail.com", "V3X Payroll System");
-                message.Subject = "Salary Slip pdf";
+                message.Subject = "Salary Slip in " + SalaryDate;
                 message.IsBodyHtml = true;
 
                 message.Body = body;
@@ -156,7 +137,7 @@ namespace PayrollAppRazorPages.Pages.Manage.Salary
             StaffSalary.MailNum += 1;
             _context.Attach(StaffSalary).State = EntityState.Modified;
             await _context.SaveChangesAsync();
-            return RedirectToPage("./SendEmailConfirmation", new { name = applicationUser.FullName, email = applicationUser.Email });
+            return RedirectToPage("./SendEmailConfirmation", new { name = applicationUser.FullName, email = applicationUser.Email, StaffSalary.Month, StaffSalary.Year });
         }
 
 

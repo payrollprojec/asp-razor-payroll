@@ -2541,3 +2541,5 @@ C:\Users\Wen\source\repos\PayrollAppRazorPages5\obj\Debug\netcoreapp3.1\PayrollA
 C:\Users\Wen\source\repos\PayrollAppRazorPages5\obj\Debug\netcoreapp3.1\PayrollAppRazorPages.pdb
 C:\Users\Wen\source\repos\PayrollAppRazorPages5\obj\Debug\netcoreapp3.1\PayrollAppRazorPages.genruntimeconfig.cache
 C:\Users\Wen\source\repos\PayrollAppRazorPages5\obj\Debug\netcoreapp3.1\Razor\Pages\Staff\SalaryPDF.cshtml.g.cs
+C:\Users\Wen\source\repos\PayrollAppRazorPages5\obj\Debug\netcoreapp3.1\Razor\Pages\Manage\Staff\ResetPw.cshtml.g.cs
+C:\Users\Wen\source\repos\PayrollAppRazorPages5\obj\Debug\netcoreapp3.1\Razor\Pages\Manage\Staff\ResetPwConfirmation.cshtml.g.cs

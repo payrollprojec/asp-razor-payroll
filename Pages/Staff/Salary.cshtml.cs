@@ -49,7 +49,7 @@ namespace PayrollAppRazorPages.Pages.Staff
             }
 
 
-            var yearLow = 2018;
+            var yearLow = 2020;
             var yearNow = DateTime.Now.Year;
 
             var yearList = new List<string>();

@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -12,13 +11,12 @@ using PayrollAppRazorPages.Models;
 
 namespace PayrollAppRazorPages.Pages.Manage.Staff
 {
-    [Authorize(Roles = "superadmin,admin")]
-    public class DeleteModel : PageModel
+    public class ResetPwModel : PageModel
     {
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly ApplicationDbContext _context;
 
-        public DeleteModel(UserManager<ApplicationUser> userManager)
+        public ResetPwModel(UserManager<ApplicationUser> userManager)
         {
             _userManager = userManager;
         }
@@ -50,13 +48,20 @@ namespace PayrollAppRazorPages.Pages.Manage.Staff
 
             if (applicationUser != null)
             {
-                bool isStaff = await _userManager.IsInRoleAsync(applicationUser, "123456");
+                bool isStaff = await _userManager.IsInRoleAsync(applicationUser, "staff");
 
                 if (isStaff)
-                    await _userManager.DeleteAsync(applicationUser);
-            }
+                {
+                    await _userManager.RemovePasswordAsync(applicationUser);
+                    string pw = "123456";
 
-            return RedirectToPage("./Index");
+                    await _userManager.AddPasswordAsync(applicationUser, pw);
+                    return RedirectToPage("./ResetPwConfirmation", new { Username = applicationUser.UserName, Password = pw });
+
+                }
+            }
+            return NotFound();
         }
+
     }
 }
