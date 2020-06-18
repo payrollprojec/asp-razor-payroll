@@ -34,6 +34,7 @@ namespace PayrollAppRazorPages.Pages.Manage.Salary
         [BindProperty(SupportsGet = true)]
         public string SelectedYear { get; set; }
         public string SelectedDate { get; private set; }
+        public int WeekdaysCount { get; set; }
         public IList<ApplicationUser> Staff { get; set; }
         public IList<ViewModel> StaffSalary { get; set; }
         public IList<ApplicationUser> Users { get; set; }
@@ -60,7 +61,18 @@ namespace PayrollAppRazorPages.Pages.Manage.Salary
         //    await OnGetAsync();
         //    return Page();
         //}
+        private static int WeekDaysInMonth(int year, int month)
+        {
+            int days = DateTime.DaysInMonth(year, month);
+            List<DateTime> dates = new List<DateTime>();
+            for (int i = 1; i <= days; i++)
+            {
+                dates.Add(new DateTime(year, month, i));
+            }
 
+            int weekDays = dates.Where(d => d.DayOfWeek < DayOfWeek.Friday).Count();
+            return weekDays;
+        }
         public async Task OnGetAsync()
         {
             string[] monthArr = new string[] { "January", "February", "March", "April", "May", "June",
@@ -91,7 +103,12 @@ namespace PayrollAppRazorPages.Pages.Manage.Salary
                 SelectedYear = DateTime.Now.Year.ToString();
             }
             SelectedDate = DateTime.Parse(SelectedYear + "-" + SelectedMonth + "-01").ToString("MMMM yyyy");
-
+            // get working days of this month
+            WeekdaysCount = WeekDaysInMonth(int.Parse(SelectedYear), int.Parse(SelectedMonth));
+            // get absent day(s) for this month
+            var Absent = await _context.Attendance
+                .Where(a => a.PunchDate.Value.Month == int.Parse(SelectedMonth) && a.PunchDate.Value.Year == int.Parse(SelectedYear) && a.AttendanceStatusId == 2)
+                .OrderBy(a => a.PunchDate).ToListAsync();
 
             Staff = await _userManager.GetUsersInRoleAsync("staff");
             StaffSalary = new List<ViewModel>();
@@ -114,11 +131,12 @@ namespace PayrollAppRazorPages.Pages.Manage.Salary
                 }
                 else
                 {
+                    var absentcount = Absent.FindAll(c => c.ApplicationUserId == s.Id);
                     ViewModel vm = new ViewModel
                     {
                         Id = s.Id,
                         Name = s.FullName,
-                        Summary = "Net Pay: RM " + (res.BasicSalary + res.Allowances + res.Bonus + res.AdvSalaryPlus - res.EPF - res.SocsoRm - res.EIS - res.Tax - res.AdvSalary).ToString(),
+                        Summary = "Net Pay: RM " + (res.BasicSalary / WeekdaysCount * (WeekdaysCount - absentcount.Count()) + res.Allowances + res.Bonus + res.AdvSalaryPlus - res.EPF - res.SocsoRm - res.EIS - res.Tax - res.AdvSalary).ToString("0.00"),
                         SalaryId = res.salaryID
                     };
                     if (res.MailNum > 0)

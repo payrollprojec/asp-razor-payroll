@@ -88,7 +88,7 @@
                 </div>
                 <div class="form-group">
                     <label asp-for="StaffSalary.AdvSalaryPlus">Adv. Salary&nbsp;&nbsp;&nbsp;&nbsp;: RM</label>
-                    <input id="bonus" asp-for="StaffSalary.AdvSalaryPlus" />
+                    <input id="adv2" asp-for="StaffSalary.AdvSalaryPlus" />
                     <span asp-validation-for="StaffSalary.AdvSalaryPlus" class="text-danger"></span>
                 </div>
             </div>
@@ -122,7 +122,17 @@
                     <input id="adv" asp-for="StaffSalary.AdvSalary" />
                     <span asp-validation-for="StaffSalary.AdvSalary" class="text-danger"></span>
                 </div>
+                <div class="form-group">
+                    <label>Absent&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: RM</label>
+                    <span id="absent"></span> (@dict["Absent"] days)
+                </div>
             </div>
+        </div>
+        <div class="form-group">
+            <input id="weekdayscount" type="hidden" value="@Model.WeekdaysCount" />
+        </div>
+        <div class="form-group">
+            <input id="absentcount" type="hidden" value="@dict["Absent"]" />
         </div>
         <div class="row border-bottom align-items-end">
             <div class="col border-right">
@@ -178,21 +188,26 @@
     const basic = document.getElementById('basic');
     const allowance = document.getElementById('allowance');
     const bonus = document.getElementById('bonus');
+    const adv2 = document.getElementById('adv2');
     const epf = document.getElementById('epf');
     const socso = document.getElementById('socso');
     const eis = document.getElementById('eis');
     const tax = document.getElementById('tax');
     const adv = document.getElementById('adv');
+    const weekdayscount = document.getElementById('weekdayscount');
+    const absentcount = document.getElementById('absentcount');
+    const absent = document.getElementById('absent');
     const totalEarn = document.getElementById('totalEarn');
     const totalDeduct = document.getElementById('totalDeduct');
     const netPay = document.getElementById('netPay');
     window.addEventListener('load', function () {
-        console.log('loaded')
+        console.log('loaded');
         calc();
     })
     function calc() {
-        totalEarn.innerHTML = `${+basic.value + +allowance.value + +bonus.value}`;
-        totalDeduct.innerHTML = `${+epf.value + +socso.value + +eis.value + +tax.value + +adv.value}`;
-        netPay.innerHTML = `${+totalEarn.innerHTML - +totalDeduct.innerHTML}`;
+        absent.innerHTML = `${(Math.round((+basic.value / +weekdayscount.value * +absentcount.value) * 100) / 100).toFixed(2)}`;
+        totalEarn.innerHTML = `${(Math.round((+basic.value + +allowance.value + +bonus.value + +adv2.value) * 100) / 100).toFixed(2)}`;
+        totalDeduct.innerHTML = `${(Math.round((+epf.value + +socso.value + +eis.value + +tax.value + +adv.value + +absent.innerHTML) * 100) / 100).toFixed(2)}`;
+        netPay.innerHTML = `${(Math.round((+totalEarn.innerHTML - +totalDeduct.innerHTML) * 100) / 100).toFixed(2)}`;
     }
 </script>

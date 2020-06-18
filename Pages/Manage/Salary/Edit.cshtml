@@ -122,7 +122,17 @@
                     <input id="adv" asp-for="StaffSalary.AdvSalary" />
                     <span asp-validation-for="StaffSalary.AdvSalary" class="text-danger"></span>
                 </div>
+                <div class="form-group">
+                    <label>Absent&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: RM</label>
+                    <span id="absent"></span> (@dict["Absent"] days)
+                </div>
             </div>
+        </div>
+        <div class="form-group">
+            <input id="weekdayscount" type="hidden" value="@Model.WeekdaysCount" />
+        </div>
+        <div class="form-group">
+            <input id="absentcount" type="hidden" value="@dict["Absent"]" />
         </div>
         <div class="row border-bottom align-items-end">
             <div class="col border-right">
@@ -181,6 +191,9 @@
     const eis = document.getElementById('eis');
     const tax = document.getElementById('tax');
     const adv = document.getElementById('adv');
+    const weekdayscount = document.getElementById('weekdayscount');
+    const absentcount = document.getElementById('absentcount');
+    const absent = document.getElementById('absent');
     const totalEarn = document.getElementById('totalEarn');
     const totalDeduct = document.getElementById('totalDeduct');
     const netPay = document.getElementById('netPay');
@@ -189,8 +202,9 @@
         calc();
     })
     function calc() {
-        totalEarn.innerHTML = `${+basic.value + +allowance.value + +bonus.value + +adv2.value}`;
-        totalDeduct.innerHTML = `${+epf.value + +socso.value + +eis.value + +tax.value + +adv.value}`;
-        netPay.innerHTML = `${+totalEarn.innerHTML - +totalDeduct.innerHTML}`;
+        absent.innerHTML = `${(Math.round((+basic.value / +weekdayscount.value * +absentcount.value) * 100) / 100).toFixed(2)}`;
+        totalEarn.innerHTML = `${(Math.round((+basic.value + +allowance.value + +bonus.value + +adv2.value) * 100) / 100).toFixed(2)}`;
+        totalDeduct.innerHTML = `${(Math.round((+epf.value + +socso.value + +eis.value + +tax.value + +adv.value + +absent.innerHTML) * 100) / 100).toFixed(2)}`;
+        netPay.innerHTML = `${(Math.round((+totalEarn.innerHTML - +totalDeduct.innerHTML) * 100) / 100).toFixed(2)}`;
     }
 </script>

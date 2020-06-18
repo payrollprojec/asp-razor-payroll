@@ -71,7 +71,7 @@
                             <h4>Year Summary</h4>
                             <div class="row">
                                 <div class="col-5">Total Net Pay</div>
-                                <div class="col">: RM @Model.summary.net</div>
+                                <div class="col">: RM @Html.DisplayFor(model => model.summary.net)</div>
                             </div>
                             @*<p>Salary</p>*@
                         </div>
@@ -140,6 +140,11 @@
                 <div class="card-body ">
                     <div class="row">
                         <div class="col">
+                            <h4>Year Summary</h4>
+                            <div class="row">
+                                <div class="col-5">Total Net Pay</div>
+                                <div class="col">: RM @Html.DisplayFor(model => model.summary.net)</div>
+                            </div>
                             @*<p>Salary</p>*@
                         </div>
                         <div class="col">
@@ -200,23 +205,23 @@
                         <h4>Year Summary</h4>
                         <div class="row">
                             <div class="col-5">Net Pay</div>
-                            <div class="col">: RM @Model.summary.net</div>
+                            <div class="col">: RM @Model.summary.net.ToString("0.00")</div>
                         </div>
                         <div class="row">
                             <div class="col-5">E'E / E'R EPF</div>
-                            <div class="col">: RM @Model.summary.epf / @Model.summary.erepf</div>
+                            <div class="col">: RM @Model.summary.epf.ToString("0.00") / @Model.summary.erepf.ToString("0.00")</div>
                         </div>
                         <div class="row">
                             <div class="col-5">E'E / E'R SOCSO</div>
-                            <div class="col">: RM @Model.summary.socso / @Model.summary.ersocso</div>
+                            <div class="col">: RM @Model.summary.socso.ToString("0.00") / @Model.summary.ersocso.ToString("0.00")</div>
                         </div>
                         <div class="row">
                             <div class="col-5">E'E / E'R EIS</div>
-                            <div class="col">: RM @Model.summary.eis / @Model.summary.eis</div>
+                            <div class="col">: RM @Model.summary.eis.ToString("0.00") / @Model.summary.ereis.ToString("0.00")</div>
                         </div>
                         <div class="row">
                             <div class="col-5">TAX</div>
-                            <div class="col">: RM @Model.summary.tax</div>
+                            <div class="col">: RM @Model.summary.tax.ToString("0.00")</div>
                         </div>
                     </div>
                     <div class="col-md-4">

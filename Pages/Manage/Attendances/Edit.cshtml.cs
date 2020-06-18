@@ -110,7 +110,7 @@ namespace PayrollAppRazorPages.Pages.Manage.Attendances
                 SelectedMonth = DateTime.Now.Month.ToString();
                 SelectedYear = DateTime.Now.Year.ToString();
             }
-
+            SelectedDate = DateTime.Parse(SelectedYear + "-" + SelectedMonth + "-01").ToString("MMMM yyyy");
 
             AttendanceStatus = new SelectList(await _context.AttendanceStatus.Select(a => a.Status).ToListAsync());
 

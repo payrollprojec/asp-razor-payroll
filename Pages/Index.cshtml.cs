@@ -10,6 +10,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using PayrollAppRazorPages.Models;
 using PayrollAppRazorPages.Data;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace PayrollAppRazorPages.Pages
 {
@@ -19,6 +20,9 @@ namespace PayrollAppRazorPages.Pages
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly ILogger<IndexModel> _logger;
         private readonly ApplicationDbContext _context;
+
+        public int wdc { get; set; }
+        public int WeekdaysCount { get; set; }
 
         public int AdminNum { get; set; }
         public int StaffNum { get; set; }
@@ -32,16 +36,35 @@ namespace PayrollAppRazorPages.Pages
         public Summary summary { get; set; }
         public class Summary
         {
+            [Column(TypeName = "decimal(18, 2)")]
             public decimal net { get; set; }
+            [Column(TypeName = "decimal(18, 2)")]
             public decimal epf { get; set; }
+            [Column(TypeName = "decimal(18, 2)")]
             public decimal erepf { get; set; }
+            [Column(TypeName = "decimal(18, 2)")]
             public decimal socso { get; set; }
+            [Column(TypeName = "decimal(18, 2)")]
             public decimal ersocso { get; set; }
+            [Column(TypeName = "decimal(18, 2)")]
             public decimal eis { get; set; }
+            [Column(TypeName = "decimal(18, 2)")]
             public decimal ereis { get; set; }
+            [Column(TypeName = "decimal(18, 2)")]
             public decimal tax { get; set; }
         }
+        private static int WeekDaysInMonth(int year, int month)
+        {
+            int days = DateTime.DaysInMonth(year, month);
+            List<DateTime> dates = new List<DateTime>();
+            for (int i = 1; i <= days; i++)
+            {
+                dates.Add(new DateTime(year, month, i));
+            }
 
+            int weekDays = dates.Where(d => d.DayOfWeek < DayOfWeek.Friday).Count();
+            return weekDays;
+        }
         public IndexModel(UserManager<ApplicationUser> userManager, ILogger<IndexModel> logger, PayrollAppRazorPages.Data.ApplicationDbContext context)
         {
             _userManager = userManager;
@@ -75,7 +98,12 @@ namespace PayrollAppRazorPages.Pages
                 var SummaryList = await _context.StaffSalary.Where(ss => ss.Year == int.Parse(todayYear)).ToListAsync();
                 foreach (var v in SummaryList)
                 {
-                    summary.net += v.BasicSalary + v.Allowances + v.Bonus + v.AdvSalaryPlus - v.EPF - v.SocsoRm - v.EIS - v.Tax - v.AdvSalary;
+                    wdc = WeekDaysInMonth(v.Year, v.Month);
+                    var ac = await _context.Attendance
+                    .Where(a => a.ApplicationUserId == v.staffID && a.PunchDate.Value.Month == v.Month && a.PunchDate.Value.Year == v.Year && a.AttendanceStatusId == 2)
+                    .OrderBy(a => a.PunchDate).ToListAsync();
+                    summary.net += v.BasicSalary / wdc * (wdc - ac.Count()) + v.Allowances + v.Bonus + v.AdvSalaryPlus - v.EPF - v.SocsoRm - v.EIS - v.Tax - v.AdvSalary;
+                    //summary.net += v.BasicSalary + v.Allowances + v.Bonus + v.AdvSalaryPlus - v.EPF - v.SocsoRm - v.EIS - v.Tax - v.AdvSalary;
 
                 }
             }
@@ -96,7 +124,12 @@ namespace PayrollAppRazorPages.Pages
                 var SummaryList = await _context.StaffSalary.Where(ss => ss.staffID == applicationUser.Id && ss.Year == int.Parse(todayYear)).ToListAsync();
                 foreach (var v in SummaryList)
                 {
-                    summary.net += v.BasicSalary + v.Allowances + v.Bonus + v.AdvSalaryPlus - v.EPF - v.SocsoRm - v.EIS - v.Tax - v.AdvSalary;
+                    wdc = WeekDaysInMonth(v.Year, v.Month);
+                    var ac = await _context.Attendance
+                    .Where(a => a.ApplicationUserId == v.staffID && a.PunchDate.Value.Month == v.Month && a.PunchDate.Value.Year == v.Year && a.AttendanceStatusId == 2)
+                    .OrderBy(a => a.PunchDate).ToListAsync();
+                    summary.net += v.BasicSalary / wdc * (wdc - ac.Count()) + v.Allowances + v.Bonus + v.AdvSalaryPlus - v.EPF - v.SocsoRm - v.EIS - v.Tax - v.AdvSalary;
+                    //summary.net += v.BasicSalary + v.Allowances + v.Bonus + v.AdvSalaryPlus - v.EPF - v.SocsoRm - v.EIS - v.Tax - v.AdvSalary;
                     summary.epf += v.EPF;
                     summary.erepf += v.EREPF;
                     summary.socso += v.SocsoRm;

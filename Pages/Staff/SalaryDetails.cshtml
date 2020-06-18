@@ -116,6 +116,13 @@
                     <label asp-for="StaffSalary.AdvSalary">Adv. Salary: RM</label>
                     @Html.DisplayFor(model => model.StaffSalary.AdvSalary)
                 </div>
+                <div class="form-group">
+                    @{
+                        var absent = Model.StaffSalary.BasicSalary / Model.WeekdaysCount * dict["Absent"];
+                    }
+                    <label>Absent&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: RM</label>
+                    <span>@absent.ToString("0.00")</span> (@dict["Absent"] days)
+                </div>
             </div>
         </div>
         <div class="row border-bottom align-items-end">
@@ -123,7 +130,7 @@
             <div class="col border-right">
                 @{
                     var totalEarn = Model.StaffSalary.BasicSalary + Model.StaffSalary.Allowances + Model.StaffSalary.Bonus + Model.StaffSalary.AdvSalaryPlus;
-                    var totalDeduct = Model.StaffSalary.EPF + Model.StaffSalary.SocsoRm + Model.StaffSalary.EIS + Model.StaffSalary.Tax + Model.StaffSalary.AdvSalary;
+                    var totalDeduct = Model.StaffSalary.EPF + Model.StaffSalary.SocsoRm + Model.StaffSalary.EIS + Model.StaffSalary.Tax + Model.StaffSalary.AdvSalary + absent;
                     var net = totalEarn - totalDeduct;
                 }
                 Total Earning: RM @totalEarn
@@ -157,10 +164,10 @@
             <div class="col">
                 <br />
                 <b>Year Summary (inc @Model.SelectedDate)</b><br />
-                Net Pay&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: RM @Model.summary.net<br />
-                E'E / E'R EPF &nbsp;: RM @Model.summary.epf / @Model.summary.erepf<br />
-                E'E / E'R SOCSO: RM @Model.summary.socso / @Model.summary.ersocso<br />
-                E'E / E'R EIS &nbsp;: RM @Model.summary.eis / @Model.summary.eis<br />
+                Net Pay&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: RM @Html.DisplayFor(model => model.summary.net)<br />
+                E'E / E'R EPF &nbsp;: RM @Html.DisplayFor(model => model.summary.epf) / @Html.DisplayFor(model => model.summary.erepf)<br />
+                E'E / E'R SOCSO: RM @Html.DisplayFor(model => model.summary.socso) / @Html.DisplayFor(model => model.summary.ersocso)<br />
+                E'E / E'R EIS &nbsp;: RM @Html.DisplayFor(model => model.summary.eis) / @Html.DisplayFor(model => model.summary.ereis)<br />
                 TAX&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: RM @Model.summary.tax<br />
             </div>
         </div>

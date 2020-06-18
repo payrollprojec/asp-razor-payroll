@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -65,7 +66,18 @@ namespace PayrollAppRazorPages.Pages.Manage.Salary
         //    public string name { get; set; }
         //    public int age { get; set; }
         //}
+        private static int WeekDaysInMonth(int year, int month)
+        {
+            int days = DateTime.DaysInMonth(year, month);
+            List<DateTime> dates = new List<DateTime>();
+            for (int i = 1; i <= days; i++)
+            {
+                dates.Add(new DateTime(year, month, i));
+            }
 
+            int weekDays = dates.Where(d => d.DayOfWeek < DayOfWeek.Friday).Count();
+            return weekDays;
+        }
         public async Task<IActionResult> OnPostAsync(int? id)
         {
             StaffSalary = await _context.StaffSalary.FirstOrDefaultAsync(m => m.salaryID == id);
@@ -76,7 +88,10 @@ namespace PayrollAppRazorPages.Pages.Manage.Salary
             applicationUser = await _userManager.Users.Include(u => u.StaffData).Where(u => u.Id == StaffSalary.staffID).SingleOrDefaultAsync();
             SalaryDate = DateTime.Parse(StaffSalary.Year + "-" + StaffSalary.Month + "-01").ToString("MMMM yyyy");
 
-
+            int wdc = WeekDaysInMonth(StaffSalary.Year, StaffSalary.Month);
+            var ac = await _context.Attendance
+            .Where(a => a.ApplicationUserId == StaffSalary.staffID && a.PunchDate.Value.Month == StaffSalary.Month && a.PunchDate.Value.Year == StaffSalary.Year && a.AttendanceStatusId == 2)
+            .OrderBy(a => a.PunchDate).ToListAsync();
             // Save Template
 
             // Send Email 
@@ -102,7 +117,7 @@ namespace PayrollAppRazorPages.Pages.Manage.Salary
                             "</tr>" +
                             "<tr>" +
                             "<td colspan='2'>" +
-                            "<b>Net Pay: </b>" + (StaffSalary.BasicSalary + StaffSalary.Allowances + StaffSalary.Bonus + StaffSalary.AdvSalaryPlus - StaffSalary.EPF - StaffSalary.SocsoRm - StaffSalary.EIS - StaffSalary.Tax - StaffSalary.AdvSalary) + "<br>" +
+                            "<b>Net Pay: </b>" + (StaffSalary.BasicSalary / wdc * (wdc - ac.Count()) + StaffSalary.Allowances + StaffSalary.Bonus + StaffSalary.AdvSalaryPlus - StaffSalary.EPF - StaffSalary.SocsoRm - StaffSalary.EIS - StaffSalary.Tax - StaffSalary.AdvSalary) + "<br>" +
                             "</td>" +
                             "</tr>" +
                             "<tr>" +

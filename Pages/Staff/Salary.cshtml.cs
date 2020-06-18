@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
@@ -33,6 +34,8 @@ namespace PayrollAppRazorPages.Pages.Staff
         public List<ViewModel> SalaryList { get; set; }
         public class ViewModel
         {
+            [Column(TypeName = "decimal(18, 2)")]
+
             public decimal Net { get; set; }
             public int Id { get; set; }
             public DateTime GenDate { get; set; }
@@ -83,7 +86,12 @@ namespace PayrollAppRazorPages.Pages.Staff
                     if (s.Month == i + 1)
                     {
                         found = true;
-                        decimal net = s.BasicSalary + s.Allowances + s.Bonus + s.AdvSalaryPlus - s.EPF - s.SocsoRm - s.EIS - s.Tax - s.AdvSalary;
+                        int wdc = WeekDaysInMonth(s.Year, s.Month);
+                        var ac = await _context.Attendance
+                        .Where(a => a.ApplicationUserId == s.staffID && a.PunchDate.Value.Month == s.Month && a.PunchDate.Value.Year == s.Year && a.AttendanceStatusId == 2)
+                        .OrderBy(a => a.PunchDate).ToListAsync();
+                        //summary.net += v.BasicSalary / wdc * (wdc - ac.Count()) + v.Allowances + v.Bonus + v.AdvSalaryPlus - v.EPF - v.SocsoRm - v.EIS - v.Tax - v.AdvSalary;
+                        decimal net = s.BasicSalary / wdc * (wdc - ac.Count()) + s.Allowances + s.Bonus + s.AdvSalaryPlus - s.EPF - s.SocsoRm - s.EIS - s.Tax - s.AdvSalary;
                         SalaryList.Add(new ViewModel { Id = s.salaryID, Month = monthArr[i], GenDate = s.DateCreated, Net = net});
                         continue;
                     }
@@ -93,6 +101,18 @@ namespace PayrollAppRazorPages.Pages.Staff
             }
 
             return Page();
+        }
+        private static int WeekDaysInMonth(int year, int month)
+        {
+            int days = DateTime.DaysInMonth(year, month);
+            List<DateTime> dates = new List<DateTime>();
+            for (int i = 1; i <= days; i++)
+            {
+                dates.Add(new DateTime(year, month, i));
+            }
+
+            int weekDays = dates.Where(d => d.DayOfWeek < DayOfWeek.Friday).Count();
+            return weekDays;
         }
     }
 }

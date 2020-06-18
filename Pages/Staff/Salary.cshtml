@@ -36,7 +36,7 @@
                             @item.Month
                         </td>
                         <td>
-                            @item.Net
+                            @Html.DisplayFor(model => item.Net)
                         </td>
                         <td>
                             <a asp-page="./SalaryDetails" asp-route-id="@item.Id">@item.GenDate.ToShortDateString()</a>

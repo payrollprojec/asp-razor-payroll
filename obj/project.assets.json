@@ -9212,11 +9212,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Wen\\source\\repos\\PayrollAppRazorPages5\\PayrollAppRazorPages.csproj",
+      "projectUniqueName": "C:\\Users\\Wen\\source\\repos\\PayrollAppRazorPages5-final4\\PayrollAppRazorPages.csproj",
       "projectName": "PayrollAppRazorPages",
-      "projectPath": "C:\\Users\\Wen\\source\\repos\\PayrollAppRazorPages5\\PayrollAppRazorPages.csproj",
+      "projectPath": "C:\\Users\\Wen\\source\\repos\\PayrollAppRazorPages5-final4\\PayrollAppRazorPages.csproj",
       "packagesPath": "C:\\Users\\Wen\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Wen\\source\\repos\\PayrollAppRazorPages5\\obj\\",
+      "outputPath": "C:\\Users\\Wen\\source\\repos\\PayrollAppRazorPages5-final4\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\Wen\\AppData\\Roaming\\NuGet\\NuGet.Config",

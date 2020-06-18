@@ -50,7 +50,7 @@ namespace PayrollAppRazorPages.Pages.Manage.Staff
 
             if (applicationUser != null)
             {
-                bool isStaff = await _userManager.IsInRoleAsync(applicationUser, "123456");
+                bool isStaff = await _userManager.IsInRoleAsync(applicationUser, "staff");
 
                 if (isStaff)
                     await _userManager.DeleteAsync(applicationUser);

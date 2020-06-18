@@ -29,12 +29,25 @@ namespace PayrollAppRazorPages.Pages.Manage.Salary
         [BindProperty(SupportsGet = true)]
         public string SelectedYear { get; set; }
         public string SelectedDate { get; set; }
+        public int WeekdaysCount { get; set; }
         public List<Attendance> UserAttendance { get; set; }
 
         [BindProperty]
         public StaffSalary StaffSalary { get; set; }
+        public StaffSalary AdvSalaryPur { get; set; }
         public ApplicationUser applicationUser { get; set; }
+        private static int WeekDaysInMonth(int year, int month)
+        {
+            int days = DateTime.DaysInMonth(year, month);
+            List<DateTime> dates = new List<DateTime>();
+            for (int i = 1; i <= days; i++)
+            {
+                dates.Add(new DateTime(year, month, i));
+            }
 
+            int weekDays = dates.Where(d => d.DayOfWeek < DayOfWeek.Friday).Count();
+            return weekDays;
+        }
         public async Task<IActionResult> OnGetAsync(string Id)
         {
             //applicationUser = await _userManager.FindByIdAsync(Id);
@@ -56,10 +69,23 @@ namespace PayrollAppRazorPages.Pages.Manage.Salary
                 SelectedYear = DateTime.Now.Year.ToString();
             }
             SelectedDate = DateTime.Parse(SelectedYear + "-" + SelectedMonth + "-01").ToString("MMMM yyyy");
+            // get working days of this month
+            WeekdaysCount = WeekDaysInMonth(int.Parse(SelectedYear), int.Parse(SelectedMonth));
             // get attendance for this month
             UserAttendance = await _context.Attendance.Include(a => a.AttendanceStatus)
                 .Where(a => a.ApplicationUserId == Id && a.PunchDate.Value.Month == int.Parse(SelectedMonth) && a.PunchDate.Value.Year == int.Parse(SelectedYear))
                 .OrderBy(a => a.PunchDate).ToListAsync();
+
+            // Get the advance salary from last month
+            // If the current month is Jan shift the year backward and change the month to Dec
+            if(int.Parse(SelectedMonth) == 1)
+            {
+                AdvSalaryPur = await _context.StaffSalary.Where(s => s.staffID == Id && s.Month == 12 && s.Year == int.Parse(SelectedYear)-1).SingleOrDefaultAsync();
+            }
+            else
+            {
+                AdvSalaryPur = await _context.StaffSalary.Where(s => s.staffID == Id && s.Month == int.Parse(SelectedMonth)-1 && s.Year == int.Parse(SelectedYear)).SingleOrDefaultAsync();
+            }
 
             // initialize a new salary object with staff data default salary info
             StaffSalary = new StaffSalary
@@ -75,6 +101,7 @@ namespace PayrollAppRazorPages.Pages.Manage.Salary
                 ERSocsoRm = applicationUser.StaffData.ERSocsoRm,
                 EREIS = applicationUser.StaffData.EREIS,
                 Socso = applicationUser.StaffData.Socso,
+                AdvSalary = AdvSalaryPur != null ? AdvSalaryPur.AdvSalaryPlus : 0,
                 Month = int.Parse(SelectedMonth),
                 Year = int.Parse(SelectedYear)
             };
