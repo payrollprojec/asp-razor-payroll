@@ -143,13 +143,13 @@
                 var totalDeduct = Model.StaffSalary.EPF + Model.StaffSalary.SocsoRm + Model.StaffSalary.EIS + Model.StaffSalary.Tax + Model.StaffSalary.AdvSalary + absent;
                 var net = totalEarn - totalDeduct;
             }
-            Total Earning: RM @totalEarn
+            Total Earning: RM @totalEarn.ToString("0.00")
             <br />
-            Net Pay&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: RM @net
+            Net Pay&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: RM @net.ToString("0.00")
             <br />
         </div>
         <div class="col">
-            Total Deduction: RM @totalDeduct
+            Total Deduction: RM @totalDeduct.ToString("0.00")
         </div>
 
     </div>
