@@ -111,32 +111,35 @@ namespace PayrollAppRazorPages.Pages.Manage.Salary
 
         public async Task<IActionResult> OnPostAsync()
         {
-            //applicationUser = await _userManager.FindByIdAsync(Id);
-            applicationUser = await _userManager.Users.Include(u => u.StaffData).Where(u => u.Id == StaffSalary.staffID).SingleOrDefaultAsync();
-
-            if (applicationUser == null)
-            {
-                return NotFound();
-            }
-            bool isStaff = await _userManager.IsInRoleAsync(applicationUser, "staff");
-            if (!isStaff)
-            {
-                return NotFound();
-            }
-
-            if (string.IsNullOrEmpty(SelectedYear) || string.IsNullOrEmpty(SelectedMonth))
-            {
-                SelectedMonth = DateTime.Now.Month.ToString();
-                SelectedYear = DateTime.Now.Year.ToString();
-            }
-            SelectedDate = DateTime.Parse(SelectedYear + "-" + SelectedMonth + "-01").ToString("MMMM yyyy");
-            // get attendance for this month
-            UserAttendance = await _context.Attendance.Include(a => a.AttendanceStatus)
-                .Where(a => a.ApplicationUserId == StaffSalary.staffID && a.PunchDate.Value.Month == int.Parse(SelectedMonth) && a.PunchDate.Value.Year == int.Parse(SelectedYear))
-                .OrderBy(a => a.PunchDate).ToListAsync();
+            
             ModelState.Remove("StaffSalary.staff");
             if (!ModelState.IsValid)
             {
+                //applicationUser = await _userManager.FindByIdAsync(Id);
+                applicationUser = await _userManager.Users.Include(u => u.StaffData).Where(u => u.Id == StaffSalary.staffID).SingleOrDefaultAsync();
+
+                if (applicationUser == null)
+                {
+                    return NotFound();
+                }
+                bool isStaff = await _userManager.IsInRoleAsync(applicationUser, "staff");
+                if (!isStaff)
+                {
+                    return NotFound();
+                }
+
+                if (string.IsNullOrEmpty(SelectedYear) || string.IsNullOrEmpty(SelectedMonth))
+                {
+                    SelectedMonth = DateTime.Now.Month.ToString();
+                    SelectedYear = DateTime.Now.Year.ToString();
+                }
+                SelectedDate = DateTime.Parse(SelectedYear + "-" + SelectedMonth + "-01").ToString("MMMM yyyy");
+                // get attendance for this month
+                WeekdaysCount = WeekDaysInMonth(StaffSalary.Year, StaffSalary.Month);
+
+                UserAttendance = await _context.Attendance.Include(a => a.AttendanceStatus)
+                    .Where(a => a.ApplicationUserId == StaffSalary.staffID && a.PunchDate.Value.Month == int.Parse(SelectedMonth) && a.PunchDate.Value.Year == int.Parse(SelectedYear))
+                    .OrderBy(a => a.PunchDate).ToListAsync();
                 return Page();
             }
             StaffSalary.MailNum = 0;

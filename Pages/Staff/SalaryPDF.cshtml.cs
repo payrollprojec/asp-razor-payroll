@@ -80,6 +80,7 @@ namespace PayrollAppRazorPages.Pages.Staff
             UserAttendance = await _context.Attendance.Include(a => a.AttendanceStatus)
                 .Where(a => a.ApplicationUserId == StaffSalary.staffID && a.PunchDate.Value.Month == StaffSalary.Month && a.PunchDate.Value.Year == StaffSalary.Year)
                 .OrderBy(a => a.PunchDate).ToListAsync();
+            WeekdaysCount = WeekDaysInMonth(StaffSalary.Year, StaffSalary.Month);
 
             summary = new Summary();
             var SummaryList = await _context.StaffSalary.Where(ss => ss.staffID == StaffSalary.staffID && ss.Year == StaffSalary.Year && ss.Month <= StaffSalary.Month).ToListAsync();

@@ -99,13 +99,14 @@ namespace PayrollAppRazorPages.Pages.Manage.Salary
                             "<h3> Salary Slip in " + SalaryDate + "</h3>" +
                             "<hr><br>" +
                             "<table cellspacing='0' cellpadding='10' border='1'>" +
-                            "<tr><th>Earning</th><th>Deduction</th></tr>" +
+                            "<tr><th>Earning (RM)</th><th>Deduction (RM)</th></tr>" +
                             "<tr>" +
                             "<td>" +
                             "<b>Basic Salary: </b>" + StaffSalary.BasicSalary + "<br>" +
                             "<b>Allowance: </b>" + StaffSalary.Allowances + "<br>" +
                             "<b>Bonus: </b>" + StaffSalary.Bonus + "<br>" +
-                            "<b>Adv. Salary: </b>" + StaffSalary.AdvSalaryPlus + "<br>" +
+                            "<b>Adv. Salary: </b>" + StaffSalary.AdvSalaryPlus + "<br><br>" +
+                            "<b>Total Earnings: " + (StaffSalary.BasicSalary + StaffSalary.Allowances + StaffSalary.Bonus + StaffSalary.AdvSalaryPlus) + "<br>" +
                             "</td>" +
                             "<td>" +
                             "<b>EPF: </b>" + StaffSalary.EPF + "<br>" +
@@ -113,11 +114,14 @@ namespace PayrollAppRazorPages.Pages.Manage.Salary
                             "<b>EIS: </b>" + StaffSalary.EIS + "<br>" +
                             "<b>TAX: </b>" + StaffSalary.Tax + "<br>" +
                             "<b>Adv. Salary: </b>" + StaffSalary.AdvSalary + "<br>" +
+                            "<b>Absent: </b>" + (StaffSalary.BasicSalary / wdc * ac.Count()).ToString("0.00") + "<br><br>" +
+                            "<b>Total Deductions: " + (StaffSalary.BasicSalary / wdc * ac.Count()+ StaffSalary.EPF + StaffSalary.SocsoRm + StaffSalary.EIS + StaffSalary.Tax + StaffSalary.AdvSalary).ToString("0.00") + "<br>" +
+
                             "</td>" +
                             "</tr>" +
                             "<tr>" +
                             "<td colspan='2'>" +
-                            "<b>Net Pay: </b>" + (StaffSalary.BasicSalary / wdc * (wdc - ac.Count()) + StaffSalary.Allowances + StaffSalary.Bonus + StaffSalary.AdvSalaryPlus - StaffSalary.EPF - StaffSalary.SocsoRm - StaffSalary.EIS - StaffSalary.Tax - StaffSalary.AdvSalary) + "<br>" +
+                            "<b>Net Pay: </b>RM " + (StaffSalary.BasicSalary / wdc * (wdc - ac.Count()) + StaffSalary.Allowances + StaffSalary.Bonus + StaffSalary.AdvSalaryPlus - StaffSalary.EPF - StaffSalary.SocsoRm - StaffSalary.EIS - StaffSalary.Tax - StaffSalary.AdvSalary).ToString("0.00") + "<br>" +
                             "</td>" +
                             "</tr>" +
                             "<tr>" +

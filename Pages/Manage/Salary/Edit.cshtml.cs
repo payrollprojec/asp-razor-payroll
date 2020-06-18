@@ -80,6 +80,7 @@ namespace PayrollAppRazorPages.Pages.Manage.Salary
                 }
                 applicationUser = await _userManager.Users.Include(u => u.StaffData).Where(u => u.Id == StaffSalary.staffID).SingleOrDefaultAsync();
                 SelectedDate = DateTime.Parse(StaffSalary.Year.ToString() + "-" + StaffSalary.Month.ToString() + "-01").ToString("MMMM yyyy");
+                WeekdaysCount = WeekDaysInMonth(StaffSalary.Year, StaffSalary.Month);
 
                 UserAttendance = await _context.Attendance.Include(a => a.AttendanceStatus)
                     .Where(a => a.ApplicationUserId == StaffSalary.staffID && a.PunchDate.Value.Month == StaffSalary.Month && a.PunchDate.Value.Year == StaffSalary.Year)
