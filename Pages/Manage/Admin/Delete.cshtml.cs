@@ -14,6 +14,8 @@ namespace PayrollAppRazorPages.Pages.Manage.Admin
     public class DeleteModel : PageModel
     {
         private readonly UserManager<ApplicationUser> _userManager;
+        [TempData]
+        public string StatusMessage { get; set; }
 
         public DeleteModel(UserManager<ApplicationUser> userManager)
         {
@@ -42,7 +44,7 @@ namespace PayrollAppRazorPages.Pages.Manage.Admin
             {
                 await _userManager.DeleteAsync(applicationUser);
             }
-
+            StatusMessage = "Admin Account Deleted.";
             return RedirectToPage("./Index");
         }
     }

@@ -20,6 +20,8 @@ namespace PayrollAppRazorPages.Pages.Manage.Admin
         {
             _userManager = userManager;
         }
+        [TempData]
+        public string StatusMessage { get; set; }
 
         public ApplicationUser applicationUser { get; set; }
 
@@ -34,6 +36,7 @@ namespace PayrollAppRazorPages.Pages.Manage.Admin
             public string FullName { get; set; }
 
             [Display(Name = "I/C No")]
+            [StringLength(12, MinimumLength = 12)]
             [Required]
             public string ICNo { get; set; }
 
@@ -41,6 +44,10 @@ namespace PayrollAppRazorPages.Pages.Manage.Admin
             [EmailAddress]
             [Display(Name = "Email")]
             public string Email { get; set; }
+
+            [Phone]
+            [Display(Name = "Phone number")]
+            public string PhoneNumber { get; set; }
 
             [Display(Name = "Login username")]
             public string UserName { get; set; }
@@ -68,6 +75,7 @@ namespace PayrollAppRazorPages.Pages.Manage.Admin
             Input.ICNo = applicationUser.ICNo;
             Input.Email = applicationUser.Email;
             Input.UserName = applicationUser.UserName;
+            Input.PhoneNumber = applicationUser.PhoneNumber;
             return Page();
         }
 
@@ -85,12 +93,14 @@ namespace PayrollAppRazorPages.Pages.Manage.Admin
                 applicationUser.FullName = Input.FullName;
                 applicationUser.ICNo = Input.ICNo;
                 applicationUser.Email = Input.Email;
+                applicationUser.PhoneNumber = Input.PhoneNumber;
                 applicationUser.NormalizedEmail = Input.Email.ToUpper();
 
 
                 var result = await _userManager.UpdateAsync(applicationUser);
                 if (result.Succeeded)
                 {
+                    StatusMessage = "Admin Details Updated.";
                     return RedirectToPage("./Details", new { applicationUser.Id });
 
                 }

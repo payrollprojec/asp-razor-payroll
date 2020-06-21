@@ -37,8 +37,13 @@ namespace PayrollAppRazorPages.Pages.Manage.Staff
             public string FullName { get; set; }
 
             [Display(Name = "I/C No")]
+            [StringLength(12, MinimumLength = 12)]
             [Required]
             public string ICNo { get; set; }
+
+            [Phone]
+            [Display(Name = "Phone number")]
+            public string PhoneNumber { get; set; }
 
             [Required]
             [EmailAddress]
@@ -147,6 +152,7 @@ namespace PayrollAppRazorPages.Pages.Manage.Staff
                     Email = Input.Email,
                     FullName = Input.FullName,
                     ICNo = Input.ICNo,
+                    PhoneNumber = Input.PhoneNumber,
                     EmailConfirmed = true,
                     NormalizedEmail = Input.Email.ToUpper(),
                 };
@@ -182,7 +188,6 @@ namespace PayrollAppRazorPages.Pages.Manage.Staff
 
                     await _context.StaffData.AddAsync(staffData);
                     await _context.SaveChangesAsync();
-
                     return RedirectToPage("CreateConfirmation", new { username = Input.UserName, password = pw });
                     //return RedirectToPage("../Salary/Create", new { username = Input.UserName, password = Input.UserName, userid = user.Id });
                 }

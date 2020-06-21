@@ -33,6 +33,7 @@ namespace PayrollAppRazorPages.Pages.Manage.Admin
             public string FullName { get; set; }
 
             [Display(Name = "I/C No")]
+            [StringLength(12, MinimumLength = 12)]
             [Required]
             public string ICNo { get; set; }
 
@@ -40,6 +41,10 @@ namespace PayrollAppRazorPages.Pages.Manage.Admin
             [EmailAddress]
             [Display(Name = "Email")]
             public string Email { get; set; }
+
+            [Phone]
+            [Display(Name = "Phone number")]
+            public string PhoneNumber { get; set; }
 
             [StringLength(20, MinimumLength = 3)]
             [Display(Name = "Login username")]
@@ -71,6 +76,7 @@ namespace PayrollAppRazorPages.Pages.Manage.Admin
                     Email = Input.Email,
                     FullName = Input.FullName,
                     ICNo = Input.ICNo,
+                    PhoneNumber = Input.PhoneNumber,
                     EmailConfirmed = true,
                     NormalizedEmail = Input.Email.ToUpper()
                 };

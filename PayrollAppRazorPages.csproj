@@ -7,10 +7,10 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Pages\Manage\Salary\**" />
-    <Content Remove="Pages\Manage\Salary\**" />
-    <EmbeddedResource Remove="Pages\Manage\Salary\**" />
-    <None Remove="Pages\Manage\Salary\**" />
+    <Compile Remove="Pages\Manage\OLDSalary\**" />
+    <Content Remove="Pages\Manage\OLDSalary\**" />
+    <EmbeddedResource Remove="Pages\Manage\OLDSalary\**" />
+    <None Remove="Pages\Manage\OLDSalary\**" />
   </ItemGroup>
 
   <ItemGroup>
@@ -19,33 +19,35 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Content Remove="Pages\Manage\Salaries\SalaryPDF.cshtml" />
+    <Content Remove="Pages\Manage\Salaries\SendEmail.cshtml" />
+    <Content Remove="Pages\Manage\Salaries\SendEmailConfirmation.cshtml" />
     <Content Remove="Pages\Manage\Staff\SalaryPDF.cshtml" />
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Include="Pages\Manage\Salary\ControllerExtensions.cs" />
-    <Compile Include="Pages\Manage\Salary\CreateSalary.cshtml.cs" />
-    <Compile Include="Pages\Manage\Salary\Delete.cshtml.cs" />
-    <Compile Include="Pages\Manage\Salary\Details.cshtml.cs" />
-    <Compile Include="Pages\Manage\Salary\SaveSalaryPDF.cshtml.cs" />
-    <Compile Include="Pages\Manage\Salary\SendEmailConfirmation.cshtml.cs" />
-    <Compile Include="Pages\Manage\Salary\SendEmail.cshtml.cs" />
-    <Compile Include="Pages\Manage\Salary\Edit.cshtml.cs" />
-    <Compile Include="Pages\Manage\Salary\Index.cshtml.cs" />
-    <Compile Include="Pages\Manage\Salary\SalaryPDF.cshtml.cs" />
+    <Compile Include="Pages\Manage\OLDSalary\CreateSalary.cshtml.cs" />
+    <Compile Include="Pages\Manage\OLDSalary\Delete.cshtml.cs" />
+    <Compile Include="Pages\Manage\OLDSalary\Details.cshtml.cs" />
+    <Compile Include="Pages\Manage\OLDSalary\Edit.cshtml.cs" />
+    <Compile Include="Pages\Manage\OLDSalary\Index.cshtml.cs" />
+    <Compile Include="Pages\Manage\OLDSalary\SalaryPDF.cshtml.cs" />
+    <Compile Include="Pages\Manage\OLDSalary\SendEmail.cshtml.cs" />
+    <Compile Include="Pages\Manage\OLDSalary\SendEmailConfirmation.cshtml.cs" />
   </ItemGroup>
 
   <ItemGroup>
-    <None Include="Pages\Manage\Salary\CreateSalary.cshtml" />
-    <None Include="Pages\Manage\Salary\Delete.cshtml" />
-    <None Include="Pages\Manage\Salary\Details.cshtml" />
-    <None Include="Pages\Manage\Salary\Edit.cshtml" />
-    <None Include="Pages\Manage\Salary\SaveSalaryPDF.cshtml" />
-    <None Include="Pages\Manage\Salary\SendEmailConfirmation.cshtml" />
-    <None Include="Pages\Manage\Salary\SendEmail.cshtml" />
-    <None Include="Pages\Manage\Salary\Index.cshtml" />
-    <None Include="Pages\Manage\Salary\SalaryPDF.cshtml" />
-    <None Include="Pages\Manage\Salary\TestMailTemplate.cshtml" />
+    <None Include="Pages\Manage\Salaries\SalaryPDF.cshtml" />
+    <None Include="Pages\Manage\Salaries\SendEmail.cshtml" />
+    <None Include="Pages\Manage\Salaries\SendEmailConfirmation.cshtml" />
+    <None Include="Pages\Manage\OLDSalary\CreateSalary.cshtml" />
+    <None Include="Pages\Manage\OLDSalary\Delete.cshtml" />
+    <None Include="Pages\Manage\OLDSalary\Details.cshtml" />
+    <None Include="Pages\Manage\OLDSalary\Edit.cshtml" />
+    <None Include="Pages\Manage\OLDSalary\Index.cshtml" />
+    <None Include="Pages\Manage\OLDSalary\SalaryPDF.cshtml" />
+    <None Include="Pages\Manage\OLDSalary\SendEmail.cshtml" />
+    <None Include="Pages\Manage\OLDSalary\SendEmailConfirmation.cshtml" />
     <None Include="Pages\Manage\Staff\Create.cshtml" />
     <None Include="Pages\Manage\Staff\CreateConfirmation.cshtml" />
     <None Include="Pages\Manage\Staff\Delete.cshtml" />
@@ -68,10 +70,6 @@
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation" Version="3.1.4" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="3.1.3" />
     <PackageReference Include="RazorEngine" Version="4.5.1-alpha001" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Pages\Manage\Salary\bkup\" />
   </ItemGroup>
 
 </Project>

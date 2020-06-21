@@ -40,6 +40,7 @@ namespace PayrollAppRazorPages.Areas.Identity.Pages.Account.Manage
             public string FullName { get; set; }
 
             [Display(Name = "I/C No")]
+            [StringLength(12, MinimumLength = 12)]
             [Required]
             public string ICNo { get; set; }
 

@@ -5,36 +5,42 @@
 }
 
 
-<div class="card">
-    <h4 class="card-header">Are you sure you want to delete user - @Html.DisplayFor(model => model.applicationUser.UserName)</h4>
+    <div class="card" style="max-width:900px;">
+        <h4 class="card-header">Are you sure you want to delete user - @Html.DisplayFor(model => model.applicationUser.UserName)</h4>
 
-    <div class="card-body">
-        <dl class="row">
-            <dt class="col-sm-2">
-                @Html.DisplayNameFor(model => model.applicationUser.FullName)
-            </dt>
-            <dd class="col-sm-10">
-                @Html.DisplayFor(model => model.applicationUser.FullName)
-            </dd>
-            <dt class="col-sm-2">
-                @Html.DisplayNameFor(model => model.applicationUser.Email)
-            </dt>
-            <dd class="col-sm-10">
-                @Html.DisplayFor(model => model.applicationUser.Email)
-            </dd>
-            <dt class="col-sm-2">
-                @Html.DisplayNameFor(model => model.applicationUser.ICNo)
-            </dt>
-            <dd class="col-sm-10">
-                @Html.DisplayFor(model => model.applicationUser.ICNo)
-            </dd>
-        </dl>
-        <hr />
-        <form method="post">
-            <input type="hidden" asp-for="applicationUser.Id" />
-            <input class="btn btn-danger" type="submit" value="Delete" />
-            <a class="btn btn-secondary" asp-page="./Index">Back to List</a>
-        </form>
+        <div class="card-body">
+            <dl class="row">
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.applicationUser.FullName)
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.applicationUser.FullName)
+                </dd>
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.applicationUser.Email)
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.applicationUser.Email)
+                </dd>
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.applicationUser.PhoneNumber)
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.applicationUser.PhoneNumber)
+                </dd>
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.applicationUser.ICNo)
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.applicationUser.ICNo)
+                </dd>
+            </dl>
+        </div>
+        <div class="card-footer">
+            <form method="post">
+                <input type="hidden" asp-for="applicationUser.Id" />
+                <input class="btn btn-danger" type="submit" value="Delete" />
+                <a class="btn btn-secondary" asp-page="./Index">Back to List</a>
+            </form>
+        </div>
     </div>
-
-</div>

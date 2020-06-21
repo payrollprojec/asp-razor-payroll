@@ -4049,6 +4049,12 @@ C:\Users\Wen\source\repos\PayrollAppRazorPages5-final4\obj\Debug\netcoreapp3.1\R
 C:\Users\Wen\source\repos\PayrollAppRazorPages5-final4\obj\Debug\netcoreapp3.1\Razor\Pages\Manage\Admin\Index.cshtml.g.cs
 C:\Users\Wen\source\repos\PayrollAppRazorPages5-final4\obj\Debug\netcoreapp3.1\Razor\Pages\Manage\Attendances\Edit.cshtml.g.cs
 C:\Users\Wen\source\repos\PayrollAppRazorPages5-final4\obj\Debug\netcoreapp3.1\Razor\Pages\Manage\Attendances\Index.cshtml.g.cs
+C:\Users\Wen\source\repos\PayrollAppRazorPages5-final4\obj\Debug\netcoreapp3.1\Razor\Pages\Manage\Attendances\_StatusMessage.cshtml.g.cs
+C:\Users\Wen\source\repos\PayrollAppRazorPages5-final4\obj\Debug\netcoreapp3.1\Razor\Pages\Manage\Salaries\CreateSalary.cshtml.g.cs
+C:\Users\Wen\source\repos\PayrollAppRazorPages5-final4\obj\Debug\netcoreapp3.1\Razor\Pages\Manage\Salaries\Delete.cshtml.g.cs
+C:\Users\Wen\source\repos\PayrollAppRazorPages5-final4\obj\Debug\netcoreapp3.1\Razor\Pages\Manage\Salaries\Details.cshtml.g.cs
+C:\Users\Wen\source\repos\PayrollAppRazorPages5-final4\obj\Debug\netcoreapp3.1\Razor\Pages\Manage\Salaries\Edit.cshtml.g.cs
+C:\Users\Wen\source\repos\PayrollAppRazorPages5-final4\obj\Debug\netcoreapp3.1\Razor\Pages\Manage\Salaries\Index.cshtml.g.cs
 C:\Users\Wen\source\repos\PayrollAppRazorPages5-final4\obj\Debug\netcoreapp3.1\Razor\Pages\Manage\Staff\Create.cshtml.g.cs
 C:\Users\Wen\source\repos\PayrollAppRazorPages5-final4\obj\Debug\netcoreapp3.1\Razor\Pages\Manage\Staff\CreateConfirmation.cshtml.g.cs
 C:\Users\Wen\source\repos\PayrollAppRazorPages5-final4\obj\Debug\netcoreapp3.1\Razor\Pages\Manage\Staff\Delete.cshtml.g.cs
@@ -4080,3 +4086,6 @@ C:\Users\Wen\source\repos\PayrollAppRazorPages5-final4\obj\Debug\netcoreapp3.1\P
 C:\Users\Wen\source\repos\PayrollAppRazorPages5-final4\obj\Debug\netcoreapp3.1\PayrollAppRazorPages.pdb
 C:\Users\Wen\source\repos\PayrollAppRazorPages5-final4\obj\Debug\netcoreapp3.1\PayrollAppRazorPages.genruntimeconfig.cache
 C:\Users\Wen\source\repos\PayrollAppRazorPages5-final4\obj\Debug\netcoreapp3.1\PayrollAppRazorPages.csprojAssemblyReference.cache
+C:\Users\Wen\source\repos\PayrollAppRazorPages5-final4\obj\Debug\netcoreapp3.1\Razor\Pages\Manage\Admin\_StatusMessage.cshtml.g.cs
+C:\Users\Wen\source\repos\PayrollAppRazorPages5-final4\obj\Debug\netcoreapp3.1\Razor\Pages\Manage\Staff\_StatusMessage.cshtml.g.cs
+C:\Users\Wen\source\repos\PayrollAppRazorPages5-final4\obj\Debug\netcoreapp3.1\Razor\Pages\Manage\Salaries\_StatusMessage.cshtml.g.cs

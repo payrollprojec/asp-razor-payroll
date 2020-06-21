@@ -51,6 +51,8 @@ namespace PayrollAppRazorPages.Pages.Manage.Attendances
         [BindProperty]
         public string SelectedStatus { get; set; }
         public DateTime MaxDate { get; set; }
+        [TempData]
+        public string StatusMessage { get; set; }
         public async Task<IActionResult> OnGetAsync(string Id)
         {
             applicationUser = await _userManager.FindByIdAsync(Id);
@@ -144,7 +146,7 @@ namespace PayrollAppRazorPages.Pages.Manage.Attendances
 
             _context.Attendance.Add(attendance);
             await _context.SaveChangesAsync();
-
+            StatusMessage = "Attendance has been added";
             return RedirectToPage("Edit", new { Id = Input.Id, SelectedMonth = Input.PunchDate.Month, SelectedYear = Input.PunchDate.Year });
         }
         [BindProperty]
@@ -154,6 +156,7 @@ namespace PayrollAppRazorPages.Pages.Manage.Attendances
             Attendance att = await _context.Attendance.Where(a => a.Id == DeleteId).SingleOrDefaultAsync();
             _context.Attendance.Remove(att);
             await _context.SaveChangesAsync();
+            StatusMessage = "Record Deleted.";
             return RedirectToPage("Edit", new { Id = att.ApplicationUserId, SelectedMonth, SelectedYear });
         }
     }

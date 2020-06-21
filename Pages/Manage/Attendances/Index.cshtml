@@ -16,7 +16,7 @@
         </p>
     </form>*@
 <div class="row">
-    <div class="col-auto"><h3>Manage Attendance</h3></div><br />
+    <div class="col-auto"><h4>Manage Attendance</h4></div><br />
     <div class="col-auto">
         <form class="form-inline">
             <input id="name" class="form-control-sm mr-sm-3" type="text" asp-for="SearchString" placeholder="Search Name" />
@@ -30,13 +30,13 @@
 </div>
 <br />
 
-<table class="table table-hover">
+<table class="table table-hover" style="max-width:800px;">
     <thead class="thead-light"s>
         <tr>
             <th>
                 Staff Name
             </th>
-            <th>
+            <th class="text-center">
                 Days Recorded (@Model.SelectedDate)
             </th>
             <th></th>
@@ -49,7 +49,7 @@
                 <td>
                     @Html.DisplayFor(modelItem => item.Name)
                 </td>
-                <td>
+                <td class="text-center">
                     @Html.DisplayFor(modelItem => item.DaysRecorded)
                 </td>
                 <td>

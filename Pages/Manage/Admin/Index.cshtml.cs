@@ -20,6 +20,8 @@ namespace PayrollAppRazorPages.Pages.Manage.Admin
         {
             _userManager = userManager;
         }
+        [TempData]
+        public string StatusMessage { get; set; }
 
         public IList<ApplicationUser> Users { get; set; }
 

@@ -7,10 +7,80 @@
 
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" />
+    <style>
+        body {
+            background-color: #f7f7f7;
+        }
+
+        .make-me-sticky {
+            position: -webkit-sticky;
+            position: sticky;
+            top: 0;
+        }
+
+        .sidebar-item {
+            /*position: absolute;*/
+            top: 0;
+            /*left: 0;*/
+            width: 100%;
+            height: 100%;
+        }
+
+        @@media (max-width: 767.98px) {
+            .sidebar-item {
+                position: relative;
+            }
+        }
+
+        html, body, .main, main {
+            height: 100%;
+            margin-bottom: 0;
+        }
+
+        .nav-pills .nav-link {
+            border-radius: 0;
+            /*color: #0b66a1;*/
+            /*color: #eb5e5e;*/
+            padding: 15px;
+        }
+
+        header {
+            position: absolute;
+            width: 100%;
+            z-index: 999;
+        }
+
+        nav {
+            background-color: rgb(104,15,19);
+        }
+
+        .side {
+            background-color: white;
+            border: 0;
+        }
+
+        .side .nav-item > .nav-link {
+            color: #666;
+        }
+
+        .side .nav-item > .nav-link.active {
+            background-color: rgba(104, 15, 19, 1) !important;
+            color: white;
+        }
+
+        .side .nav-item > a.nav-link:hover {
+            color: white;
+            background-color: rgba(125, 30, 34, 0.80);
+        }
+        .earn-duct .form-group{
+            margin-bottom: 0;
+        }
+    </style>
 </head>
+
 <body>
     <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-dark bg-dark box-shadow">
             <div class="container-fluid">
                 <a class="navbar-brand" asp-area="" asp-page="/Index">Payroll App</a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
@@ -21,28 +91,28 @@
                     <partial name="_LoginPartial" />
                     <ul class="navbar-nav flex-grow-1">
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-page="/Index">Home</a>
+                            <a class="nav-link text-light" asp-area="" asp-page="/Index">Home</a>
                         </li>
                         @*<li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-page="/Privacy">Privacy</a>
-                        </li>*@
+                                <a class="nav-link text-dark" asp-area="" asp-page="/Privacy">Privacy</a>
+                            </li>*@
                     </ul>
                 </div>
             </div>
         </nav>
     </header>
-    <div class="container-fluid">
-        <main role="main" class="pb-3">
+    <div class="container-fluid main">
+        <main role="main">
             @RenderBody()
         </main>
     </div>
 
-    <footer class="border-top footer text-muted d-print-none" style="overflow: hidden;">
-        <div class="container">
-            &copy; 2020 - Payroll App
-            @*- <a asp-area="" asp-page="/Privacy">Privacy</a>*@
-        </div>
-    </footer>
+
+    @*<footer class="border-top footer text-muted d-print-none" style="overflow: hidden;">
+            <div class="container">
+                &copy; 2020 - Payroll App
+            </div>
+        </footer>*@
 
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
@@ -50,4 +120,11 @@
 
     @RenderSection("Scripts", required: false)
 </body>
+<script type="text/javascript">
+    window.addEventListener('load', function () {
+        $(".alert").delay(2000).slideUp(200, function () {
+            $(this).alert('close');
+        });
+    });
+</script>
 </html>

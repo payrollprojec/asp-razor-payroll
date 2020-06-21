@@ -4,62 +4,66 @@
     ViewData["Title"] = "Salary";
 }
 
-<h4>Salary</h4>
-
-<form>
-    <p>
-        <select class="mr-md-3" asp-for="SelectedYear" asp-items="Model.Years">
-        </select>
-        <input type="submit" value="Filter" />
+<div >
+    <form>
+        <div class="row">
+            <h4 class="col">Salary</h4>
+            <p class="col d-flex justify-content-start">
+                <select class="form-control-sm mr-md-3" asp-for="SelectedYear" asp-items="Model.Years">
+                </select>
+                <input type="submit" value="Filter" />
             </p>
-    <table class="table table-hover">
-        <thead class="thead-light">
-            <tr>
-                <th>
-                    Month
-                </th>
-                <th>
-                    Net
-                </th>
-                <th>
-                    View Salary
-                </th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var item in Model.SalaryList)
-            {
+        </div>
+
+        <table class="table table-hover table-sm " style="max-width:800px;">
+            <thead class="thead-light">
+                <tr>
+                    <th>
+                        Month
+                    </th>
+                    <th class="text-center">
+                        Net
+                    </th>
+                    <th class="text-center">
+                        View Salary
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.SalaryList)
+                {
                 if (item.Net > 0)
                 {
-                    <tr>
-                        <td>
-                            @item.Month
-                        </td>
-                        <td>
-                            RM @Html.DisplayFor(model => item.Net)
-                        </td>
-                        <td>
-                            <a asp-page="./SalaryDetails" asp-route-id="@item.Id">@item.GenDate.ToShortDateString()</a>
-                        </td>
-                    </tr>
+                <tr>
+                    <td>
+                        @item.Month
+                    </td>
+                    <td class="text-center">
+                        RM @Html.DisplayFor(model => item.Net)
+                    </td>
+                    <td class="text-center">
+                        <a asp-page="./SalaryDetails" asp-route-id="@item.Id">@item.GenDate.ToShortDateString()</a>
+                    </td>
+                </tr>
                 }
                 else
                 {
-                    <tr>
-                        <td>
-                            @item.Month
-                        </td>
-                        <td>
-                            -
-                        </td>
-                        <td>
-                            -
-                        </td>
-                    </tr>
+                <tr>
+                    <td>
+                        @item.Month
+                    </td>
+                    <td class="text-center">
+                        -
+                    </td>
+                    <td class="text-center">
+                        -
+                    </td>
+                </tr>
+                }
                 }
 
-            }
+            </tbody>
+        </table>
+    </form>
+</div>
 
-        </tbody>
-    </table>
-</form>

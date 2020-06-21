@@ -3,22 +3,28 @@
 @{
     ViewData["Title"] = "Attendance";
 }
+<style>
+    #statusCount {
+        background-color: white;
+        position: -webkit-sticky;
+        position: sticky;
+        top: 0;
+    }
 
-@*<div class="row">
-    <h4 class="col">Attendance</h4>
-    <form>
-        <p>
-            <select class="mr-md-3" asp-for="SelectedMonth" asp-items="Model.Months">
-            </select>
-            <select class="mr-md-3" asp-for="SelectedYear" asp-items="Model.Years">
-            </select>
-            <input type="submit" value="Filter" />
-        </p>
-    </form>
-</div>*@
-<div class="row">
+        #statusCount th {
+            max-width: 60px;
+            text-align: center;
+        }
+
+        #statusCount td {
+            text-align: center;
+        }
+</style>
+
+<div class="row" >
     <div class="col"><h2>Attendance</h2></div><br />
     <div class="col">
+
         <form class="form-inline">
             <select class="form-control-sm mr-sm-3" asp-for="SelectedMonth" asp-items="Model.Months">
             </select>
@@ -33,21 +39,96 @@
 
 @if (Model.UserAttendance.Count == 0)
 {
-    <p>No attendance found.</p>
+<p>No attendance found.</p>
 }
 else
 {
-    Dictionary<string, int> dict = new Dictionary<string, int>();
-    dict.Add("Present", 0);
-    dict.Add("Absent", 0);
-    dict.Add("Leave", 0);
-    dict.Add("Sick", 0);
+Dictionary<string, int> dict = new Dictionary<string, int>();
+dict.Add("Present", 0);
+dict.Add("Absent", 0);
+dict.Add("Leave", 0);
+dict.Add("Sick", 0);
 
-    foreach (var item in Model.UserAttendance)
-    {
-        dict[item.AttendanceStatus.Status] += 1;
-    }
-    <table class="table table-bordered table-sm text-center">
+foreach (var item in Model.UserAttendance)
+{
+dict[item.AttendanceStatus.Status] += 1;
+}
+
+<div class="row">
+
+    <div class="col">
+        <table class="table table-bordered table-sm text-center">
+            <thead class="thead-light">
+                <tr>
+                    <th>
+                        Day
+                    </th>
+                    <th>
+                        Date
+                    </th>
+                    <th>
+                        Status
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.UserAttendance)
+                {
+                <tr>
+                    <td>
+                        @(item.PunchDate.Value.DayOfWeek)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.PunchDate)
+                    </td>
+                    <td>
+                        @if (item.AttendanceStatus.Status != "Present")
+                        {
+                        <span style="color:deeppink;"> @Html.DisplayFor(modelItem => item.AttendanceStatus.Status)</span>
+                        }
+                        else
+                        {
+                        @Html.DisplayFor(modelItem => item.AttendanceStatus.Status)
+
+                        }
+                    </td>
+                </tr>
+                }
+
+            </tbody>
+        </table>
+    </div>
+
+    <div class="col" style="max-width:400px;">
+        <table id="statusCount" class="table table-sm table-bordered table-hover">
+            <thead class="thead-light">
+                <tr>
+                    <th scope="col">Attendance Status</th>
+                    <th scope="col">Count</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <th scope="row">Present</th>
+                    <td> @dict["Present"]</td>
+                </tr>
+                <tr>
+                    <th scope="row">Absent</th>
+                    <td>@dict["Absent"]</td>
+                </tr>
+                <tr>
+                    <th scope="row">Leave</th>
+                    <td>@dict["Leave"]</td>
+                </tr>
+                <tr>
+                    <th scope="row">Sick</th>
+                    <td>@dict["Sick"]</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+@*<table class="table table-bordered table-sm text-center">
         <thead class="thead-light">
             <tr>
                 <th>Present</th>
@@ -96,6 +177,6 @@ else
             }
 
         </tbody>
-    </table>
+    </table>*@
 
 }

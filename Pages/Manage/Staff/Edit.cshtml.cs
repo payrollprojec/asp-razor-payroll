@@ -24,7 +24,8 @@ namespace PayrollAppRazorPages.Pages.Manage.Staff
         }
 
         public ApplicationUser applicationUser { get; set; }
-
+        [TempData]
+        public string StatusMessage { get; set; }
         [BindProperty]
         public InputModel Input { get; set; }
 
@@ -38,6 +39,7 @@ namespace PayrollAppRazorPages.Pages.Manage.Staff
             public string FullName { get; set; }
 
             [Display(Name = "I/C No")]
+            [StringLength(12, MinimumLength = 12)]
             [Required]
             public string ICNo { get; set; }
 
@@ -45,6 +47,9 @@ namespace PayrollAppRazorPages.Pages.Manage.Staff
             [EmailAddress]
             [Display(Name = "Email")]
             public string Email { get; set; }
+            [Phone]
+            [Display(Name = "Phone number")]
+            public string PhoneNumber { get; set; }
 
             [Display(Name = "Login username")]
             public string UserName { get; set; }
@@ -152,6 +157,7 @@ namespace PayrollAppRazorPages.Pages.Manage.Staff
             Input.ICNo = applicationUser.ICNo;
             Input.Email = applicationUser.Email;
             Input.UserName = applicationUser.UserName;
+            Input.PhoneNumber = applicationUser.PhoneNumber;
 
             Input.DOB = applicationUser.StaffData.DOB;
             Input.DateJoined = applicationUser.StaffData.DateJoined;
@@ -199,6 +205,7 @@ namespace PayrollAppRazorPages.Pages.Manage.Staff
                 applicationUser.ICNo = Input.ICNo;
                 applicationUser.Email = Input.Email;
                 applicationUser.NormalizedEmail = Input.Email.ToUpper();
+                applicationUser.PhoneNumber = Input.PhoneNumber;
 
                 applicationUser.StaffData.DOB = Input.DOB;
                 applicationUser.StaffData.DateJoined = Input.DateJoined;
@@ -223,6 +230,7 @@ namespace PayrollAppRazorPages.Pages.Manage.Staff
                 var result = await _userManager.UpdateAsync(applicationUser);
                 if (result.Succeeded)
                 {
+                    StatusMessage = "Staff Details Updated.";
                     return RedirectToPage("./Details", new { applicationUser.Id });
 
                 }

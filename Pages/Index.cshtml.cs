@@ -118,7 +118,7 @@ namespace PayrollAppRazorPages.Pages
                     a => a.ApplicationUserId == applicationUser.Id &&
                     a.PunchDate.Value.Day == int.Parse(todayDay) &&
                     a.PunchDate.Value.Month == int.Parse(todayMon) &&
-                    a.PunchDate.Value.Year == int.Parse(todayYear)).SingleOrDefaultAsync();
+                    a.PunchDate.Value.Year == int.Parse(todayYear)).Include(a => a.AttendanceStatus).SingleOrDefaultAsync();
 
                 summary = new Summary();
                 var SummaryList = await _context.StaffSalary.Where(ss => ss.staffID == applicationUser.Id && ss.Year == int.Parse(todayYear)).ToListAsync();
@@ -141,11 +141,11 @@ namespace PayrollAppRazorPages.Pages
 
                 if (TodayAttendance == null)
                 {
-                    RecordStatus = "Today's attendance: Not recorded yet.";
+                    RecordStatus = "Today's attendance: No record.";
                 }
                 else
                 {
-                    RecordStatus = "Today's attendance: Recorded.";
+                    RecordStatus = "Today's attendance: " + TodayAttendance.AttendanceStatus.Status;
 
                 }
             }

@@ -2,16 +2,14 @@
     Layout = "/Pages/Shared/_Layout.cshtml";
 }
 
-<div>
-    <h4>Change your account settings</h4>
-    <hr />
-    <div class="row">
-        <div class="col-md-3 mb-5">
-            <partial name="_ManageNav" />
-        </div>
-        <div class="col-md-9">
-            @RenderBody()
-        </div>
+<h4>Change your account settings</h4>
+<div class="row main">
+    <div class="col-md-2 p-0 d-print-none side">
+
+        <partial name="_ManageNav" />
+    </div>
+    <div class="col-md-8  pt-md-5 offset-md-2">
+        @RenderBody()
     </div>
 </div>
 

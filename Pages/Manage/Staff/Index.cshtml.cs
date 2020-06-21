@@ -15,7 +15,8 @@ namespace PayrollAppRazorPages.Pages.Manage.Staff
     public class IndexModel : PageModel
     {
         private readonly UserManager<ApplicationUser> _userManager;
-
+        [TempData]
+        public string StatusMessage { get; set; }
         public IndexModel(UserManager<ApplicationUser> userManager)
         {
             _userManager = userManager;

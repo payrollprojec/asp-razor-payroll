@@ -16,6 +16,9 @@
 <br />
 
 <style>
+    body {
+        background: white;
+    }
     .slip {
         font-family: Consolas, monospace;
         border: solid 1px;
@@ -83,46 +86,46 @@
             Sick &nbsp;: @dict["Sick"]
         </div>
     </div>
-    <div class="row">
+    <div class="row earn-duct">
 
         <div class="col border-right">
             <br /><b>Earning</b>
-            <div>
+            <div class="form-group">
                 <label asp-for="StaffSalary.BasicSalary"></label>&nbsp;&nbsp;&nbsp;: RM
                 @Html.DisplayFor(model => model.StaffSalary.BasicSalary)
             </div>
-            <div>
+            <div class="form-group" style="display: @(Model.StaffSalary.Allowances == 0? "none" :"block")">
                 <label asp-for="StaffSalary.Allowances"></label>: RM
                 @Html.DisplayFor(model => model.StaffSalary.Allowances)
             </div>
-            <div>
+            <div class="form-group" style="display: @(Model.StaffSalary.Bonus == 0? "none" :"block")">
                 <label asp-for="StaffSalary.Bonus"></label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: RM
                 @Html.DisplayFor(model => model.StaffSalary.Bonus)
             </div>
-            <div>
-                <label asp-for="StaffSalary.AdvSalary">Adv. Salary&nbsp;&nbsp;&nbsp;&nbsp;: RM</label>
+            <div class="form-group" style="display: @(Model.StaffSalary.AdvSalaryPlus == 0? "none" :"block")">
+                <label>Adv. Salary&nbsp;&nbsp;&nbsp;&nbsp;: RM</label>
                 @Html.DisplayFor(model => model.StaffSalary.AdvSalaryPlus)
             </div>
         </div>
         <div class="col">
             <br /><b>Deduction</b>
-            <div>
+            <div class="form-group" style="display: @(Model.StaffSalary.EPF == 0? "none" :"block")">
                 <label asp-for="StaffSalary.EPF">EPF&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: RM</label>
                 @Html.DisplayFor(model => model.StaffSalary.EPF)
             </div>
-            <div>
+            <div class="form-group" style="display: @(Model.StaffSalary.SocsoRm == 0? "none" :"block")">
                 <label asp-for="StaffSalary.SocsoRm">SOCSO&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: RM</label>
                 @Html.DisplayFor(model => model.StaffSalary.SocsoRm)
             </div>
-            <div>
+            <div class="form-group" style="display: @(Model.StaffSalary.EIS == 0? "none" :"block")">
                 <label asp-for="StaffSalary.EIS">EIS&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: RM</label>
                 @Html.DisplayFor(model => model.StaffSalary.EIS)
             </div>
-            <div>
+            <div class="form-group" style="display: @(Model.StaffSalary.Tax == 0? "none" :"block")">
                 <label asp-for="StaffSalary.Tax">TAX&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: RM</label>
                 @Html.DisplayFor(model => model.StaffSalary.Tax)
             </div>
-            <div>
+            <div class="form-group" style="display: @(Model.StaffSalary.AdvSalary == 0? "none" :"block")">
                 <label asp-for="StaffSalary.AdvSalary">Adv. Salary: RM</label>
                 @Html.DisplayFor(model => model.StaffSalary.AdvSalary)
             </div>
@@ -135,9 +138,8 @@
             </div>
         </div>
     </div>
-    <div class="row border-bottom align-items-end">
-
-        <div class="col border-right">
+    <div class="row border-top border-bottom align-items-end">
+        <div class="col border-right"><br />
             @{
                 var totalEarn = Model.StaffSalary.BasicSalary + Model.StaffSalary.Allowances + Model.StaffSalary.Bonus + Model.StaffSalary.AdvSalaryPlus;
                 var totalDeduct = Model.StaffSalary.EPF + Model.StaffSalary.SocsoRm + Model.StaffSalary.EIS + Model.StaffSalary.Tax + Model.StaffSalary.AdvSalary + absent;
@@ -145,10 +147,10 @@
             }
             Total Earning: RM @totalEarn.ToString("0.00")
             <br />
-            Net Pay&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: RM @net.ToString("0.00")
+            <b>Net Pay&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: RM @net.ToString("0.00")</b>
             <br />
         </div>
-        <div class="col">
+        <div class="col"><br />
             Total Deduction: RM @totalDeduct.ToString("0.00")
         </div>
 

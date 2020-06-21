@@ -3,11 +3,13 @@
 @{
     ViewData["Title"] = "CreateConfirmation";
 }
-<h4 >Staff account created</h4><br />
 
 <div class="card">
     <h4 class="card-header">Login Details</h4>
     <div class="card-body">
+        <div class="alert alert-success alert-dismissible" role="alert">
+            Staff account created
+        </div>
         <p>Username: @Model.Username</p>
         <p>Password: @Model.Password</p>
     </div>

@@ -3,12 +3,13 @@
 @{
     ViewData["Title"] = "ResetPwConfirmation";
 }
-<h4>Staff password reset</h4>
-<br />
 
-<div class="card">
+<div class="card" style="max-width:500px;">
     <h4 class="card-header">Login Details</h4>
     <div class="card-body">
+        <div class="alert alert-success alert-dismissible" role="alert">
+            Staff Account New Password
+        </div>
         <p>Username: @Model.Username</p>
         <p>Password: @Model.Password</p>
     </div>

@@ -17,7 +17,8 @@ namespace PayrollAppRazorPages.Pages.Manage.Staff
     {
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly ApplicationDbContext _context;
-
+        [TempData]
+        public string StatusMessage { get; set; }
         public DeleteModel(UserManager<ApplicationUser> userManager)
         {
             _userManager = userManager;
@@ -53,7 +54,11 @@ namespace PayrollAppRazorPages.Pages.Manage.Staff
                 bool isStaff = await _userManager.IsInRoleAsync(applicationUser, "staff");
 
                 if (isStaff)
+                {
                     await _userManager.DeleteAsync(applicationUser);
+                    StatusMessage = "Staff Account Deleted.";
+
+                }
             }
 
             return RedirectToPage("./Index");

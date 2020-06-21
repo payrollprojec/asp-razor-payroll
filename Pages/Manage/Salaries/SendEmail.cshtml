@@ -1,0 +1,44 @@
+﻿@page "{Id}"
+@model PayrollAppRazorPages.Pages.Manage.Salaries.SendEmailModel
+@{
+    ViewData["Title"] = "SendEmail";
+    //this is for back to list button
+    var parms = new Dictionary<string, string>
+    {
+    {"SelectedMonth", Model.StaffSalary.Month.ToString() },
+    {"SelectedYear", Model.StaffSalary.Year.ToString() }
+    };
+}
+<div class="card" style="max-width:600px;">
+    <h4 class="card-header">Send Salary Slip to < @Html.DisplayFor(model => model.applicationUser.Email) > </h4>
+    <div class="card-body">
+        <dl class="row">
+            <dt class="col-sm-3">
+                @Html.DisplayNameFor(model => model.StaffSalary.staff.FullName)
+            </dt>
+            <dd class="col-sm-9">
+                : @Html.DisplayFor(model => model.StaffSalary.staff.FullName)
+            </dd>
+            <dt class="col-sm-3">
+                Salary Period
+            </dt>
+            <dd class="col-sm-9">
+                : @{ string SelectedDate = DateTime.Parse(Model.StaffSalary.Year.ToString() + "-" + Model.StaffSalary.Month.ToString() + "-01").ToString("MMMM yyyy");}
+                @SelectedDate
+            </dd>
+        </dl>
+    </div>
+    <form method="post">
+        <div asp-validation-summary="All" class="text-danger"></div>
+        <div class="card-footer">
+            <a class="btn btn-outline-secondary" asp-page="./Details" target="_blank" asp-route-id="@Model.StaffSalary.salaryID">Preview Slip</a>
+            <button class="btn btn-primary" type="submit">Send Email</button>
+            <a class="btn btn-secondary" asp-page="./Index" asp-all-route-data="parms">Back to List</a>
+        </div>
+    </form>
+</div>
+<br />
+
+
+
+

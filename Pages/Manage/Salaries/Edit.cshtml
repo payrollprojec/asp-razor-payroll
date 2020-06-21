@@ -1,0 +1,227 @@
+﻿@page "{Id}"
+@model PayrollAppRazorPages.Pages.Manage.Salaries.EditModel
+@{
+    ViewData["Title"] = "Edit";
+    //this is for back to list button
+    var parms = new Dictionary<string, string>
+    {
+    {"SelectedMonth", Model.StaffSalary.Month.ToString() },
+    {"SelectedYear", Model.StaffSalary.Year.ToString() }
+    };
+}
+
+<style>
+    .slip {
+        font-family: Consolas, monospace;
+        border: solid 1px;
+        padding: 20px;
+    }
+
+    span.text-danger {
+        display: block;
+    }
+</style>
+<div class="slip container-fluid">
+    <div class="row" style="padding-bottom:5px;">
+        <div class="col"><h4>PAYSLIP FOR @Model.SelectedDate.ToUpper()</h4></div>
+        <div class="col align-self-center text-right">
+            <h4 class="small">Generated on @Model.StaffSalary.DateCreated.ToShortDateString()</h4>
+            <div>
+                <a class="btn btn-sm btn-outline-secondary" asp-page="./Details" asp-route-id="@Model.StaffSalary.salaryID">Back to Details</a>
+                <a class="btn btn-sm btn-secondary" asp-page="./Index" asp-all-route-data="parms">Back to List</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="row border-bottom border-top">
+        <div class="col border-right">
+
+            <br /><b>Employee Details</b><br />
+
+            @Html.DisplayNameFor(model => model.applicationUser.FullName)&nbsp;&nbsp;&nbsp;&nbsp;:
+            @Html.DisplayFor(model => model.applicationUser.FullName)
+            <br />
+
+            @Html.DisplayNameFor(model => model.applicationUser.ICNo)&nbsp;&nbsp;:
+            @Html.DisplayFor(model => model.applicationUser.ICNo)
+            <br />
+
+            @Html.DisplayNameFor(model => model.applicationUser.Email)&nbsp;&nbsp;&nbsp;:
+            @Html.DisplayFor(model => model.applicationUser.Email)
+            <br />
+            @Html.DisplayNameFor(model => model.applicationUser.StaffData.EPFNo)&nbsp;&nbsp;:
+            @Html.DisplayFor(model => model.applicationUser.StaffData.EPFNo)
+            <br />
+
+            @Html.DisplayNameFor(model => model.applicationUser.StaffData.SocsoNo):
+            @Html.DisplayFor(model => model.applicationUser.StaffData.SocsoNo)
+            <br />
+            @Html.DisplayNameFor(model => model.applicationUser.StaffData.TaxNo)&nbsp;&nbsp;:
+            @Html.DisplayFor(model => model.applicationUser.StaffData.TaxNo)
+        </div>
+        <div class="col">
+            @{
+                Dictionary<string, int> dict = new Dictionary<string, int>();
+                dict.Add("Present", 0);
+                dict.Add("Absent", 0);
+                dict.Add("Leave", 0);
+                dict.Add("Sick", 0);
+
+                foreach (var item in Model.UserAttendance)
+                {
+                dict[item.AttendanceStatus.Status] += 1;
+                }
+            }
+            <br /><b>Attendance Record</b>
+            <br />
+            Absent: @dict["Absent"]
+            <br />
+            Leave : @dict["Leave"]
+            <br />
+            Sick &nbsp;: @dict["Sick"]
+        </div>
+    </div>
+    <form method="post" oninput="calc()">
+        <div class="row">
+
+            <div class="col border-right">
+                <br /><b>Earning</b>
+                <div asp-validation-summary="All" class="text-danger"></div>
+                <div class="form-group">
+                    <label asp-for="StaffSalary.BasicSalary"></label>&nbsp;&nbsp;&nbsp;: RM
+                    <input id="basic" asp-for="StaffSalary.BasicSalary" />
+                    <span asp-validation-for="StaffSalary.BasicSalary" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="StaffSalary.Allowances"></label>: RM
+                    <input id="allowance" asp-for="StaffSalary.Allowances" />
+                    <span asp-validation-for="StaffSalary.Allowances" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="StaffSalary.Bonus"></label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: RM
+                    <input id="bonus" asp-for="StaffSalary.Bonus" />
+                    <span asp-validation-for="StaffSalary.Bonus" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="StaffSalary.AdvSalaryPlus">Adv. Salary&nbsp;&nbsp;&nbsp;&nbsp;: RM</label>
+                    <input id="adv2" asp-for="StaffSalary.AdvSalaryPlus" />
+                    <span asp-validation-for="StaffSalary.AdvSalaryPlus" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="col">
+                <br /><b>Deduction</b>
+                <div class="form-group">
+                    <label asp-for="StaffSalary.EPF">EPF&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: RM</label>
+                    <input id="epf" asp-for="StaffSalary.EPF" />
+                    <span asp-validation-for="StaffSalary.EPF" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="StaffSalary.SocsoRm">SOCSO&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: RM</label>
+                    <input id="socso" asp-for="StaffSalary.SocsoRm" />
+                    <span asp-validation-for="StaffSalary.SocsoRm" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="StaffSalary.EIS">EIS&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: RM</label>
+                    <input id="eis" asp-for="StaffSalary.EIS" />
+                    <span asp-validation-for="StaffSalary.EIS" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="StaffSalary.Tax">TAX&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: RM</label>
+                    <input id="tax" asp-for="StaffSalary.Tax" />
+                    <span asp-validation-for="StaffSalary.Tax" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="StaffSalary.AdvSalary">Adv. Salary: RM</label>
+                    <input id="adv" asp-for="StaffSalary.AdvSalary" />
+                    <span asp-validation-for="StaffSalary.AdvSalary" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label>Absent&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: RM</label>
+                    <span id="absent"></span> (@dict["Absent"] days)
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <input id="weekdayscount" type="hidden" value="@Model.WeekdaysCount" />
+        </div>
+        <div class="form-group">
+            <input id="absentcount" type="hidden" value="@dict["Absent"]" />
+        </div>
+        <div class="row border-bottom align-items-end">
+            <div class="col border-right">
+                Total Earning: RM <span id="totalEarn"></span><br />
+                Net Pay&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: RM <span id="netPay"></span>
+
+
+            </div>
+            <div class="col">
+                Total Deduction: RM <span id="totalDeduct"></span>
+            </div>
+
+        </div>
+        <div class="row border-bottom">
+            <div class="col border-right">
+                <br /><b>Employer Contribution</b>
+                <div class="form-group">
+                    <label asp-for="StaffSalary.EREPF">EPF&nbsp;&nbsp;: RM</label>
+                    <input id="epf" asp-for="StaffSalary.EREPF" />
+                    <span asp-validation-for="StaffSalary.EREPF" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="StaffSalary.ERSocsoRm">SOCSO: RM</label>
+                    <input id="socso" asp-for="StaffSalary.ERSocsoRm" />
+                    <span asp-validation-for="StaffSalary.ERSocsoRm" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="StaffSalary.EREIS">EIS&nbsp;&nbsp;: RM</label>
+                    <input id="eis" asp-for="StaffSalary.EREIS" />
+                    <span asp-validation-for="StaffSalary.EREIS" class="text-danger"></span>
+                </div>
+                <input type="hidden" asp-for="StaffSalary.staffID" />
+                <input type="hidden" asp-for="StaffSalary.Month" />
+                <input type="hidden" asp-for="StaffSalary.Year" />
+                <input type="hidden" asp-for="StaffSalary.MailNum" />
+                <input type="hidden" asp-for="StaffSalary.DateCreated" />
+                <input type="hidden" asp-for="StaffSalary.salaryID" />
+            </div>
+            <div class="col">
+            </div>
+        </div>
+        <br />
+        <input class="btn btn-primary" type="submit" value="Save" />
+    </form>
+</div>
+<br />
+<div>
+    <a class="btn btn-outline-secondary" asp-page="./Details" asp-route-id="@Model.StaffSalary.salaryID">Back to Details</a>
+    <a class="btn btn-secondary" asp-page="./Index" asp-all-route-data="parms">Back to List</a>
+</div>
+<br />
+<script>
+    const basic = document.getElementById('basic');
+    const allowance = document.getElementById('allowance');
+    const bonus = document.getElementById('bonus');
+    const adv2 = document.getElementById('adv2');
+
+    const epf = document.getElementById('epf');
+    const socso = document.getElementById('socso');
+    const eis = document.getElementById('eis');
+    const tax = document.getElementById('tax');
+    const adv = document.getElementById('adv');
+    const weekdayscount = document.getElementById('weekdayscount');
+    const absentcount = document.getElementById('absentcount');
+    const absent = document.getElementById('absent');
+    const totalEarn = document.getElementById('totalEarn');
+    const totalDeduct = document.getElementById('totalDeduct');
+    const netPay = document.getElementById('netPay');
+    window.addEventListener('load', function () {
+        console.log('loaded')
+        calc();
+    })
+    function calc() {
+        absent.innerHTML = `${(Math.round((+basic.value / +weekdayscount.value * +absentcount.value) * 100) / 100).toFixed(2)}`;
+        totalEarn.innerHTML = `${(Math.round((+basic.value + +allowance.value + +bonus.value + +adv2.value) * 100) / 100).toFixed(2)}`;
+        totalDeduct.innerHTML = `${(Math.round((+epf.value + +socso.value + +eis.value + +tax.value + +adv.value + +absent.innerHTML) * 100) / 100).toFixed(2)}`;
+        netPay.innerHTML = `${(Math.round((+totalEarn.innerHTML - +totalDeduct.innerHTML) * 100) / 100).toFixed(2)}`;
+    }
+</script>

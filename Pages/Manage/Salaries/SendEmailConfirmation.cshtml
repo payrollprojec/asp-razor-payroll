@@ -1,0 +1,24 @@
+﻿@page 
+@model PayrollAppRazorPages.Pages.Manage.Salaries.SendEmailConfirmationModel
+@{
+    ViewData["Title"] = "SendEmail";
+}
+
+    <div class="card" style="max-width:900px;">
+        <div class="card-body">
+            <div class="alert alert-success alert-dismissible" role="alert">
+                The Salary Slip has been emailed to < @Model.Email >
+            </div>
+            <p>@Model.Name's Salary Slip for @Model.Month @Model.Year</p>
+            @{
+                var parms = new Dictionary<string, string>
+{
+                    {"SelectedMonth", Model.Month},
+                    {"SelectedYear", Model.Year }
+                };
+            }
+            <a class="btn btn-secondary" asp-page="./Index" asp-all-route-data="parms">Back to List</a>
+        </div>
+    </div>
+
+

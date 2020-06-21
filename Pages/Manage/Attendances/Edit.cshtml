@@ -5,115 +5,169 @@
 }
 @{
     var parms = new Dictionary<string, string>
-{
-                    {"SelectedMonth", Model.SelectedMonth },
-                    {"SelectedYear", Model.SelectedYear }
-                };
+    {
+    {"SelectedMonth", Model.SelectedMonth },
+    {"SelectedYear", Model.SelectedYear }
+    };
 }
+<style>
+    .btn-link {
+        padding: 0;
+    }
+
+    .fixedPart {
+        position: -webkit-sticky;
+        position: sticky;
+        top: 0;
+    }
+
+    #statusCount th {
+        max-width: 20px;
+        text-align: center;
+        background-color: #63bc68;
+        color: white;
+    }
+
+    #statusCount td {
+        text-align: center;
+    }
+</style>
+
 
 <div class="row">
-    <h3 style="display:inline;" class="col-sm-10">Attendance for @Model.applicationUser.FullName (@Model.SelectedDate)</h3>
-    <p style="display:inline;" class="col-sm-2 btn "><a asp-page="./Index" asp-all-route-data="parms">Back to List</a></p>
+    <h3 class="col">Attendance for @Model.applicationUser.FullName (@Model.SelectedDate)</h3>
+    <div class="col d-flex justify-content-end">
+        <p><a class="btn btn-secondary" asp-page="./Index" asp-all-route-data="parms">Back to List</a></p>
+    </div>
 </div><br />
 
-<div class="card">
-    <div class="card-header">Add Attendance</div>
-    <div class="card-body">
-        <form method="post">
-            <div asp-validation-summary="All" class="text-danger"></div>
-            <div class="row">
-                <div class="form-group">
-                    <input type="hidden" asp-for="Input.Id" />
-                    <label asp-for="Input.PunchDate"></label>
-                    <input value="@Model.MaxDate.ToString("yyyy-MM-dd")" class="mr-md-3" asp-for="Input.PunchDate" />
-                    <span asp-validation-for="Input.PunchDate" class="text-danger"></span>
-                    <select class="mr-md-3" asp-for="SelectedStatus" asp-items="Model.AttendanceStatus"></select>
-                </div>
-                <div>
-                    <button type="submit" class="btn btn-primary btn-sm">Add</button>
-                </div>
+<div class="row fixedPart bg-light p-2 align-items-center" style="box-shadow: 0 10px 7px -7px gray">
+    <div class="col-md">
+        <div class="card">
+            <div class="card-header"><h5>Add Attendance</h5></div>
+            <div class="card-body d-flex justify-content-center">
+                <form method="post">
+                    <div asp-validation-summary="All" class="text-danger"></div>
+                    <div class="row">
+                        <div class="form-group">
+                            <input type="hidden" asp-for="Input.Id" />
+                            <label asp-for="Input.PunchDate"></label>
+                            <input value="@Model.MaxDate.ToString("yyyy-MM-dd")" class="mr-md-3" asp-for="Input.PunchDate" />
+                            <span asp-validation-for="Input.PunchDate" class="text-danger"></span>
+                            <select class="mr-md-3" asp-for="SelectedStatus" asp-items="Model.AttendanceStatus"></select>
+                        </div>
+                        <div>
+                            <button type="submit" class="btn btn-sm btn-success">Add</button>
+                        </div>
+                    </div>
+                    <partial name="_StatusMessage" model="Model.StatusMessage" />
+                </form>
             </div>
-        </form>
+        </div>
+    </div>
+
+
+    <div class="col-md">
+        @if (Model.UserAttendance.Count == 0){}
+        else
+        {
+        Dictionary<string, int>
+        dict = new Dictionary<string, int>
+        ();
+        dict.Add("Present", 0);
+        dict.Add("Absent", 0);
+        dict.Add("Leave", 0);
+        dict.Add("Sick", 0);
+
+        foreach (var item in Model.UserAttendance)
+        {
+        dict[item.AttendanceStatus.Status] += 1;
+        }
+
+        <div>
+            <table id="statusCount" class="table table-sm table-hover" style="background-color:white;">
+                @*<thead style="background-color:#f27e22;">
+                    <tr>
+                        <th scope="col">Attendance Status</th>
+                        <th scope="col">Count</th>
+                    </tr>
+                </thead>*@
+                <tbody>
+                    <tr>
+                        <th scope="row">Present</th>
+                        <td> @dict["Present"]</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Absent</th>
+                        <td>@dict["Absent"]</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Leave</th>
+                        <td>@dict["Leave"]</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Sick</th>
+                        <td>@dict["Sick"]</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        }
     </div>
 </div>
-
 <br />
 
 @if (Model.UserAttendance.Count == 0)
-{
-    <p>No attendance found.</p>
-}
+{   <div>No attendance found.</div> }
 else
 {
-    Dictionary<string, int> dict = new Dictionary<string, int>();
-    dict.Add("Present", 0);
-    dict.Add("Absent", 0);
-    dict.Add("Leave", 0);
-    dict.Add("Sick", 0);
+<table class="table table-bordered table-hover table-sm text-center">
+    <thead class="thead-light">
+        <tr>
+            <th>
+                Day
+            </th>
+            <th>
+                Date
+            </th>
+            <th>
+                Status
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.UserAttendance)
+        {
+        <tr>
+            <td>
+                @(item.PunchDate.Value.DayOfWeek)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PunchDate)
+            </td>
+            <td>
+                @if (item.AttendanceStatus.Status != "Present")
+                {
+                <span style="color:palevioletred"> @Html.DisplayFor(modelItem => item.AttendanceStatus.Status)</span>
+                }
+                else
+                {
+                @Html.DisplayFor(modelItem => item.AttendanceStatus.Status)
 
-    foreach (var item in Model.UserAttendance)
-    {
-        dict[item.AttendanceStatus.Status] += 1;
-    }
-    <table class="table table-bordered table-sm text-center">
-        <thead class="thead-light">
-            <tr>
-                <th>Present</th>
-                <th>Absent</th>
-                <th>Leave</th>
-                <th>Sick</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <td>@dict["Present"]</td>
-                <td>@dict["Absent"]</td>
-                <td>@dict["Leave"]</td>
-                <td>@dict["Sick"]</td>
-            </tr>
-        </tbody>
-    </table>
-    <table class="table table-bordered table-hover table-sm text-center">
-        <thead class="thead-light ">
-            <tr>
-                <th>
-                    Day
-                </th>
-                <th>
-                    Date
-                </th>
-                <th>
-                    Status
-                </th>
-                <th></th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var item in Model.UserAttendance)
-            {
-                <tr>
-                    <td>
-                        @(item.PunchDate.Value.DayOfWeek)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.PunchDate)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.AttendanceStatus.Status)
-                    </td>
-                    <td>
-                        <form asp-page-handler="delete" method="post">
-                            <input type="hidden" asp-for="DeleteId" value="@item.Id" />
-                            <input type="hidden" asp-for="SelectedMonth" />
-                            <input type="hidden" asp-for="SelectedYear" />
-                            <button class="btn btn-link">Delete</button>
-                        </form>
-                    </td>
-                </tr>
-            }
+                }
 
-        </tbody>
-    </table>
-
+            </td>
+            <td>
+                <form asp-page-handler="delete" method="post">
+                    <input type="hidden" asp-for="DeleteId" value="@item.Id" />
+                    <input type="hidden" asp-for="SelectedMonth" />
+                    <input type="hidden" asp-for="SelectedYear" />
+                    <button class="btn btn-link">Delete</button>
+                </form>
+            </td>
+        </tr>
+        }
+    </tbody>
+</table>
 }
-

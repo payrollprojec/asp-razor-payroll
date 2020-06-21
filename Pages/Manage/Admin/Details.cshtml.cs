@@ -14,6 +14,8 @@ namespace PayrollAppRazorPages.Pages.Manage.Admin
     public class DetailsModel : PageModel
     {
         private readonly UserManager<ApplicationUser> _userManager;
+        [TempData]
+        public string StatusMessage { get; set; }
 
         public DetailsModel(UserManager<ApplicationUser> userManager)
         {
