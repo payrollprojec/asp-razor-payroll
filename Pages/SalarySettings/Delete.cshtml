@@ -1,0 +1,45 @@
+﻿@page
+@model PayrollAppRazorPages.Pages.SalarySettings.DeleteModel
+
+@{
+    ViewData["Title"] = "Delete";
+}
+<div class="row">
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-header">
+                @if (Model.SalaryItem.IsDeduction == false)
+                {
+                    <h4>Delete Salary Earning</h4>
+                }
+                else
+                {
+                    <h4>Delete Salary Deduction</h4>
+                }
+            </div>
+            <div class="card-body">
+                <form method="post">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <div class="form-group">
+                        <label asp-for="SalaryItem.Name" class="control-label"></label>: 
+                        @Html.DisplayFor(model => model.SalaryItem.Name)
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="SalaryItem.DefaultAmount" class="control-label"></label>: 
+                        @Html.DisplayFor(model => model.SalaryItem.DefaultAmount)
+
+                    </div>
+                    <input type="hidden" asp-for="SalaryItem.Id" />
+                    <div class="form-group">
+                        <input type="submit" value="Delete" class="btn btn-danger" />
+                    </div>
+                </form>
+            </div>
+        </div>
+
+    </div>
+</div>
+<br />
+<div>
+    <a class="btn btn-secondary" asp-page="Index">Back to List</a>
+</div>

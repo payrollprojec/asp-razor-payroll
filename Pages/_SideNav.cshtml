@@ -12,29 +12,26 @@
                 <br /><br /><br />
                 <ul class="nav nav-pills flex-column">
 
-                    @if (User.IsInRole("superadmin"))
+                    @if (User.IsInRole("superadmin") || User.IsInRole("admin"))
                     {
-                        <li class="nav-item"><a class="nav-link @(actionName == "/Index" ? "active":"")" asp-page="/Index"><i class="fas fa-tachometer-alt"></i>  Dashboard</a></li>
-                        <li class="nav-item"><a class="nav-link @(actionName.Contains("/Manage/Admin") ? "active":"")" asp-page="/Manage/Admin/Index"><i class="fas fa-user-tie"></i>  Manage Admin</a></li>
-                        <li class="nav-item"><a class="nav-link @(actionName.Contains("/Manage/Staff") ? "active":"")" asp-page="/Manage/Staff/Index"><i class="fas fa-users"></i>  Manage Staff</a></li>
+                        <li class="nav-item"><a class="nav-link @(actionName == "/Index" ? "active":"")" asp-page="/Index"><i class="fas fa-tachometer-alt fa-fw"></i>  Dashboard</a></li>
+                        @if (User.IsInRole("superadmin"))
+                        {     
+                            <li class="nav-item"><a class="nav-link @(actionName.Contains("/Manage/Admin") ? "active":"")" asp-page="/Manage/Admin/Index"><i class="fas fa-user-tie fa-fw"></i>  Manage Admin</a></li>
+                        }
+                        <li class="nav-item"><a class="nav-link @(actionName.Contains("/Manage/Staff") ? "active":"")" asp-page="/Manage/Staff/Index"><i class="fas fa-users fa-fw"></i>  Manage Staff</a></li>
                         <li><br /></li>
-                        <li class="nav-item"><a class="nav-link @(actionName.Contains("/Manage/Salaries") ? "active":"")" asp-page="/Manage/Salaries/Index"><i class="fas fa-file-invoice-dollar"></i> Manage Salaries</a></li>
-                        <li class="nav-item"><a class="nav-link @(actionName.Contains("/Manage/Attendances") ? "active":"")" asp-page="/Manage/Attendances/Index"><i class="fas fa-clipboard-list"></i> Manage Attendance</a></li>
+                        <li class="nav-item"><a class="nav-link @(actionName.Contains("/Manage/Salaries") ? "active":"")" asp-page="/Manage/Salaries/Index"><i class="fas fa-file-invoice-dollar fa-fw"></i> Manage Salaries</a></li>
+                        <li class="nav-item"><a class="nav-link @(actionName.Contains("/Manage/Attendances") ? "active":"")" asp-page="/Manage/Attendances/Index"><i class="fas fa-clipboard-list fa-fw"></i> Manage Attendance</a></li>
+                        <li><br /></li>    
+                        <li class="nav-item"><a class="nav-link @(actionName.Contains("/SalarySettings") ? "active":"")" asp-page="/SalarySettings/Index"><i class="fas fa-sliders-h fa-fw"></i> Salary Settings</a></li>
                     }
-                    @if (User.IsInRole("admin"))
-                    {
-                        <li class="nav-item"><a class="nav-link @(actionName == "/Index" ? "active":"")" asp-page="/Index"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
-                        <li class="nav-item"><a class="nav-link @(actionName.Contains("/Manage/Staff") ? "active":"")" asp-page="/Manage/Staff/Index"><i class="fas fa-users"></i> Manage Staff</a></li>
-                        <li><br /></li>
-                        <li class="nav-item"><a class="nav-link @(actionName.Contains("/Manage/Salaries") ? "active":"")" asp-page="/Manage/Salaries/Index"><i class="fas fa-file-invoice-dollar"></i> Manage Salaries</a></li>
-                        <li class="nav-item"><a class="nav-link @(actionName.Contains("/Manage/Attendances") ? "active":"")" asp-page="/Manage/Attendances/Index"><i class="fas fa-clipboard-list"></i> Manage Attendance</a></li>
 
-                    }
                     @if (User.IsInRole("staff"))
                     {
-                        <li class="nav-item"><a class="nav-link @(actionName == "/Index" ? "active":"")" asp-page="/Index"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
-                        <li class="nav-item"><a class="nav-link @(actionName.Contains("/Staff/Attendance") ? "active":"")" asp-page="/Staff/Attendance"><i class="fas fa-clipboard-list"></i> Check Attendance</a></li>
-                        <li class="nav-item"><a class="nav-link @(actionName.Contains("/Staff/Salary") ? "active":"")" asp-page="/Staff/Salary"><i class="fas fa-file-invoice-dollar"></i> Check Salary</a></li>
+                        <li class="nav-item"><a class="nav-link @(actionName == "/Index" ? "active":"")" asp-page="/Index"><i class="fas fa-tachometer-alt fa-fw"></i> Dashboard</a></li>
+                        <li class="nav-item"><a class="nav-link @(actionName.Contains("/Staff/Attendance") ? "active":"")" asp-page="/Staff/Attendance"><i class="fas fa-clipboard-list fa-fw"></i> Check Attendance</a></li>
+                        <li class="nav-item"><a class="nav-link @(actionName.Contains("/Staff/Salary") ? "active":"")" asp-page="/Staff/Salary"><i class="fas fa-file-invoice-dollar fa-fw"></i> Check Salary</a></li>
                     }
                 </ul>
             </div>

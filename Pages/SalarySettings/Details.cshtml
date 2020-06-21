@@ -1,0 +1,37 @@
+﻿@page
+@model PayrollAppRazorPages.Pages.SalarySettings.DetailsModel
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h1>Details</h1>
+
+<div>
+    <h4>SalaryItem</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.SalaryItem.Name)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.SalaryItem.Name)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.SalaryItem.DefaultAmount)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.SalaryItem.DefaultAmount)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.SalaryItem.IsDeduction)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.SalaryItem.IsDeduction)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-page="./Edit" asp-route-id="@Model.SalaryItem.Id">Edit</a> |
+    <a asp-page="./Index">Back to List</a>
+</div>

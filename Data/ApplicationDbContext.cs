@@ -19,6 +19,8 @@ namespace PayrollAppRazorPages.Data
         public DbSet<PayrollAppRazorPages.Models.Attendance> Attendance { get; set; }
         public DbSet<PayrollAppRazorPages.Models.AttendanceStatus> AttendanceStatus { get; set; }
         public DbSet<PayrollAppRazorPages.Models.StaffSalary> StaffSalary { get; set; }
+        public DbSet<PayrollAppRazorPages.Models.SalaryItem> SalaryItem { get; set; }
+        public DbSet<PayrollAppRazorPages.Models.StaffSalaryExtra> StaffSalaryExtra { get; set; }
 
         internal Task UpdateAsync(StaffSalary staffSalary)
         {

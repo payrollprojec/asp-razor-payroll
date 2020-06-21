@@ -34,7 +34,7 @@
 
                     <div class="form-group">
                         @*<label asp-for="Input.Email"></label>*@
-                        <input asp-for="Input.Email" class="form-control" placeholder="Email"/>
+                        <input asp-for="Input.Email" class="form-control" placeholder="Email" />
                         <span asp-validation-for="Input.Email" class="text-danger"></span>
                     </div>
 
@@ -47,10 +47,13 @@
                     </div>
                 </div>
                 <div class="card-footer">
-                    <a class="btn btn-secondary" asp-page="./Index">Back to List</a>
                     <button class="btn btn-primary" type="submit">Create</button>
                 </div>
             </form>
+
         </div>
+        <br />
+        <a class="btn btn-secondary" asp-page="./Index">Back to List</a>
+
     </div>
 </div>
