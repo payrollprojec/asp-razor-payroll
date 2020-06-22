@@ -149,6 +149,8 @@ namespace PayrollAppRazorPages.Pages.Manage.Attendances
             StatusMessage = "Attendance has been added";
             return RedirectToPage("Edit", new { Id = Input.Id, SelectedMonth = Input.PunchDate.Month, SelectedYear = Input.PunchDate.Year });
         }
+
+        //For deleting attendance
         [BindProperty]
         public int DeleteId { get; set; }
         public async Task<IActionResult> OnPostDeleteAsync()

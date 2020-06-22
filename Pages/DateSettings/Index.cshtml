@@ -1,0 +1,49 @@
+﻿@page
+@model PayrollAppRazorPages.Pages.DateSettings.IndexModel
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<div class="row" style="max-width:800px;">
+    <h1 class="col">Holiday</h1>
+    <div class="col d-flex justify-content-end align-items-end">
+        @if (User.IsInRole("superadmin") || User.IsInRole("admin"))
+        {   <a class="btn btn-info" asp-page="Create">Create Holiday</a>    }
+        else { }
+    </div>
+</div>
+<br />
+
+
+<table class="table table-sm table-hover"  style="max-width:800px;">
+    <thead class="thead-light">
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Holiday[0].HolidayDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Holiday[0].HolidayDes)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.Holiday) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.HolidayDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.HolidayDes)
+            </td>
+            <td>
+                @if (User.IsInRole("superadmin") || User.IsInRole("admin"))
+                {
+                   <a asp-page="./Edit" asp-route-id="@item.Id">Edit</a> <span> | </span>
+                        @*<a asp-page="./Details" asp-route-id="@item.Id">Details</a> <span> | </span>*@
+                        <a asp-page="./Delete" asp-route-id="@item.Id">Delete</a>
+                }</td>
+        </tr>          }
+    </tbody>
+</table>

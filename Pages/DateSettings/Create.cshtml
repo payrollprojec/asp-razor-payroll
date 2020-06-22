@@ -1,0 +1,86 @@
+﻿@page
+@model PayrollAppRazorPages.Pages.DateSettings.CreateModel
+
+@{
+    ViewData["Title"] = "Create";
+
+
+}
+<div class="row">
+    <div class="col">
+        <h1>Create</h1>
+    </div>
+    <div class="col  d-flex justify-content-end align-items-end">
+        <a class="btn btn-secondary" asp-page="Index">Back to List</a>
+    </div>
+</div>
+<br />
+
+
+<div class="row">
+    <div class="col-sm-5">
+        <div class="card">
+            <h4 class="card-header">Holiday</h4>
+            <div class="card-body">
+
+                <form method="post">
+                    <partial name="_StatusMessage" model="Model.StatusMessage" />
+                    @*<div asp-validation-summary="ModelOnly" class="text-danger"></div>*@
+                    <div asp-validation-summary="All" class="text-danger"></div>
+
+                    <div class="form-group">
+                        <label asp-for="Holiday.HolidayDate" class="control-label"></label>
+                        <input asp-for="Holiday.HolidayDate" class="form-control" />
+                        <span asp-validation-for="Holiday.HolidayDate" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Holiday.HolidayDes" class="control-label"></label>
+                        <input asp-for="Holiday.HolidayDes" class="form-control" />
+                        <span asp-validation-for="Holiday.HolidayDes" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <input type="submit" value="Create" class="btn btn-primary" />
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-7">
+        <table class="table table-sm table-hover">
+            <thead class="thead-light">
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(model => model.HolidayList[0].HolidayDate)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.HolidayList[0].HolidayDes)
+                    </th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach(var item in Model.HolidayList)
+                {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.HolidayDate)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.HolidayDes)
+                    </td>
+                    <td>
+                        <a asp-page="./Edit" asp-route-id="@item.Id">Edit</a> | 
+                        @*<a asp-page="./Details" asp-route-id="@item.Id">Details</a> |*@ 
+                        <a asp-page="./Delete" asp-route-id="@item.Id">Delete</a>
+                    </td>
+                </tr>
+                }
+
+            </tbody>
+        </table>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

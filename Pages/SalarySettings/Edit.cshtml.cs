@@ -22,7 +22,8 @@ namespace PayrollAppRazorPages.Pages.SalarySettings
 
         [BindProperty]
         public SalaryItem SalaryItem { get; set; }
-
+        [TempData]
+        public string StatusMessage { get; set; }
         public async Task<IActionResult> OnGetAsync(int? id)
         {
             if (id == null)
@@ -65,7 +66,7 @@ namespace PayrollAppRazorPages.Pages.SalarySettings
                     throw;
                 }
             }
-
+            StatusMessage = "Record Updated.";
             return RedirectToPage("./Index");
         }
 

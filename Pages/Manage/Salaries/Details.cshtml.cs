@@ -33,6 +33,7 @@ namespace PayrollAppRazorPages.Pages.Manage.Salaries
         public int WeekdaysCount { get; set; }
         public int wdc { get; set; }
         public List<Attendance> UserAttendance { get; set; }
+        public List<StaffSalaryExtra> StaffSalaryExtras { get; set; }
         public Summary summary { get; set; }
         public class Summary
         {
@@ -85,16 +86,25 @@ namespace PayrollAppRazorPages.Pages.Manage.Salaries
             UserAttendance = await _context.Attendance.Include(a => a.AttendanceStatus)
                 .Where(a => a.ApplicationUserId == StaffSalary.staffID && a.PunchDate.Value.Month == StaffSalary.Month && a.PunchDate.Value.Year == StaffSalary.Year)
                 .OrderBy(a => a.PunchDate).ToListAsync();
-
+            StaffSalaryExtras = await _context.StaffSalaryExtra.Include(s => s.SalaryItem).Where(s => s.StaffSalaryId == StaffSalary.salaryID).ToListAsync();
             summary = new Summary();
-            var SummaryList = await _context.StaffSalary.Where(ss => ss.staffID == StaffSalary.staffID && ss.Year == StaffSalary.Year && ss.Month <= StaffSalary.Month).ToListAsync();
+            var SummaryList = await _context.StaffSalary.Include(ss => ss.StaffSalaryExtras).ThenInclude(extra => extra.SalaryItem).Where(ss => ss.staffID == StaffSalary.staffID && ss.Year == StaffSalary.Year && ss.Month <= StaffSalary.Month).ToListAsync();
             foreach (var v in SummaryList)
             {
+                decimal extraEarns = 0;
+                decimal extraDucts = 0;
+                foreach (var j in v.StaffSalaryExtras)
+                {
+                    if (j.SalaryItem.IsDeduction == false)
+                        extraEarns += j.Amount;
+                    else
+                        extraDucts += j.Amount;
+                }
                 wdc = WeekDaysInMonth(v.Year, v.Month);
                 var ac = await _context.Attendance
                 .Where(a => a.ApplicationUserId == v.staffID && a.PunchDate.Value.Month == v.Month && a.PunchDate.Value.Year == v.Year && a.AttendanceStatusId == 2)
                 .OrderBy(a => a.PunchDate).ToListAsync();
-                summary.net += v.BasicSalary / wdc * (wdc - ac.Count()) + v.Allowances + v.Bonus + v.AdvSalaryPlus - v.EPF - v.SocsoRm - v.EIS - v.Tax - v.AdvSalary;
+                summary.net += v.BasicSalary / wdc * (wdc - ac.Count()) + v.Allowances + extraEarns + v.Bonus + v.AdvSalaryPlus - extraDucts - v.EPF - v.SocsoRm - v.EIS - v.Tax - v.AdvSalary;
                 summary.epf += v.EPF;
                 summary.erepf += v.EREPF;
                 summary.socso += v.SocsoRm;

@@ -21,7 +21,8 @@ namespace PayrollAppRazorPages.Pages.SalarySettings
 
         [BindProperty(SupportsGet =true)]
         public string Type { get; set; }
-
+        [TempData]
+        public string StatusMessage { get; set; }
         public IActionResult OnGet()
         {
             SalaryItem = new SalaryItem()
@@ -45,7 +46,7 @@ namespace PayrollAppRazorPages.Pages.SalarySettings
 
             _context.SalaryItem.Add(SalaryItem);
             await _context.SaveChangesAsync();
-
+            StatusMessage = "Created New Record";
             return RedirectToPage("./Index");
         }
     }

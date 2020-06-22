@@ -25,6 +25,8 @@
                         <li class="nav-item"><a class="nav-link @(actionName.Contains("/Manage/Attendances") ? "active":"")" asp-page="/Manage/Attendances/Index"><i class="fas fa-clipboard-list fa-fw"></i> Manage Attendance</a></li>
                         <li><br /></li>    
                         <li class="nav-item"><a class="nav-link @(actionName.Contains("/SalarySettings") ? "active":"")" asp-page="/SalarySettings/Index"><i class="fas fa-sliders-h fa-fw"></i> Salary Settings</a></li>
+                        <li class="nav-item"><a class="nav-link @(actionName.Contains("/DateSettings/Index") ? "active":"")" asp-page="/DateSettings/Index"><i class="fas fa-calendar-day fa-fw"></i> Holiday Settings</a></li>
+
                     }
 
                     @if (User.IsInRole("staff"))
@@ -32,6 +34,8 @@
                         <li class="nav-item"><a class="nav-link @(actionName == "/Index" ? "active":"")" asp-page="/Index"><i class="fas fa-tachometer-alt fa-fw"></i> Dashboard</a></li>
                         <li class="nav-item"><a class="nav-link @(actionName.Contains("/Staff/Attendance") ? "active":"")" asp-page="/Staff/Attendance"><i class="fas fa-clipboard-list fa-fw"></i> Check Attendance</a></li>
                         <li class="nav-item"><a class="nav-link @(actionName.Contains("/Staff/Salary") ? "active":"")" asp-page="/Staff/Salary"><i class="fas fa-file-invoice-dollar fa-fw"></i> Check Salary</a></li>
+                        <li class="nav-item"><a class="nav-link @(actionName.Contains("/DateSettings/Index") ? "active":"")" asp-page="/DateSettings/Index"><i class="fas fa-calendar-day fa-fw"></i> Check Holiday</a></li>
+
                     }
                 </ul>
             </div>

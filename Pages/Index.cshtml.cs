@@ -34,6 +34,8 @@ namespace PayrollAppRazorPages.Pages
         public IList<ApplicationUser> Admin { get; set; }
         public Attendance TodayAttendance { get; set; }
         public Summary summary { get; set; }
+        public IList<Holiday> Holiday { get; set; }
+        public string ComingHoliday { get; set;  }
         public class Summary
         {
             [Column(TypeName = "decimal(18, 2)")]
@@ -70,7 +72,6 @@ namespace PayrollAppRazorPages.Pages
             _userManager = userManager;
             _logger = logger;
             _context = context;
-
         }
 
         //public void OnGet()
@@ -79,6 +80,18 @@ namespace PayrollAppRazorPages.Pages
             var todayDay = DateTime.Today.Day.ToString();
             var todayMon = DateTime.Today.Month.ToString();
             var todayYear = DateTime.Today.Year.ToString();
+
+            Holiday = await _context.Holiday.OrderBy(a => a.HolidayDate).ToListAsync();
+            if (Holiday.Count() == 0)
+            {
+                ComingHoliday = "Not available yet.";
+            }
+            else
+            {
+                var v = await _context.Holiday.Where(a => a.HolidayDate.Value.Month == int.Parse(todayMon)).SingleOrDefaultAsync();
+                if (v != null)
+                    ComingHoliday = v.HolidayDate + " " + v.HolidayDes;
+            }
 
             if (User.IsInRole("superadmin") || User.IsInRole("admin"))
             {
@@ -146,7 +159,6 @@ namespace PayrollAppRazorPages.Pages
                 else
                 {
                     RecordStatus = "Today's attendance: " + TodayAttendance.AttendanceStatus.Status;
-
                 }
             }
         }

@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using PayrollAppRazorPages.Data;
 using PayrollAppRazorPages.Models;
@@ -31,6 +32,10 @@ namespace PayrollAppRazorPages.Pages.Manage.Salaries
         public string SelectedDate { get; set; }
         public int WeekdaysCount { get; set; }
         public List<Attendance> UserAttendance { get; set; }
+        [BindProperty]
+        public List<StaffSalaryExtra> StaffSalaryExtrasEarn { get; set; }
+        [BindProperty]
+        public List<StaffSalaryExtra> StaffSalaryExtrasDuct { get; set; }
 
         private static int WeekDaysInMonth(int year, int month)
         {
@@ -65,6 +70,12 @@ namespace PayrollAppRazorPages.Pages.Manage.Salaries
                 .Where(a => a.ApplicationUserId == StaffSalary.staffID && a.PunchDate.Value.Month == StaffSalary.Month && a.PunchDate.Value.Year == StaffSalary.Year)
                 .OrderBy(a => a.PunchDate).ToListAsync();
 
+            
+            StaffSalaryExtrasEarn = await _context.StaffSalaryExtra.Include(s => s.SalaryItem).Where(s => s.StaffSalaryId == StaffSalary.salaryID && s.SalaryItem.IsDeduction == false).ToListAsync();
+            StaffSalaryExtrasDuct = await _context.StaffSalaryExtra.Include(s => s.SalaryItem).Where(s => s.StaffSalaryId == StaffSalary.salaryID && s.SalaryItem.IsDeduction== true).ToListAsync();
+
+            
+
             return Page();
         }
 
@@ -89,7 +100,9 @@ namespace PayrollAppRazorPages.Pages.Manage.Salaries
 
                 return Page();
             }
-
+            _context.UpdateRange(StaffSalaryExtrasEarn);
+            _context.UpdateRange(StaffSalaryExtrasDuct);
+            await _context.SaveChangesAsync();
             _context.Attach(StaffSalary).State = EntityState.Modified;
 
             try

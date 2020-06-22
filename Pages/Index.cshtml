@@ -19,159 +19,212 @@
 <div class="text-center">
     @if (User.IsInRole("superadmin"))
     {
-        <h3>Superadmin Dashboard</h3><br />
+    <h3>Superadmin Dashboard</h3><br />
     }
     else if (User.IsInRole("admin"))
     {
-        <h3>Admin Dashboard</h3><br />
+    <h3>Admin Dashboard</h3><br />
 
     }
     else
     {
-        <h3>Staff Dashboard</h3><br />
+    <h3>Staff Dashboard</h3><br />
     }
 
     @*superadmin and admin dashboard*@
     @if (User.IsInRole("superadmin") || User.IsInRole("admin"))
     {
-        <div class="card-deck text-left  ">
+    <div class="card-deck text-left  ">
 
-            @if (User.IsInRole("superadmin"))
-            {
-                <div class="card text-white bg-info">
-                    <div class="card-body">
-                        <div class="row">
-                            <div class="col">
-                                <h1>@Model.AdminNum </h1>
-                            </div>
-                            <div class="col">
-                                <h1 class="text-right"><i class="fas fa-user-tie"></i></h1>
-                            </div>
-                        </div>
-                        Admin(s)
+        @if (User.IsInRole("superadmin"))
+        {
+        //manage admin card #0173b9
+        <div class="card text-white" style="background-color:steelblue;">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-9">
+                        <h1>@Model.AdminNum </h1>
                     </div>
-                    <div class="card-footer">
-                        <a class="btn text-white" asp-page="./Manage/Admin/Index">Manage Admin  <i class="fas fa-arrow-circle-right"></i></a>
+                    <div class="col">
+                        <h1 class="text-right"><i class="fas fa-user-tie"></i></h1>
                     </div>
-
                 </div>
-            }
-
-            <div class="card text-left text-white" style="background-color: salmon;">
-                <div class="card-body">
-                    <div class="row">
-                        <div class="col">
-                            <h1>@Model.StaffNum</h1>
-
-                        </div>
-                        <div class="col">
-                            <h1 class="text-right"><i class="fas fa-users"></i> </h1>
-                        </div>
-                    </div>
-                    Staff
-                </div>
-                <div class="card-footer">
-                    <a class="btn text-white" asp-page="./Manage/Staff/Index">Manage Staff  <i class="fas fa-arrow-circle-right"></i></a>
-                </div>
+                Admin(s)
             </div>
-            @if (User.IsInRole("admin"))
-            {
-                <div class="col"></div>
-            }
-        </div><br />
-        <div class="card-deck text-left ">
-            <div class="card text-white bg-success ">
-                <div class="card-body ">
-                    <div class="row">
-                        <div class="col-10">
-                            <h4>Year Summary</h4>
-                            <div class="row">
-                                <div class="col-8">Total Net Pay</div>
-                                <div class="col">: RM @Html.DisplayFor(model => model.summary.net)</div>
-                            </div>
-                            @*<p>Salary</p>*@
-                        </div>
-                        <div class="col">
-                            <h1 class="text-right"><i class="fas fa-file-invoice-dollar"></i></h1>
-                        </div>
-                    </div>
-                </div>
-                <div class="card-footer text-left">
-                    <a class="btn text-white" asp-page="./Manage/Salaries/Index">Manage Salary  <i class="fas fa-arrow-circle-right"></i></a>
-                </div>
+            <div class="card-footer">
+                <a class="btn text-white" asp-page="./Manage/Admin/Index">Manage Admin  <i class="fas fa-arrow-circle-right"></i></a>
             </div>
-            <div class="card text-white text-left" style="background-color:darkorange">
-                <div class="card-body ">
-                    <div class="row">
-                        <div class="col">
-                            <h1 style="display:inline;">@Model.AttendanceCount</h1>
-                            <p style="display:inline;">/ @Model.StaffNum</p>
-                        </div>
-                        <div class="col">
-                            <h1 class="text-right"><i class="fas fa-clipboard-list"></i> </h1>
-                        </div>
+
+        </div>
+        }
+        @*manage staff card*@
+        @*salmon #f68795*@
+        <div class="card text-left text-white" style="background-color:lightcoral ;">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-9">
+                        <h1>@Model.StaffNum</h1>
                     </div>
-                    Today's Attandance Record
+                    <div class="col">
+                        <h1 class="text-right"><i class="fas fa-users"></i> </h1>
+                    </div>
                 </div>
-                <div class="card-footer">
-                    <a class="btn text-white" asp-page="./Manage/Attendances/Index">Staff Attendance  <i class="fas fa-arrow-circle-right"></i></a>
-                </div>
+                Staff
+            </div>
+            <div class="card-footer">
+                <a class="btn text-white" asp-page="./Manage/Staff/Index">Manage Staff  <i class="fas fa-arrow-circle-right"></i></a>
             </div>
         </div>
-    }
-    @if (User.IsInRole("staff"))
-    {
-        <div class="card-deck">
-            <div class="card text-white bg-info">
-                <div class="card-body">
-                    <h1 style="display:inline;"> @Model.TodayDate </h1>
-                    @*<h1 class="text-right" style="display:inline;"><i class="fas fa-clipboard-list"></i></h1>*@
 
-                    <p>@Model.RecordStatus</p>
-                </div>
-                <div class="card-footer">
-                    <a class="btn text-white" asp-page="./Staff/Attendance">Check Attendance <i class="fas fa-arrow-circle-right"></i></a>
-                </div>
-            </div>
-
-            <div class="card bg-success text-white">
-                <div class="card-body row">
-                    <div class="col-md-8 text-left">
-                        <h4>Year Summary</h4>
-                        <div class="row">
-                            <div class="col-5">Net Pay</div>
-                            <div class="col">: RM @Model.summary.net.ToString("0.00")</div>
-                        </div>
-                        <div class="row">
-                            <div class="col-5">E'E / E'R EPF</div>
-                            <div class="col">: RM @Model.summary.epf.ToString("0.00") / @Model.summary.erepf.ToString("0.00")</div>
-                        </div>
-                        <div class="row">
-                            <div class="col-5">E'E / E'R SOCSO</div>
-                            <div class="col">: RM @Model.summary.socso.ToString("0.00") / @Model.summary.ersocso.ToString("0.00")</div>
-                        </div>
-                        <div class="row">
-                            <div class="col-5">E'E / E'R EIS</div>
-                            <div class="col">: RM @Model.summary.eis.ToString("0.00") / @Model.summary.ereis.ToString("0.00")</div>
-                        </div>
-                        <div class="row">
-                            <div class="col-5">TAX</div>
-                            <div class="col">: RM @Model.summary.tax.ToString("0.00")</div>
-                        </div>
+        @*manage attendance card*@
+        <div class="card text-white text-left" style="background-color:darkorange">
+            <div class="card-body ">
+                <div class="row">
+                    <div class="col-md-9">
+                        <h1 style="display:inline;">@Model.AttendanceCount</h1>
+                        <p style="display:inline;">/ @Model.StaffNum</p>
                     </div>
-                    <div class="col-md-4">
+                    <div class="col">
+                        <h1 class="text-right"><i class="fas fa-clipboard-list"></i> </h1>
+                    </div>
+                </div>
+                Today's Attandance Record
+            </div>
+            <div class="card-footer">
+                <a class="btn text-white" asp-page="./Manage/Attendances/Index">Staff Attendance  <i class="fas fa-arrow-circle-right"></i></a>
+            </div>
+        </div>
+        @if (User.IsInRole("admin"))
+        {
+        <div class="col"></div>
+        }
+    </div><br />
+    <div class="card-deck text-left ">
+        @*manage salary card*@
+        <div class="card text-white bg-success ">
+            <div class="card-body ">
+                <div class="row">
+                    <div class="col-md-8 align-items-end">
+                        <h3>Year Summary</h3>
+                    </div>
+                    <div class="col">
                         <h1 class="text-right"><i class="fas fa-file-invoice-dollar"></i></h1>
                     </div>
                 </div>
-                <div class="card-footer">
-                    <a class="btn text-white" asp-page="./Staff/Salary">Check Salary <i class="fas fa-arrow-circle-right"></i></a>
-                </div>
+                Total Net Pay: RM @Html.DisplayFor(model => model.summary.net)
             </div>
-
-
+            <div class="card-footer text-left">
+                <a class="btn text-white" asp-page="./Manage/Salaries/Index">Manage Salary  <i class="fas fa-arrow-circle-right"></i></a>
+            </div>
         </div>
 
+        @*</div><br />
+            <div class="card-deck">*@
+        @* salary setting *@
+        <div class="card text-white" style="background-color:#76c82f;">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-9">
+                    </div>
+                    <div class="col">
+                        <h1 class="text-right"><i class="fas  fa-sliders-h  fa-fw"></i></h1>
+                    </div>
+                </div>
+            </div>
+            <div class="card-footer">
+                <a class="btn text-white" asp-page="./SalarySettings/Index">Salary Setting <i class="fas fa-arrow-circle-right"></i></a>
+            </div>
+        </div>
+        @*manage holiday*@
+        <div class="card text-white bg-warning">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-9">
+                        <h3>Coming Holiday</h3>
+                    </div>
+                    <div class="col">
+                        <h1 class="text-right"><i class="fas fa-calendar-day fa-fw"></i></h1>
+                    </div>
+                </div>
+                @Model.ComingHoliday
+            </div>
+            <div class="card-footer">
+                <a class="btn text-white" asp-page="./DateSettings/Index">Holiday Setting <i class="fas fa-arrow-circle-right"></i></a>
+            </div>
+        </div>
+    </div>
     }
+    @if (User.IsInRole("staff"))
+    {
+    <div class="card-deck">
+        @*view attendance card*@
+        <div class="card text-white bg-info">
+            <div class="card-body">
+                <h1 style="display:inline;"> @Model.TodayDate </h1>
+                @*<h1 class="text-right" style="display:inline;"><i class="fas fa-clipboard-list"></i></h1>*@
+
+                <p>@Model.RecordStatus</p>
+            </div>
+            <div class="card-footer">
+                <a class="btn text-white" asp-page="./Staff/Attendance">Check Attendance <i class="fas fa-arrow-circle-right"></i></a>
+            </div>
+        </div>
+        @*view salary card*@
+        <div class="card bg-success text-white">
+            <div class="card-body row">
+                <div class="col-md-8 text-left">
+                    <h4>Year Summary</h4>
+                    <div class="row">
+                        <div class="col-5">Net Pay</div>
+                        <div class="col">: RM @Model.summary.net.ToString("0.00")</div>
+                    </div>
+                    <div class="row">
+                        <div class="col-5">E'E / E'R EPF</div>
+                        <div class="col">: RM @Model.summary.epf.ToString("0.00") / @Model.summary.erepf.ToString("0.00")</div>
+                    </div>
+                    <div class="row">
+                        <div class="col-5">E'E / E'R SOCSO</div>
+                        <div class="col">: RM @Model.summary.socso.ToString("0.00") / @Model.summary.ersocso.ToString("0.00")</div>
+                    </div>
+                    <div class="row">
+                        <div class="col-5">E'E / E'R EIS</div>
+                        <div class="col">: RM @Model.summary.eis.ToString("0.00") / @Model.summary.ereis.ToString("0.00")</div>
+                    </div>
+                    <div class="row">
+                        <div class="col-5">TAX</div>
+                        <div class="col">: RM @Model.summary.tax.ToString("0.00")</div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <h1 class="text-right"><i class="fas fa-file-invoice-dollar"></i></h1>
+                </div>
+            </div>
+            <div class="card-footer">
+                <a class="btn text-white" asp-page="./Staff/Salary">Check Salary <i class="fas fa-arrow-circle-right"></i></a>
+            </div>
+        </div>
+
+        @*view holiday*@
+        <div class="card text-white bg-warning">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col">
+
+                    </div>
+                    <div class="col">
+                        <h1 class="text-right"><i class="fas fa-calendar-day fa-fw"></i></h1>
+                    </div>
+                </div>
+            </div>
+            <div class="card-footer">
+                <a class="btn text-white" asp-page="./DateSettings/Index">Check Holiday <i class="fas fa-arrow-circle-right"></i></a>
+            </div>
+        </div>
+
+    </div>
+    }
+    <br />
+
     @*<h1 class="display-4">Welcome</h1>
         <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>*@
 </div>

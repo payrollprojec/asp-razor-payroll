@@ -12,6 +12,8 @@ namespace PayrollAppRazorPages.Models
         [Key]
         public int salaryID { get; set; }
 
+        public List<StaffSalaryExtra> StaffSalaryExtras { get; set; }
+
         public string staffID { get; set; }
 
         [Required]

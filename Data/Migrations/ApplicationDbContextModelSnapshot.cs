@@ -266,6 +266,24 @@ namespace PayrollAppRazorPages.Data.Migrations
                     b.ToTable("AttendanceStatus");
                 });
 
+            modelBuilder.Entity("PayrollAppRazorPages.Models.Holiday", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<DateTime?>("HolidayDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("HolidayDes")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Holiday");
+                });
+
             modelBuilder.Entity("PayrollAppRazorPages.Models.SalaryItem", b =>
                 {
                     b.Property<int>("Id")

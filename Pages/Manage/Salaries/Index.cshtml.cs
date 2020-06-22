@@ -85,7 +85,7 @@ namespace PayrollAppRazorPages.Pages.Manage.Salaries
 
             Staff = await _userManager.GetUsersInRoleAsync("staff");
             StaffSalary = new List<ViewModel>();
-            var resAll = await _context.StaffSalary.Where(ss => ss.Month == int.Parse(SelectedMonth) && ss.Year == int.Parse(SelectedYear)).ToListAsync();
+            var resAll = await _context.StaffSalary.Include(ss => ss.StaffSalaryExtras).ThenInclude(extra => extra.SalaryItem).Where(ss => ss.Month == int.Parse(SelectedMonth) && ss.Year == int.Parse(SelectedYear)).ToListAsync();
 
             foreach (var s in Staff)
             {
@@ -104,12 +104,21 @@ namespace PayrollAppRazorPages.Pages.Manage.Salaries
                 }
                 else
                 {
+                    decimal extraEarns = 0;
+                    decimal extraDucts = 0;
+                    foreach (var j in res.StaffSalaryExtras)
+                    {
+                        if (j.SalaryItem.IsDeduction == false)
+                            extraEarns += j.Amount;
+                        else
+                            extraDucts += j.Amount;
+                    }
                     var absentcount = Absent.FindAll(c => c.ApplicationUserId == s.Id);
                     ViewModel vm = new ViewModel
                     {
                         Id = s.Id,
                         Name = s.FullName,
-                        Summary = "Net Pay: RM " + (res.BasicSalary / WeekdaysCount * (WeekdaysCount - absentcount.Count()) + res.Allowances + res.Bonus + res.AdvSalaryPlus - res.EPF - res.SocsoRm - res.EIS - res.Tax - res.AdvSalary).ToString("0.00"),
+                        Summary = "Net Pay: RM " + (res.BasicSalary / WeekdaysCount * (WeekdaysCount - absentcount.Count()) + extraEarns - extraDucts + res.Allowances + res.Bonus + res.AdvSalaryPlus - res.EPF - res.SocsoRm - res.EIS - res.Tax - res.AdvSalary).ToString("0.00"),
                         SalaryId = res.salaryID
                     };
                     if (res.MailNum > 0)

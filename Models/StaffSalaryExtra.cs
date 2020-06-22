@@ -6,9 +6,11 @@ namespace PayrollAppRazorPages.Models
     public class StaffSalaryExtra
     {
         public int Id { get; set; }
-        public int StaffSalaryId{ get; set; }
+
         [Required]
+        public int StaffSalaryId{ get; set; }
         public StaffSalary StaffSalary { get; set; }
+        
         public int SalaryItemId { get; set; }
         public SalaryItem SalaryItem{ get; set; }
 

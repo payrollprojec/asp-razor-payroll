@@ -16,6 +16,10 @@
   <ItemGroup>
     <Compile Remove="Data\Migrations\20200517145233_CreateApplicationUser.cs" />
     <Compile Remove="Data\Migrations\20200517145233_CreateApplicationUser.Designer.cs" />
+    <Compile Remove="Data\Migrations\20200622094623_holiday.cs" />
+    <Compile Remove="Data\Migrations\20200622094623_holiday.Designer.cs" />
+    <Compile Remove="Data\Migrations\20200622100553_changesalaryextra.cs" />
+    <Compile Remove="Data\Migrations\20200622100553_changesalaryextra.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>
@@ -23,6 +27,11 @@
     <Content Remove="Pages\Manage\Salaries\SendEmail.cshtml" />
     <Content Remove="Pages\Manage\Salaries\SendEmailConfirmation.cshtml" />
     <Content Remove="Pages\Manage\Staff\SalaryPDF.cshtml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="Pages\DateSettings\NewFile.txt" />
+    <None Remove="Pages\DateSettings\NewFile1.txt" />
   </ItemGroup>
 
   <ItemGroup>

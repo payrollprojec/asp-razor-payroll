@@ -20581,6 +20581,16 @@
       "FileKind": "mvc"
     },
     {
+      "FilePath": "c:\\Users\\Wen\\source\\repos\\PayrollAppRazorPages5-final4\\Pages\\Manage\\Salaries\\Edit.cshtml",
+      "TargetPath": "Pages\\Manage\\Salaries\\Edit.cshtml",
+      "FileKind": "mvc"
+    },
+    {
+      "FilePath": "c:\\Users\\Wen\\source\\repos\\PayrollAppRazorPages5-final4\\Pages\\SalarySettings\\Index.cshtml",
+      "TargetPath": "Pages\\SalarySettings\\Index.cshtml",
+      "FileKind": "mvc"
+    },
+    {
       "FilePath": "c:\\Users\\Wen\\source\\repos\\PayrollAppRazorPages5-final4\\Areas\\Identity\\Pages\\Account\\ForgotPasswordConfirmation.cshtml",
       "TargetPath": "Areas\\Identity\\Pages\\Account\\ForgotPasswordConfirmation.cshtml",
       "FileKind": "mvc"
@@ -20596,8 +20606,23 @@
       "FileKind": "mvc"
     },
     {
+      "FilePath": "c:\\Users\\Wen\\source\\repos\\PayrollAppRazorPages5-final4\\Pages\\SalarySettings\\Details.cshtml",
+      "TargetPath": "Pages\\SalarySettings\\Details.cshtml",
+      "FileKind": "mvc"
+    },
+    {
       "FilePath": "c:\\Users\\Wen\\source\\repos\\PayrollAppRazorPages5-final4\\Areas\\Identity\\Pages\\Account\\Manage\\EnableAuthenticator.cshtml",
       "TargetPath": "Areas\\Identity\\Pages\\Account\\Manage\\EnableAuthenticator.cshtml",
+      "FileKind": "mvc"
+    },
+    {
+      "FilePath": "c:\\Users\\Wen\\source\\repos\\PayrollAppRazorPages5-final4\\Pages\\DateSettings\\Details.cshtml",
+      "TargetPath": "Pages\\DateSettings\\Details.cshtml",
+      "FileKind": "mvc"
+    },
+    {
+      "FilePath": "c:\\Users\\Wen\\source\\repos\\PayrollAppRazorPages5-final4\\Pages\\DateSettings\\Index.cshtml",
+      "TargetPath": "Pages\\DateSettings\\Index.cshtml",
       "FileKind": "mvc"
     },
     {
@@ -20631,6 +20656,11 @@
       "FileKind": "mvc"
     },
     {
+      "FilePath": "c:\\Users\\Wen\\source\\repos\\PayrollAppRazorPages5-final4\\Pages\\DateSettings\\Edit.cshtml",
+      "TargetPath": "Pages\\DateSettings\\Edit.cshtml",
+      "FileKind": "mvc"
+    },
+    {
       "FilePath": "c:\\Users\\Wen\\source\\repos\\PayrollAppRazorPages5-final4\\Pages\\Manage\\Staff\\CreateConfirmation.cshtml",
       "TargetPath": "Pages\\Manage\\Staff\\CreateConfirmation.cshtml",
       "FileKind": "mvc"
@@ -20656,6 +20686,11 @@
       "FileKind": "mvc"
     },
     {
+      "FilePath": "c:\\Users\\Wen\\source\\repos\\PayrollAppRazorPages5-final4\\Pages\\DateSettings\\Create.cshtml",
+      "TargetPath": "Pages\\DateSettings\\Create.cshtml",
+      "FileKind": "mvc"
+    },
+    {
       "FilePath": "c:\\Users\\Wen\\source\\repos\\PayrollAppRazorPages5-final4\\Areas\\Identity\\Pages\\Account\\Manage\\_Layout.cshtml",
       "TargetPath": "Areas\\Identity\\Pages\\Account\\Manage\\_Layout.cshtml",
       "FileKind": "mvc"
@@ -20666,6 +20701,11 @@
       "FileKind": "mvc"
     },
     {
+      "FilePath": "c:\\Users\\Wen\\source\\repos\\PayrollAppRazorPages5-final4\\Pages\\Shared\\_StatusMessage.cshtml",
+      "TargetPath": "Pages\\Shared\\_StatusMessage.cshtml",
+      "FileKind": "mvc"
+    },
+    {
       "FilePath": "c:\\Users\\Wen\\source\\repos\\PayrollAppRazorPages5-final4\\Pages\\Index.cshtml",
       "TargetPath": "Pages\\Index.cshtml",
       "FileKind": "mvc"
@@ -20673,6 +20713,11 @@
     {
       "FilePath": "c:\\Users\\Wen\\source\\repos\\PayrollAppRazorPages5-final4\\Pages\\Manage\\Attendances\\Index.cshtml",
       "TargetPath": "Pages\\Manage\\Attendances\\Index.cshtml",
+      "FileKind": "mvc"
+    },
+    {
+      "FilePath": "c:\\Users\\Wen\\source\\repos\\PayrollAppRazorPages5-final4\\Pages\\Manage\\Salaries\\Index.cshtml",
+      "TargetPath": "Pages\\Manage\\Salaries\\Index.cshtml",
       "FileKind": "mvc"
     },
     {
@@ -20693,6 +20738,11 @@
     {
       "FilePath": "c:\\Users\\Wen\\source\\repos\\PayrollAppRazorPages5-final4\\Pages\\Staff\\Salary.cshtml",
       "TargetPath": "Pages\\Staff\\Salary.cshtml",
+      "FileKind": "mvc"
+    },
+    {
+      "FilePath": "c:\\Users\\Wen\\source\\repos\\PayrollAppRazorPages5-final4\\Pages\\Manage\\Salaries\\Delete.cshtml",
+      "TargetPath": "Pages\\Manage\\Salaries\\Delete.cshtml",
       "FileKind": "mvc"
     },
     {
@@ -20731,6 +20781,16 @@
       "FileKind": "mvc"
     },
     {
+      "FilePath": "c:\\Users\\Wen\\source\\repos\\PayrollAppRazorPages5-final4\\Pages\\SalarySettings\\Create.cshtml",
+      "TargetPath": "Pages\\SalarySettings\\Create.cshtml",
+      "FileKind": "mvc"
+    },
+    {
+      "FilePath": "c:\\Users\\Wen\\source\\repos\\PayrollAppRazorPages5-final4\\Pages\\SalarySettings\\Edit.cshtml",
+      "TargetPath": "Pages\\SalarySettings\\Edit.cshtml",
+      "FileKind": "mvc"
+    },
+    {
       "FilePath": "c:\\Users\\Wen\\source\\repos\\PayrollAppRazorPages5-final4\\Pages\\Staff\\SalaryDetails.cshtml",
       "TargetPath": "Pages\\Staff\\SalaryDetails.cshtml",
       "FileKind": "mvc"
@@ -20743,6 +20803,11 @@
     {
       "FilePath": "c:\\Users\\Wen\\source\\repos\\PayrollAppRazorPages5-final4\\Areas\\Identity\\Pages\\Account\\LoginWithRecoveryCode.cshtml",
       "TargetPath": "Areas\\Identity\\Pages\\Account\\LoginWithRecoveryCode.cshtml",
+      "FileKind": "mvc"
+    },
+    {
+      "FilePath": "c:\\Users\\Wen\\source\\repos\\PayrollAppRazorPages5-final4\\Pages\\DateSettings\\Delete.cshtml",
+      "TargetPath": "Pages\\DateSettings\\Delete.cshtml",
       "FileKind": "mvc"
     },
     {
@@ -20816,6 +20881,11 @@
       "FileKind": "mvc"
     },
     {
+      "FilePath": "c:\\Users\\Wen\\source\\repos\\PayrollAppRazorPages5-final4\\Pages\\Manage\\Salaries\\CreateSalary.cshtml",
+      "TargetPath": "Pages\\Manage\\Salaries\\CreateSalary.cshtml",
+      "FileKind": "mvc"
+    },
+    {
       "FilePath": "c:\\Users\\Wen\\source\\repos\\PayrollAppRazorPages5-final4\\Areas\\Identity\\Pages\\Account\\ForgotPassword.cshtml",
       "TargetPath": "Areas\\Identity\\Pages\\Account\\ForgotPassword.cshtml",
       "FileKind": "mvc"
@@ -20836,6 +20906,11 @@
       "FileKind": "mvc"
     },
     {
+      "FilePath": "c:\\Users\\Wen\\source\\repos\\PayrollAppRazorPages5-final4\\Pages\\SalarySettings\\Delete.cshtml",
+      "TargetPath": "Pages\\SalarySettings\\Delete.cshtml",
+      "FileKind": "mvc"
+    },
+    {
       "FilePath": "c:\\Users\\Wen\\source\\repos\\PayrollAppRazorPages5-final4\\Areas\\Identity\\Pages\\Account\\ConfirmEmail.cshtml",
       "TargetPath": "Areas\\Identity\\Pages\\Account\\ConfirmEmail.cshtml",
       "FileKind": "mvc"
@@ -20848,6 +20923,11 @@
     {
       "FilePath": "c:\\Users\\Wen\\source\\repos\\PayrollAppRazorPages5-final4\\Areas\\Identity\\Pages\\Account\\ExternalLogin.cshtml",
       "TargetPath": "Areas\\Identity\\Pages\\Account\\ExternalLogin.cshtml",
+      "FileKind": "mvc"
+    },
+    {
+      "FilePath": "c:\\Users\\Wen\\source\\repos\\PayrollAppRazorPages5-final4\\Pages\\Manage\\Salaries\\Details.cshtml",
+      "TargetPath": "Pages\\Manage\\Salaries\\Details.cshtml",
       "FileKind": "mvc"
     },
     {

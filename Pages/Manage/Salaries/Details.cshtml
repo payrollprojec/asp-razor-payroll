@@ -7,7 +7,7 @@
     .slip {
         font-family: Consolas, monospace;
         border: solid 1px;
-        padding:20px;
+        padding: 20px;
     }
 
     span.text-danger {
@@ -94,6 +94,7 @@
                     <label>Adv. Salary&nbsp;&nbsp;&nbsp;&nbsp;: RM</label>
                     @Html.DisplayFor(model => model.StaffSalary.AdvSalaryPlus)
                 </div>
+
             </div>
             <div class="col">
                 <br /><b>Deduction</b>
@@ -126,12 +127,52 @@
                 </div>
             </div>
         </div>
+        <div class="row earn-duct border-top">
+            <div class="col border-right">
+                <p><b>Extra Earnings</b></p>
+                @{ 
+                    decimal extraEarns = 0;
+                    decimal extraDucts = 0;
+                }
+                @foreach (var item in Model.StaffSalaryExtras)
+                {
+                    @if (item.SalaryItem.IsDeduction == true)
+                    {
+                        continue;
+                    }
+                    extraEarns += item.Amount;
+                    <div class="form-group">
+                        <label>@Html.DisplayFor(modelItem => item.SalaryItem.Name): RM</label>
+                        @Html.DisplayFor(modelItem => item.Amount)
+                    </div>
+
+                }
+            </div>
+            <div class="col">
+                <p><b>Extra Deductions</b></p>
+                @foreach (var item in Model.StaffSalaryExtras)
+                {
+                    @if (item.SalaryItem.IsDeduction == false)
+                    {
+                        continue;
+                    }
+                    extraDucts += item.Amount;
+                    <div class="form-group">
+                        <label>@Html.DisplayFor(modelItem => item.SalaryItem.Name): RM</label>
+                        @Html.DisplayFor(modelItem => item.Amount)
+                    </div>
+
+                }
+
+            </div>
+        </div>
         <div class="row border-top border-bottom align-items-end">
 
-            <div class="col border-right"><br />
+            <div class="col border-right">
+                <br />
                 @{
-                    var totalEarn = Model.StaffSalary.BasicSalary + Model.StaffSalary.Allowances + Model.StaffSalary.Bonus + Model.StaffSalary.AdvSalaryPlus;
-                    var totalDeduct = Model.StaffSalary.EPF + Model.StaffSalary.SocsoRm + Model.StaffSalary.EIS + Model.StaffSalary.Tax + Model.StaffSalary.AdvSalary + absent;
+                    var totalEarn = Model.StaffSalary.BasicSalary + Model.StaffSalary.Allowances + Model.StaffSalary.Bonus + Model.StaffSalary.AdvSalaryPlus + extraEarns;
+                    var totalDeduct = Model.StaffSalary.EPF + Model.StaffSalary.SocsoRm + Model.StaffSalary.EIS + Model.StaffSalary.Tax + Model.StaffSalary.AdvSalary + absent + extraDucts;
                     var net = totalEarn - totalDeduct;
                 }
                 Total Earning: RM @totalEarn.ToString("0.00")
@@ -140,7 +181,8 @@
 
 
             </div>
-            <div class="col"><br />
+            <div class="col">
+                <br />
                 Total Deduction: RM @totalDeduct.ToString("0.00")
             </div>
 
@@ -177,7 +219,7 @@
             <a class="btn btn-info" asp-page="./Edit" asp-route-id="@Model.StaffSalary.salaryID">Edit </a>
             @{
                 var parms = new Dictionary<string, string>
-                {
+                        {
                     {"SelectedMonth", Model.StaffSalary.Month.ToString() },
                     {"SelectedYear", Model.StaffSalary.Year.ToString() }
                 };
