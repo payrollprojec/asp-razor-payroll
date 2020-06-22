@@ -16,6 +16,7 @@ namespace PayrollAppRazorPages.Models
         public DateTime? HolidayDate { get; set; }
 
         [Display(Name = "Holiday Description")]
+        [StringLength(255, MinimumLength = 3)]
         public string HolidayDes { get; set; }
     }
 }

@@ -42,7 +42,8 @@ namespace PayrollAppRazorPages.Pages.Manage.Salaries
         [BindProperty]
         public StaffSalary StaffSalary { get; set; }
         public ApplicationUser applicationUser { get; set; }
-        public string SalaryDate{ get; set; }
+        public string SalaryDate { get; set; }
+        public List<StaffSalaryExtra> StaffSalaryExtras { get; private set; }
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {
@@ -67,18 +68,6 @@ namespace PayrollAppRazorPages.Pages.Manage.Salaries
         //    public string name { get; set; }
         //    public int age { get; set; }
         //}
-        private static int WeekDaysInMonth(int year, int month)
-        {
-            int days = DateTime.DaysInMonth(year, month);
-            List<DateTime> dates = new List<DateTime>();
-            for (int i = 1; i <= days; i++)
-            {
-                dates.Add(new DateTime(year, month, i));
-            }
-
-            int weekDays = dates.Where(d => d.DayOfWeek < DayOfWeek.Friday).Count();
-            return weekDays;
-        }
         public async Task<IActionResult> OnPostAsync(int? id)
         {
             StaffSalary = await _context.StaffSalary.FirstOrDefaultAsync(m => m.salaryID == id);
@@ -89,12 +78,29 @@ namespace PayrollAppRazorPages.Pages.Manage.Salaries
             applicationUser = await _userManager.Users.Include(u => u.StaffData).Where(u => u.Id == StaffSalary.staffID).SingleOrDefaultAsync();
             SalaryDate = DateTime.Parse(StaffSalary.Year + "-" + StaffSalary.Month + "-01").ToString("MMMM yyyy");
 
-            int wdc = WeekDaysInMonth(StaffSalary.Year, StaffSalary.Month);
-            var ac = await _context.Attendance
-            .Where(a => a.ApplicationUserId == StaffSalary.staffID && a.PunchDate.Value.Month == StaffSalary.Month && a.PunchDate.Value.Year == StaffSalary.Year && a.AttendanceStatusId == 2)
+            int wdc = _context.WeekDaysInMonth(StaffSalary.Year, StaffSalary.Month);
+            var ac = await _context.Attendance.Include(a => a.AttendanceStatus)
+            .Where(a => a.ApplicationUserId == StaffSalary.staffID && a.PunchDate.Value.Month == StaffSalary.Month && a.PunchDate.Value.Year == StaffSalary.Year && a.AttendanceStatus.Status == "Absent")
             .OrderBy(a => a.PunchDate).ToListAsync();
             // Save Template
-
+            StaffSalaryExtras = await _context.StaffSalaryExtra.Include(s => s.SalaryItem).Where(s => s.StaffSalaryId == StaffSalary.salaryID).ToListAsync();
+            decimal extraEarns = 0;
+            decimal extraDucts = 0;
+            string extraearn = "";
+            string extraduct = "";
+            foreach (var j in StaffSalaryExtras)
+            {
+                if (j.SalaryItem.IsDeduction == false)
+                {
+                    extraEarns += j.Amount;
+                    extraearn += "<b>" + j.SalaryItem.Name + ": </b>" + j.Amount + "<br>";
+                }
+                else
+                {
+                    extraDucts += j.Amount;
+                    extraduct += "<b>" + j.SalaryItem.Name + ": </b>" + j.Amount + "<br>";
+                }
+            }
             // Send Email 
             string body = "Dear " + applicationUser.FullName + ", this is the summary of your salary  in " + SalaryDate + ".<br><br><hr>" +
                             "<h3> Salary Slip in " + SalaryDate + "</h3>" +
@@ -107,7 +113,7 @@ namespace PayrollAppRazorPages.Pages.Manage.Salaries
                             "<b>Allowance: </b>" + StaffSalary.Allowances + "<br>" +
                             "<b>Bonus: </b>" + StaffSalary.Bonus + "<br>" +
                             "<b>Adv. Salary: </b>" + StaffSalary.AdvSalaryPlus + "<br><br>" +
-                            "<b>Total Earnings: " + (StaffSalary.BasicSalary + StaffSalary.Allowances + StaffSalary.Bonus + StaffSalary.AdvSalaryPlus) + "<br>" +
+                            extraearn +
                             "</td>" +
                             "<td>" +
                             "<b>EPF: </b>" + StaffSalary.EPF + "<br>" +
@@ -115,14 +121,30 @@ namespace PayrollAppRazorPages.Pages.Manage.Salaries
                             "<b>EIS: </b>" + StaffSalary.EIS + "<br>" +
                             "<b>TAX: </b>" + StaffSalary.Tax + "<br>" +
                             "<b>Adv. Salary: </b>" + StaffSalary.AdvSalary + "<br>" +
-                            "<b>Absent: </b>" + (StaffSalary.BasicSalary / wdc * ac.Count()).ToString("0.00") + "<br><br>" +
-                            "<b>Total Deductions: " + (StaffSalary.BasicSalary / wdc * ac.Count()+ StaffSalary.EPF + StaffSalary.SocsoRm + StaffSalary.EIS + StaffSalary.Tax + StaffSalary.AdvSalary).ToString("0.00") + "<br>" +
-
+                            //"<b>Absent: </b>" + (StaffSalary.BasicSalary / wdc * ac.Count()).ToString("0.00") + "<br><br>" +
+                            "<b>Absent: </b>" + StaffSalary.Absent + " (" + ac.Count() + ") day" + "<br><br>" +
+                            extraduct +
                             "</td>" +
                             "</tr>" +
+
+                            //"<tr>" +
+                            //"<td>" +
+                            //"<b>Net Pay: </b>RM " + (StaffSalary.BasicSalary - StaffSalary.Absent + StaffSalary.Allowances + StaffSalary.Bonus + StaffSalary.AdvSalaryPlus - StaffSalary.EPF - StaffSalary.SocsoRm - StaffSalary.EIS - StaffSalary.Tax - StaffSalary.AdvSalary).ToString("0.00") + "<br>" +
+                            //"</td>" +
+                            //"</tr>" +
+
+                            "<tr>" +
+                            "<td>" +
+                            "<b>Total Earnings: " + (StaffSalary.BasicSalary + extraEarns + StaffSalary.Allowances + StaffSalary.Bonus + StaffSalary.AdvSalaryPlus) + "<br>" +
+                            "</td>" +
+                            "<td>" +
+                            "<b>Total Deductions: " + (StaffSalary.Absent + extraDucts + StaffSalary.EPF + StaffSalary.SocsoRm + StaffSalary.EIS + StaffSalary.Tax + StaffSalary.AdvSalary).ToString("0.00") + "<br>" +
+                            "</td>" +
+                            "</tr>" +
+
                             "<tr>" +
                             "<td colspan='2'>" +
-                            "<b>Net Pay: </b>RM " + (StaffSalary.BasicSalary / wdc * (wdc - ac.Count()) + StaffSalary.Allowances + StaffSalary.Bonus + StaffSalary.AdvSalaryPlus - StaffSalary.EPF - StaffSalary.SocsoRm - StaffSalary.EIS - StaffSalary.Tax - StaffSalary.AdvSalary).ToString("0.00") + "<br>" +
+                            "<b>Net Pay: </b>RM " + (StaffSalary.BasicSalary + extraEarns - extraDucts - StaffSalary.Absent + StaffSalary.Allowances + StaffSalary.Bonus + StaffSalary.AdvSalaryPlus - StaffSalary.EPF - StaffSalary.SocsoRm - StaffSalary.EIS - StaffSalary.Tax - StaffSalary.AdvSalary).ToString("0.00") + "<br>" +
                             "</td>" +
                             "</tr>" +
                             "<tr>" +
@@ -134,7 +156,7 @@ namespace PayrollAppRazorPages.Pages.Manage.Salaries
                             "</tr></table>";
 
 
-              using (var message = new MailMessage())
+            using (var message = new MailMessage())
             {
                 message.To.Add(new MailAddress(applicationUser.Email, applicationUser.Email));
                 message.From = new MailAddress("formailingapp@gmail.com", "V3X Payroll System");
@@ -165,5 +187,5 @@ namespace PayrollAppRazorPages.Pages.Manage.Salaries
 
 
     }
-    
+
 }

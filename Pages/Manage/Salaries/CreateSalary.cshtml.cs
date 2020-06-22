@@ -13,7 +13,7 @@ using PayrollAppRazorPages.Models;
 
 namespace PayrollAppRazorPages.Pages.Manage.Salaries
 {
-    [Authorize(Roles ="superadmin,admin")]
+    [Authorize(Roles = "superadmin,admin")]
     public class CreateSalaryModel : PageModel
     {
         private readonly UserManager<ApplicationUser> _userManager;
@@ -36,7 +36,7 @@ namespace PayrollAppRazorPages.Pages.Manage.Salaries
         public int ExtraEarnCount { get; set; } // not used
         public List<Attendance> UserAttendance { get; set; }
         [BindProperty]
-        public List<StaffSalaryExtra> StaffSalaryExtras{ get; set; }
+        public List<StaffSalaryExtra> StaffSalaryExtras { get; set; }
         public IList<SelectListItem> ExtraEarnItems { get; set; }
         public IList<SelectListItem> ExtraDeductItems { get; set; }
         public List<SalaryItem> SalaryItem { get; set; }
@@ -48,18 +48,6 @@ namespace PayrollAppRazorPages.Pages.Manage.Salaries
         public List<string> EarnSelect { get; set; }
         [BindProperty]
         public List<string> DeductSelect { get; set; }
-        private static int WeekDaysInMonth(int year, int month)
-        {
-            int days = DateTime.DaysInMonth(year, month);
-            List<DateTime> dates = new List<DateTime>();
-            for (int i = 1; i <= days; i++)
-            {
-                dates.Add(new DateTime(year, month, i));
-            }
-
-            int weekDays = dates.Where(d => d.DayOfWeek < DayOfWeek.Friday).Count();
-            return weekDays;
-        }
         public async Task<IActionResult> OnGetAsync(string Id)
         {
             //applicationUser = await _userManager.FindByIdAsync(Id);
@@ -82,8 +70,10 @@ namespace PayrollAppRazorPages.Pages.Manage.Salaries
             }
             SelectedDate = DateTime.Parse(SelectedYear + "-" + SelectedMonth + "-01").ToString("MMMM yyyy");
             // get working days of this month
-            WeekdaysCount = WeekDaysInMonth(int.Parse(SelectedYear), int.Parse(SelectedMonth));
-            //var HolidaysCount = _context.Holiday.Where(h => h.HolidayDate.Value.)
+            WeekdaysCount = _context.WeekDaysInMonth(int.Parse(SelectedYear), int.Parse(SelectedMonth));
+            var HolidaysCount = await _context.Holiday.Where(h => h.HolidayDate.Value.Year == int.Parse(SelectedYear) && h.HolidayDate.Value.Month == int.Parse(SelectedMonth)).ToListAsync();
+            WeekdaysCount -= HolidaysCount.Count();
+
             // get attendance for this month
             UserAttendance = await _context.Attendance.Include(a => a.AttendanceStatus)
                 .Where(a => a.ApplicationUserId == Id && a.PunchDate.Value.Month == int.Parse(SelectedMonth) && a.PunchDate.Value.Year == int.Parse(SelectedYear))
@@ -91,13 +81,13 @@ namespace PayrollAppRazorPages.Pages.Manage.Salaries
 
             // Get the advance salary from last month
             // If the current month is Jan shift the year backward and change the month to Dec
-            if(int.Parse(SelectedMonth) == 1)
+            if (int.Parse(SelectedMonth) == 1)
             {
-                AdvSalaryPur = await _context.StaffSalary.Where(s => s.staffID == Id && s.Month == 12 && s.Year == int.Parse(SelectedYear)-1).SingleOrDefaultAsync();
+                AdvSalaryPur = await _context.StaffSalary.Where(s => s.staffID == Id && s.Month == 12 && s.Year == int.Parse(SelectedYear) - 1).SingleOrDefaultAsync();
             }
             else
             {
-                AdvSalaryPur = await _context.StaffSalary.Where(s => s.staffID == Id && s.Month == int.Parse(SelectedMonth)-1 && s.Year == int.Parse(SelectedYear)).SingleOrDefaultAsync();
+                AdvSalaryPur = await _context.StaffSalary.Where(s => s.staffID == Id && s.Month == int.Parse(SelectedMonth) - 1 && s.Year == int.Parse(SelectedYear)).SingleOrDefaultAsync();
             }
 
             // initialize a new salary object with staff data default salary info
@@ -149,7 +139,7 @@ namespace PayrollAppRazorPages.Pages.Manage.Salaries
             EarnSelect = new List<string>
             {
                 "","","","","","","","","",""
-            }; 
+            };
             DeductSelect = new List<string>
             {
                 "","","","",""
@@ -187,7 +177,7 @@ namespace PayrollAppRazorPages.Pages.Manage.Salaries
                 }
                 SelectedDate = DateTime.Parse(SelectedYear + "-" + SelectedMonth + "-01").ToString("MMMM yyyy");
                 // get attendance for this month
-                WeekdaysCount = WeekDaysInMonth(StaffSalary.Year, StaffSalary.Month);
+                WeekdaysCount = _context.WeekDaysInMonth(StaffSalary.Year, StaffSalary.Month);
 
                 UserAttendance = await _context.Attendance.Include(a => a.AttendanceStatus)
                     .Where(a => a.ApplicationUserId == StaffSalary.staffID && a.PunchDate.Value.Month == int.Parse(SelectedMonth) && a.PunchDate.Value.Year == int.Parse(SelectedYear))
@@ -225,7 +215,7 @@ namespace PayrollAppRazorPages.Pages.Manage.Salaries
 
 
             StatusMessage = "Staff Salary Created.";
-            return RedirectToPage("./Index", new { SelectedMonth, SelectedYear});
+            return RedirectToPage("./Index", new { SelectedMonth, SelectedYear });
         }
     }
 }

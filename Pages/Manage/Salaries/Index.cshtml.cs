@@ -77,11 +77,11 @@ namespace PayrollAppRazorPages.Pages.Manage.Salaries
                 SelectedYear = DateTime.Now.Year.ToString();
             }
             SelectedDate = DateTime.Parse(SelectedYear + "-" + SelectedMonth + "-01").ToString("MMMM yyyy");
-            WeekdaysCount = WeekDaysInMonth(int.Parse(SelectedYear), int.Parse(SelectedMonth));
+            //WeekdaysCount = WeekDaysInMonth(int.Parse(SelectedYear), int.Parse(SelectedMonth));
             // get absent day(s) for this month
-            var Absent = await _context.Attendance
-                .Where(a => a.PunchDate.Value.Month == int.Parse(SelectedMonth) && a.PunchDate.Value.Year == int.Parse(SelectedYear) && a.AttendanceStatusId == 2)
-                .OrderBy(a => a.PunchDate).ToListAsync();
+            //var Absent = await _context.Attendance
+            //    .Where(a => a.PunchDate.Value.Month == int.Parse(SelectedMonth) && a.PunchDate.Value.Year == int.Parse(SelectedYear) && a.AttendanceStatusId == 2)
+            //    .OrderBy(a => a.PunchDate).ToListAsync();
 
             Staff = await _userManager.GetUsersInRoleAsync("staff");
             StaffSalary = new List<ViewModel>();
@@ -113,12 +113,13 @@ namespace PayrollAppRazorPages.Pages.Manage.Salaries
                         else
                             extraDucts += j.Amount;
                     }
-                    var absentcount = Absent.FindAll(c => c.ApplicationUserId == s.Id);
+                    //var absentcount = Absent.FindAll(c => c.ApplicationUserId == s.Id);
                     ViewModel vm = new ViewModel
                     {
                         Id = s.Id,
                         Name = s.FullName,
-                        Summary = "Net Pay: RM " + (res.BasicSalary / WeekdaysCount * (WeekdaysCount - absentcount.Count()) + extraEarns - extraDucts + res.Allowances + res.Bonus + res.AdvSalaryPlus - res.EPF - res.SocsoRm - res.EIS - res.Tax - res.AdvSalary).ToString("0.00"),
+                        //Summary = "Net Pay: RM " + (res.BasicSalary / WeekdaysCount * (WeekdaysCount - absentcount.Count()) + extraEarns - extraDucts + res.Allowances + res.Bonus + res.AdvSalaryPlus - res.EPF - res.SocsoRm - res.EIS - res.Tax - res.AdvSalary).ToString("0.00"),
+                        Summary = "Net Pay: RM " + (res.BasicSalary - res.Absent + extraEarns - extraDucts + res.Allowances + res.Bonus + res.AdvSalaryPlus - res.EPF - res.SocsoRm - res.EIS - res.Tax - res.AdvSalary).ToString("0.00"),
                         SalaryId = res.salaryID
                     };
                     if (res.MailNum > 0)
@@ -133,18 +134,6 @@ namespace PayrollAppRazorPages.Pages.Manage.Salaries
                 }
             }
 
-        }
-        private static int WeekDaysInMonth(int year, int month)
-        {
-            int days = DateTime.DaysInMonth(year, month);
-            List<DateTime> dates = new List<DateTime>();
-            for (int i = 1; i <= days; i++)
-            {
-                dates.Add(new DateTime(year, month, i));
-            }
-
-            int weekDays = dates.Where(d => d.DayOfWeek < DayOfWeek.Friday).Count();
-            return weekDays;
         }
     }
 }

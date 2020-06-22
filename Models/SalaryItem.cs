@@ -8,6 +8,8 @@ namespace PayrollAppRazorPages.Models
         public int Id { get; set; }
 
         [Display(Name = "Name")]
+        [StringLength(60, MinimumLength = 3)]
+        [Required]
         public string Name{ get; set; }
 
         [Display(Name = "Default Amount")]

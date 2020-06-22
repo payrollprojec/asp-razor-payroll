@@ -131,7 +131,7 @@
                     </div>
                 </div>
                 Extra Salary Earning & Deduction
-            </div>           
+            </div>
             <div class="card-footer">
                 <a class="btn text-white" asp-page="./SalarySettings/Index">Salary Setting <i class="fas fa-arrow-circle-right"></i></a>
             </div>
@@ -157,72 +157,74 @@
     }
     @if (User.IsInRole("staff"))
     {
-<div class="card-deck">
-    @*view attendance card*@
-    <div class="card text-white bg-info">
-        <div class="card-body">
-            <h1 style="display:inline;"> @Model.TodayDate </h1><hr />
-            @*<h1 class="text-right" style="display:inline;"><i class="fas fa-clipboard-list"></i></h1>*@
+    <div class="card-deck">
+        @*view attendance card*@
+        <div class="card text-white bg-info">
+            <div class="card-body">
+                <h1 style="display:inline;"> @Model.TodayDate </h1><hr />
+                @*<h1 class="text-right" style="display:inline;"><i class="fas fa-clipboard-list"></i></h1>*@
 
-            <p>@Model.RecordStatus</p>
-        </div>
-        <div class="card-footer">
-            <a class="btn text-white" asp-page="./Staff/Attendance">Check Attendance <i class="fas fa-arrow-circle-right"></i></a>
-        </div>
-    </div>
-    @*view salary card*@
-    <div class="card bg-success text-white">
-        <div class="card-body">
-            <div class="row">
-                <div class="col-md-10">
-                    <h2>Year Summary</h2>
-                </div>
-                <div class="col-md-2">
-              <h2 class="text-right"><i class="fas fa-file-invoice-dollar"></i></h2>
-                </div>
-            </div><hr />
-            
-            <div class="text-left">
-                <div class="row">
-                    <div class="col-5">Net Pay</div>
-                    <div class="col">: RM @Model.summary.net.ToString("0.00")</div>
-                </div>
-                <div class="row">
-                    <div class="col-5">E'E / E'R EPF</div>
-                    <div class="col">: RM @Model.summary.epf.ToString("0.00") / @Model.summary.erepf.ToString("0.00")</div>
-                </div>
-                <div class="row">
-                    <div class="col-5">E'E / E'R SOCSO</div>
-                    <div class="col">: RM @Model.summary.socso.ToString("0.00") / @Model.summary.ersocso.ToString("0.00")</div>
-                </div>
-                <div class="row">
-                    <div class="col-5">E'E / E'R EIS</div>
-                    <div class="col">: RM @Model.summary.eis.ToString("0.00") / @Model.summary.ereis.ToString("0.00")</div>
-                </div>
-                <div class="row">
-                    <div class="col-5">TAX</div>
-                    <div class="col">: RM @Model.summary.tax.ToString("0.00")</div>
-                </div>
+                <p>@Model.RecordStatus</p>
+            </div>
+            <div class="card-footer">
+                <a class="btn text-white" asp-page="./Staff/Attendance">Check Attendance <i class="fas fa-arrow-circle-right"></i></a>
             </div>
         </div>
-        <div class="card-footer">
-            <a class="btn text-white" asp-page="./Staff/Salary">Check Salary <i class="fas fa-arrow-circle-right"></i></a>
+        @*view salary card*@
+        <div class="card bg-success text-white">
+            <div class="card-body">
+                <h1 class="text-center">Year Summary  <i class="fas fa-file-invoice-dollar"></i></h1>
+                @*<div class="row">
+                        <div class="col-md-10">
+                          <h2>Year Summary</h2>
+                      </div>
+                      <div class="col-md-2">
+                    <h2 class="text-right"><i class="fas fa-file-invoice-dollar"></i></h2>
+                      </div>
+                    </div>*@
+                <hr />
+
+                <div class="text-left">
+                    <div class="row">
+                        <div class="col-5">Net Pay</div>
+                        <div class="col">: RM @Model.summary.net.ToString("0.00")</div>
+                    </div>
+                    <div class="row">
+                        <div class="col-5">E'E / E'R EPF</div>
+                        <div class="col">: RM @Model.summary.epf.ToString("0.00") / @Model.summary.erepf.ToString("0.00")</div>
+                    </div>
+                    <div class="row">
+                        <div class="col-5">E'E / E'R SOCSO</div>
+                        <div class="col">: RM @Model.summary.socso.ToString("0.00") / @Model.summary.ersocso.ToString("0.00")</div>
+                    </div>
+                    <div class="row">
+                        <div class="col-5">E'E / E'R EIS</div>
+                        <div class="col">: RM @Model.summary.eis.ToString("0.00") / @Model.summary.ereis.ToString("0.00")</div>
+                    </div>
+                    <div class="row">
+                        <div class="col-5">TAX</div>
+                        <div class="col">: RM @Model.summary.tax.ToString("0.00")</div>
+                    </div>
+                </div>
+            </div>
+            <div class="card-footer">
+                <a class="btn text-white" asp-page="./Staff/Salary">Check Salary <i class="fas fa-arrow-circle-right"></i></a>
+            </div>
         </div>
+
+        @*view holiday #deee1f*@
+        <div class="card text-white" style="background-color: rgb(241, 181, 0) ;">
+            <div class="card-body">
+                <h1>Coming Holiday</h1><hr />
+                <div>@Model.ComingHoliday</div>
+
+            </div>
+            <div class="card-footer">
+                <a class="btn text-white" asp-page="./DateSettings/Index">Check Holiday <i class="fas fa-arrow-circle-right"></i></a>
+            </div>
+        </div>
+
     </div>
-
-    @*view holiday #deee1f*@
-    <div class="card text-white" style="background-color: rgb(241, 181, 0) ;">
-        <div class="card-body">
-            <h1>Coming Holiday</h1><hr />
-            <div>@Model.ComingHoliday</div>
-
-        </div>
-        <div class="card-footer">
-            <a class="btn text-white" asp-page="./DateSettings/Index">Check Holiday <i class="fas fa-arrow-circle-right"></i></a>
-        </div>
-    </div>
-
-</div>
     }
     <br />
 

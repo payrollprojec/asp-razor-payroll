@@ -4,24 +4,24 @@
     ViewData["Title"] = "Attendance";
 }
 <style>
-    #statusCount {
-        background-color: white;
+    .fixedPart {
         position: -webkit-sticky;
         position: sticky;
         top: 0;
     }
 
-        #statusCount th {
-            max-width: 60px;
-            text-align: center;
-        }
+    .fixedTable th {
+        max-width: 60px;
+        text-align: center;
+    }
 
-        #statusCount td {
-            text-align: center;
-        }
+    .fixedTable td {
+        text-align: center;
+        background-color: white;
+    }
 </style>
 
-<div class="row" >
+<div class="row">
     <div class="col"><h2>Attendance</h2></div><br />
     <div class="col">
 
@@ -55,9 +55,9 @@ dict[item.AttendanceStatus.Status] += 1;
 }
 
 <div class="row">
-
+    @*Column 1*@
     <div class="col">
-        <table class="table table-bordered table-sm text-center">
+        <table class="table table-bordered table-hover table-sm text-center">
             <thead class="thead-light">
                 <tr>
                     <th>
@@ -84,7 +84,7 @@ dict[item.AttendanceStatus.Status] += 1;
                     <td>
                         @if (item.AttendanceStatus.Status != "Present")
                         {
-                        <span style="color:deeppink;"> @Html.DisplayFor(modelItem => item.AttendanceStatus.Status)</span>
+                        <span style="color: deeppink;"> @Html.DisplayFor(modelItem => item.AttendanceStatus.Status)</span>
                         }
                         else
                         {
@@ -99,84 +99,65 @@ dict[item.AttendanceStatus.Status] += 1;
         </table>
     </div>
 
-    <div class="col" style="max-width:400px;">
-        <table id="statusCount" class="table table-sm table-bordered table-hover">
-            <thead class="thead-light">
-                <tr>
-                    <th scope="col">Attendance Status</th>
-                    <th scope="col">Count</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <th scope="row">Present</th>
-                    <td> @dict["Present"]</td>
-                </tr>
-                <tr>
-                    <th scope="row">Absent</th>
-                    <td>@dict["Absent"]</td>
-                </tr>
-                <tr>
-                    <th scope="row">Leave</th>
-                    <td>@dict["Leave"]</td>
-                </tr>
-                <tr>
-                    <th scope="row">Sick</th>
-                    <td>@dict["Sick"]</td>
-                </tr>
-            </tbody>
-        </table>
+    @*Column 2*@
+    <div class="col-sm-7" style="max-width:500px;">
+        <div class=" fixedPart">
+            @*Table 1*@
+            <table class="table table-sm table-bordered fixedTable">
+                <thead class="thead-light">
+                    <tr>
+                        <th scope="col">Attendance Status</th>
+                        <th scope="col">Count</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <th scope="row">Present</th>
+                        <td> @dict["Present"]</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Absent</th>
+                        <td>@dict["Absent"]</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Leave</th>
+                        <td>@dict["Leave"]</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Sick</th>
+                        <td>@dict["Sick"]</td>
+                    </tr>
+                </tbody>
+            </table>
+            <br />
+            @*Table 2*@
+            <table class="table table-sm table-bordered fixedTable">
+                <thead class="thead-light">
+                    <tr>
+                        <th> @Html.DisplayNameFor(model => model.SelectedMonHoliday[0].HolidayDate) </th>
+                        <th> @Html.DisplayNameFor(model => model.SelectedMonHoliday[0].HolidayDes) </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.SelectedMonHoliday)
+                    {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.HolidayDate.Value.DayOfWeek) <span>, </span>
+                            @Html.DisplayFor(modelItem => item.HolidayDate)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.HolidayDes)
+                        </td>
+                    </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+
+
     </div>
+    @*End Column 2*@
+
 </div>
-@*<table class="table table-bordered table-sm text-center">
-        <thead class="thead-light">
-            <tr>
-                <th>Present</th>
-                <th>Absent</th>
-                <th>Leave</th>
-                <th>Sick</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <td>@dict["Present"]</td>
-                <td>@dict["Absent"]</td>
-                <td>@dict["Leave"]</td>
-                <td>@dict["Sick"]</td>
-            </tr>
-        </tbody>
-    </table>
-    <table class="table table-bordered table-sm text-center">
-        <thead class="thead-light">
-            <tr>
-                <th>
-                    Day
-                </th>
-                <th>
-                    Date
-                </th>
-                <th>
-                    Status
-                </th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var item in Model.UserAttendance)
-            {
-                <tr>
-                    <td>
-                        @(item.PunchDate.Value.DayOfWeek)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.PunchDate)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.AttendanceStatus.Status)
-                    </td>
-                </tr>
-            }
-
-        </tbody>
-    </table>*@
-
 }

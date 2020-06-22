@@ -20706,6 +20706,11 @@
       "FileKind": "mvc"
     },
     {
+      "FilePath": "c:\\Users\\Wen\\source\\repos\\PayrollAppRazorPages5-final4\\Pages\\WorkDaySettings.cshtml",
+      "TargetPath": "Pages\\WorkDaySettings.cshtml",
+      "FileKind": "mvc"
+    },
+    {
       "FilePath": "c:\\Users\\Wen\\source\\repos\\PayrollAppRazorPages5-final4\\Pages\\Index.cshtml",
       "TargetPath": "Pages\\Index.cshtml",
       "FileKind": "mvc"

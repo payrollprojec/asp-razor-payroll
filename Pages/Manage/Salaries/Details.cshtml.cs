@@ -54,18 +54,7 @@ namespace PayrollAppRazorPages.Pages.Manage.Salaries
             [Column(TypeName = "decimal(18, 2)")]
             public decimal tax { get; set; }
         }
-        private static int WeekDaysInMonth(int year, int month)
-        {
-            int days = DateTime.DaysInMonth(year, month);
-            List<DateTime> dates = new List<DateTime>();
-            for (int i = 1; i <= days; i++)
-            {
-                dates.Add(new DateTime(year, month, i));
-            }
 
-            int weekDays = dates.Where(d => d.DayOfWeek < DayOfWeek.Friday).Count();
-            return weekDays;
-        }
         public async Task<IActionResult> OnGetAsync(int? id)
         {
             if (id == null)
@@ -82,7 +71,9 @@ namespace PayrollAppRazorPages.Pages.Manage.Salaries
             applicationUser = await _userManager.Users.Include(u => u.StaffData).Where(u => u.Id == StaffSalary.staffID).SingleOrDefaultAsync();
             SelectedDate = DateTime.Parse(StaffSalary.Year.ToString() + "-" + StaffSalary.Month.ToString() + "-01").ToString("MMMM yyyy");
             // get working days of this month
-            WeekdaysCount = WeekDaysInMonth(StaffSalary.Year, StaffSalary.Month);
+            WeekdaysCount = _context.WeekDaysInMonth(StaffSalary.Year, StaffSalary.Month);
+            var HolidaysCount = await _context.Holiday.Where(h => h.HolidayDate.Value.Year == StaffSalary.Year && h.HolidayDate.Value.Month == StaffSalary.Month).ToListAsync();
+            WeekdaysCount -= HolidaysCount.Count();
             UserAttendance = await _context.Attendance.Include(a => a.AttendanceStatus)
                 .Where(a => a.ApplicationUserId == StaffSalary.staffID && a.PunchDate.Value.Month == StaffSalary.Month && a.PunchDate.Value.Year == StaffSalary.Year)
                 .OrderBy(a => a.PunchDate).ToListAsync();
@@ -100,11 +91,12 @@ namespace PayrollAppRazorPages.Pages.Manage.Salaries
                     else
                         extraDucts += j.Amount;
                 }
-                wdc = WeekDaysInMonth(v.Year, v.Month);
-                var ac = await _context.Attendance
-                .Where(a => a.ApplicationUserId == v.staffID && a.PunchDate.Value.Month == v.Month && a.PunchDate.Value.Year == v.Year && a.AttendanceStatusId == 2)
-                .OrderBy(a => a.PunchDate).ToListAsync();
-                summary.net += v.BasicSalary / wdc * (wdc - ac.Count()) + v.Allowances + extraEarns + v.Bonus + v.AdvSalaryPlus - extraDucts - v.EPF - v.SocsoRm - v.EIS - v.Tax - v.AdvSalary;
+                //wdc = WeekDaysInMonth(v.Year, v.Month);
+                //var ac = await _context.Attendance
+                //.Where(a => a.ApplicationUserId == v.staffID && a.PunchDate.Value.Month == v.Month && a.PunchDate.Value.Year == v.Year && a.AttendanceStatusId == 2)
+                //.OrderBy(a => a.PunchDate).ToListAsync();
+                //summary.net += v.BasicSalary / wdc * (wdc - ac.Count()) + v.Allowances + extraEarns + v.Bonus + v.AdvSalaryPlus - extraDucts - v.EPF - v.SocsoRm - v.EIS - v.Tax - v.AdvSalary;
+                summary.net += v.BasicSalary - v.Absent + v.Allowances + extraEarns + v.Bonus + v.AdvSalaryPlus - extraDucts - v.EPF - v.SocsoRm - v.EIS - v.Tax - v.AdvSalary;
                 summary.epf += v.EPF;
                 summary.erepf += v.EREPF;
                 summary.socso += v.SocsoRm;

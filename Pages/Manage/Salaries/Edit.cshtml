@@ -76,6 +76,7 @@
             }
             <br /><b>Attendance Record</b>
             <br />
+            Present: @dict["Present"]/@Model.WeekdaysCount<br />
             Absent: @dict["Absent"]
             <br />
             Leave : @dict["Leave"]
@@ -87,7 +88,7 @@
         <div class="row">
 
             <div class="col border-right">
-                <br /><b>Earning</b>
+                <b>Earning</b>
                 <div asp-validation-summary="All" class="text-danger"></div>
                 <div class="form-group">
                     <label asp-for="StaffSalary.BasicSalary"></label>&nbsp;&nbsp;&nbsp;: RM
@@ -109,9 +110,10 @@
                     <input id="adv2" asp-for="StaffSalary.AdvSalaryPlus" />
                     <span asp-validation-for="StaffSalary.AdvSalaryPlus" class="text-danger"></span>
                 </div>
+
             </div>
             <div class="col">
-                <br /><b>Deduction</b>
+                <b>Deduction</b>
                 <div class="form-group">
                     <label asp-for="StaffSalary.EPF">EPF&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: RM</label>
                     <input id="epf" asp-for="StaffSalary.EPF" />
@@ -138,8 +140,10 @@
                     <span asp-validation-for="StaffSalary.AdvSalary" class="text-danger"></span>
                 </div>
                 <div class="form-group">
-                    <label>Absent&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: RM</label>
-                    <span id="absent"></span> (@dict["Absent"] days)
+                    <label>Absent (@dict["Absent"]/@Model.WeekdaysCount): RM</label>
+                    <input id="absent" asp-for="StaffSalary.Absent" />
+                    <span asp-validation-for="StaffSalary.Absent" class="text-danger"></span>
+
                 </div>
             </div>
         </div>
@@ -172,7 +176,6 @@
                     </div>
 
                 }
-
             </div>
         </div>
         <input id="weekdayscount" type="hidden" value="@Model.WeekdaysCount" />
@@ -180,7 +183,7 @@
         <div class="row  border-top  border-bottom align-items-end">
             <div class="col border-right">
                 Total Earning: RM <span id="totalEarn"></span><br />
-                Net Pay&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: RM <span id="netPay"></span>
+                <b>Net Pay&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: RM <span id="netPay"></span></b>
 
 
             </div>
@@ -263,9 +266,8 @@
             //console.log(allExtraEarn[i].value);
             extraDucts += +allExtraDuct[i].value;
         }
-        absent.innerHTML = `${(Math.round((+basic.value / +weekdayscount.value * +absentcount.value) * 100) / 100).toFixed(2)}`;
         totalEarn.innerHTML = `${(Math.round((+basic.value + +allowance.value + +bonus.value + +adv2.value + +extraEarns) * 100) / 100).toFixed(2)}`;
-        totalDeduct.innerHTML = `${(Math.round((+epf.value + +socso.value + +eis.value + +tax.value + +adv.value + +absent.innerHTML + +extraDucts) * 100) / 100).toFixed(2)}`;
+        totalDeduct.innerHTML = `${(Math.round((+epf.value + +socso.value + +eis.value + +tax.value + +adv.value + +absent.value + +extraDucts) * 100) / 100).toFixed(2)}`;
         netPay.innerHTML = `${(Math.round((+totalEarn.innerHTML - +totalDeduct.innerHTML) * 100) / 100).toFixed(2)}`;
     }
 </script>

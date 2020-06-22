@@ -55,18 +55,6 @@ namespace PayrollAppRazorPages.Pages
             [Column(TypeName = "decimal(18, 2)")]
             public decimal tax { get; set; }
         }
-        private static int WeekDaysInMonth(int year, int month)
-        {
-            int days = DateTime.DaysInMonth(year, month);
-            List<DateTime> dates = new List<DateTime>();
-            for (int i = 1; i <= days; i++)
-            {
-                dates.Add(new DateTime(year, month, i));
-            }
-
-            int weekDays = dates.Where(d => d.DayOfWeek < DayOfWeek.Friday).Count();
-            return weekDays;
-        }
         public IndexModel(UserManager<ApplicationUser> userManager, ILogger<IndexModel> logger, PayrollAppRazorPages.Data.ApplicationDbContext context)
         {
             _userManager = userManager;
@@ -82,27 +70,35 @@ namespace PayrollAppRazorPages.Pages
             var todayYear = DateTime.Today.Year.ToString();
 
             Holiday = await _context.Holiday.ToListAsync();
+
+            //if there is no holiday added
             if (Holiday.Count() == 0)
             {
                 ComingHoliday = "Not available yet.";
             }
             else
             {
-                var v = await _context.Holiday.Where(a => a.HolidayDate.Value.Month == int.Parse(todayMon) && a.HolidayDate.Value.Day >= int.Parse(todayDay)).SingleOrDefaultAsync();
-                if (v != null)
-                    ComingHoliday = ((DateTime)v.HolidayDate).ToString("dd/MM/yyyy") + " - " + v.HolidayDes;
+                int nextMon = int.Parse(todayMon) + 1;
+                int nextYear = int.Parse(todayYear) + 1;
+
+                // December
+                if (nextMon == 13)
+                {
+                    var closeHoliday = await _context.Holiday.Where(a => a.HolidayDate.Value.Year >= nextYear).OrderBy(a => a.HolidayDate).Take(1).ToListAsync();
+                    if (closeHoliday.Count() == 0)
+                        ComingHoliday = "Not available yet.";
+                    else
+                        ComingHoliday = ((DateTime)closeHoliday[0].HolidayDate).ToString("dd/MM/yyyy") + " - " + closeHoliday[0].HolidayDes;
+                }
                 else
                 {
-                    int nextMon = int.Parse(todayMon) + 1;
-                    var v2 = await _context.Holiday.Where(a => a.HolidayDate.Value.Month == nextMon).SingleOrDefaultAsync();
-                    if(v2 != null)
-                    {
-                        ComingHoliday = ((DateTime)v2.HolidayDate).ToString("dd/MM/yyyy") + " - " + v2.HolidayDes;
-                    }
-                    else {
-                        ComingHoliday = "No coming holiday yet.";
-                    }
+                    var closeHoliday = await _context.Holiday.Where(a => a.HolidayDate.Value.Month >= int.Parse(todayMon) && a.HolidayDate.Value.Day >= int.Parse(todayDay)).OrderBy(a => a.HolidayDate).Take(1).ToListAsync();
+                    if (closeHoliday.Count() == 0)
+                        ComingHoliday = "Not available yet.";
+                    else
+                        ComingHoliday = ((DateTime)closeHoliday[0].HolidayDate).ToString("dd/MM/yyyy") + " - " + closeHoliday[0].HolidayDes;
                 }
+
             }
 
             if (User.IsInRole("superadmin") || User.IsInRole("admin"))
@@ -120,14 +116,20 @@ namespace PayrollAppRazorPages.Pages
                 AttendanceCount = num.Count();
                 summary = new Summary();
 
-                var SummaryList = await _context.StaffSalary.Where(ss => ss.Year == int.Parse(todayYear)).ToListAsync();
+                var SummaryList = await _context.StaffSalary.Include(ss => ss.StaffSalaryExtras).ThenInclude(extra => extra.SalaryItem).Where(ss => ss.Year == int.Parse(todayYear)).ToListAsync();
                 foreach (var v in SummaryList)
                 {
-                    wdc = WeekDaysInMonth(v.Year, v.Month);
-                    var ac = await _context.Attendance
-                    .Where(a => a.ApplicationUserId == v.staffID && a.PunchDate.Value.Month == v.Month && a.PunchDate.Value.Year == v.Year && a.AttendanceStatusId == 2)
-                    .OrderBy(a => a.PunchDate).ToListAsync();
-                    summary.net += v.BasicSalary / wdc * (wdc - ac.Count()) + v.Allowances + v.Bonus + v.AdvSalaryPlus - v.EPF - v.SocsoRm - v.EIS - v.Tax - v.AdvSalary;
+                    decimal extraEarns = 0;
+                    decimal extraDucts = 0;
+                    foreach (var j in v.StaffSalaryExtras)
+                    {
+                        if (j.SalaryItem.IsDeduction == false)
+                            extraEarns += j.Amount;
+                        else
+                            extraDucts += j.Amount;
+                    }
+
+                    summary.net += v.BasicSalary - v.Absent + extraEarns - extraDucts + v.Allowances + v.Bonus + v.AdvSalaryPlus - v.EPF - v.SocsoRm - v.EIS - v.Tax - v.AdvSalary;
                     //summary.net += v.BasicSalary + v.Allowances + v.Bonus + v.AdvSalaryPlus - v.EPF - v.SocsoRm - v.EIS - v.Tax - v.AdvSalary;
 
                 }
@@ -146,14 +148,22 @@ namespace PayrollAppRazorPages.Pages
                     a.PunchDate.Value.Year == int.Parse(todayYear)).Include(a => a.AttendanceStatus).SingleOrDefaultAsync();
 
                 summary = new Summary();
-                var SummaryList = await _context.StaffSalary.Where(ss => ss.staffID == applicationUser.Id && ss.Year == int.Parse(todayYear)).ToListAsync();
+                var SummaryList = await _context.StaffSalary.Include(ss => ss.StaffSalaryExtras).ThenInclude(extra => extra.SalaryItem).Where(ss => ss.staffID == applicationUser.Id && ss.Year == int.Parse(todayYear)).ToListAsync();
                 foreach (var v in SummaryList)
                 {
-                    wdc = WeekDaysInMonth(v.Year, v.Month);
-                    var ac = await _context.Attendance
-                    .Where(a => a.ApplicationUserId == v.staffID && a.PunchDate.Value.Month == v.Month && a.PunchDate.Value.Year == v.Year && a.AttendanceStatusId == 2)
-                    .OrderBy(a => a.PunchDate).ToListAsync();
-                    summary.net += v.BasicSalary / wdc * (wdc - ac.Count()) + v.Allowances + v.Bonus + v.AdvSalaryPlus - v.EPF - v.SocsoRm - v.EIS - v.Tax - v.AdvSalary;
+                    decimal extraEarns = 0;
+                    decimal extraDucts = 0;
+                    foreach (var j in v.StaffSalaryExtras)
+                    {
+                        if (j.SalaryItem.IsDeduction == false)
+                            extraEarns += j.Amount;
+                        else
+                            extraDucts += j.Amount;
+                    }
+                    //wdc = WeekDaysInMonth(v.Year, v.Month);
+
+                    //summary.net += v.BasicSalary / wdc * (wdc - ac.Count()) + v.Allowances + v.Bonus + v.AdvSalaryPlus - v.EPF - v.SocsoRm - v.EIS - v.Tax - v.AdvSalary;
+                    summary.net += v.BasicSalary - v.Absent + extraEarns - extraDucts + v.Allowances + v.Bonus + v.AdvSalaryPlus - v.EPF - v.SocsoRm - v.EIS - v.Tax - v.AdvSalary;
                     //summary.net += v.BasicSalary + v.Allowances + v.Bonus + v.AdvSalaryPlus - v.EPF - v.SocsoRm - v.EIS - v.Tax - v.AdvSalary;
                     summary.epf += v.EPF;
                     summary.erepf += v.EREPF;

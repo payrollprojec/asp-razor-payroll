@@ -58,6 +58,7 @@
             }
             <br /><b>Attendance Record</b>
             <br />
+            Present: @dict["Present"]/@Model.WeekdaysCount<br />
             Absent: @dict["Absent"]
             <br />
             Leave : @dict["Leave"]
@@ -132,6 +133,8 @@
                 <div class="form-group">
                     <label>Absent (@dict["Absent"]/@Model.WeekdaysCount): RM</label>
                     <input id="absent" asp-for="StaffSalary.Absent" />
+                    <span asp-validation-for="StaffSalary.Absent" class="text-danger"></span>
+
                 </div>
 
             </div>

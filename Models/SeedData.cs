@@ -26,6 +26,11 @@ namespace PayrollAppRazorPages.Models
 
                 await context.SaveChangesAsync();
             }
+            if (context.GlobalSettings.Any()) { }
+            else
+            {
+                await context.GlobalSettings.AddAsync(new GlobalSettings { NoWorkDays = "5,6" });
+            }
 
             if (context.Users.Any())
             {

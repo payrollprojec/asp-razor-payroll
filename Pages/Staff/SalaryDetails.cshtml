@@ -16,16 +16,16 @@
     }
 </style>
 <div class="slip container-fluid">
-    <div class="row">
+    <div class="row" style="padding-bottom:5px;">
         <div class="col"><h4>PAYSLIP FOR @Model.SelectedDate.ToUpper()</h4></div>
         <div class="col align-self-center text-right">
             <h4 class="small">Generated on @Model.StaffSalary.DateCreated.ToShortDateString()</h4>
-            <a class="btn btn-warning" asp-page="./SalaryPDF" target="_blank" asp-route-id="@Model.StaffSalary.salaryID">Print PDF</a>
+            <a class="btn btn-sm btn-warning" asp-page="./SalaryPDF" target="_blank" asp-route-id="@Model.StaffSalary.salaryID">Print PDF</a>
         </div>
     </div>
 
     <div class="row border-bottom border-top">
-        <div class="col border-right">
+        <div class="col-md border-right">
 
             <br /><b>Employee Details</b><br />
 
@@ -50,7 +50,7 @@
             @Html.DisplayNameFor(model => model.applicationUser.StaffData.TaxNo)&nbsp;&nbsp;:
             @Html.DisplayFor(model => model.applicationUser.StaffData.TaxNo)
         </div>
-        <div class="col">
+        <div class="col-md">
             @{
                 Dictionary<string, int> dict = new Dictionary<string, int>();
                 dict.Add("Present", 0);
@@ -65,6 +65,8 @@
             }
             <br /><b>Attendance Record</b>
             <br />
+            Present: @dict["Present"]/@Model.WeekdaysCount<br />
+
             Absent: @dict["Absent"]
             <br />
             Leave : @dict["Leave"]
@@ -74,7 +76,7 @@
     </div>
         <div class="row earn-duct">
 
-            <div class="col border-right">
+            <div class="col-md border-right">
                 <br /><b>Earning</b>
                 <div class="form-group">
                     <label asp-for="StaffSalary.BasicSalary"></label>&nbsp;&nbsp;&nbsp;: RM
@@ -92,8 +94,9 @@
                     <label>Adv. Salary&nbsp;&nbsp;&nbsp;&nbsp;: RM</label>
                     @Html.DisplayFor(model => model.StaffSalary.AdvSalaryPlus)
                 </div>
+
             </div>
-            <div class="col">
+            <div class="col-md">
                 <br /><b>Deduction</b>
                 <div class="form-group" style="display: @(Model.StaffSalary.EPF == 0? "none" :"block")">
                     <label asp-for="StaffSalary.EPF">EPF&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: RM</label>
@@ -115,21 +118,61 @@
                     <label asp-for="StaffSalary.AdvSalary">Adv. Salary: RM</label>
                     @Html.DisplayFor(model => model.StaffSalary.AdvSalary)
                 </div>
+
                 <div class="form-group">
-                    @{
-                        var absent = Model.StaffSalary.BasicSalary / Model.WeekdaysCount * dict["Absent"];
-                    }
                     <label>Absent&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: RM</label>
-                    <span>@absent.ToString("0.00")</span> (@dict["Absent"] days)
+                    @Html.DisplayFor(model => model.StaffSalary.Absent) (@dict["Absent"] days)
+                    <span asp-validation-for="StaffSalary.Absent" class="text-danger"></span>
+
                 </div>
+            </div>
+        </div>
+        <div class="row earn-duct border-top">
+            <div class="col-md border-right">
+                <p><b>Extra Earnings</b></p>
+                @{
+                    decimal extraEarns = 0;
+                    decimal extraDucts = 0;
+                }
+                @foreach (var item in Model.StaffSalaryExtras)
+                {
+                    @if (item.SalaryItem.IsDeduction == true)
+                    {
+                        continue;
+                    }
+                    extraEarns += item.Amount;
+                    <div class="form-group">
+                        <label>@Html.DisplayFor(modelItem => item.SalaryItem.Name): RM</label>
+                        @Html.DisplayFor(modelItem => item.Amount)
+                    </div>
+
+                }
+            </div>
+            <div class="col-md">
+                <p><b>Extra Deductions</b></p>
+                @foreach (var item in Model.StaffSalaryExtras)
+                {
+                    @if (item.SalaryItem.IsDeduction == false)
+                    {
+                        continue;
+                    }
+                    extraDucts += item.Amount;
+                    <div class="form-group">
+                        <label>@Html.DisplayFor(modelItem => item.SalaryItem.Name): RM</label>
+                        @Html.DisplayFor(modelItem => item.Amount)
+                    </div>
+
+                }
+
             </div>
         </div>
         <div class="row border-top border-bottom align-items-end">
 
-            <div class="col border-right"><br />
+            <div class="col-md border-right">
+                <br />
                 @{
-                    var totalEarn = Model.StaffSalary.BasicSalary + Model.StaffSalary.Allowances + Model.StaffSalary.Bonus + Model.StaffSalary.AdvSalaryPlus;
-                    var totalDeduct = Model.StaffSalary.EPF + Model.StaffSalary.SocsoRm + Model.StaffSalary.EIS + Model.StaffSalary.Tax + Model.StaffSalary.AdvSalary + absent;
+                    var totalEarn = Model.StaffSalary.BasicSalary + Model.StaffSalary.Allowances + Model.StaffSalary.Bonus + Model.StaffSalary.AdvSalaryPlus + extraEarns;
+                    var totalDeduct = Model.StaffSalary.EPF + Model.StaffSalary.SocsoRm + Model.StaffSalary.EIS + Model.StaffSalary.Tax + Model.StaffSalary.AdvSalary + Model.StaffSalary.Absent + extraDucts;
                     var net = totalEarn - totalDeduct;
                 }
                 Total Earning: RM @totalEarn.ToString("0.00")
@@ -138,13 +181,14 @@
 
 
             </div>
-            <div class="col"><br />
+            <div class="col-md">
+                <br />
                 Total Deduction: RM @totalDeduct.ToString("0.00")
             </div>
 
         </div>
         <div class="row border-bottom">
-            <div class="col border-right">
+            <div class="col-md border-right">
                 <br />
                 <b>Employer Contribution</b>
                 <div class="form-group">
@@ -160,7 +204,7 @@
                     @Html.DisplayFor(model => model.StaffSalary.EREIS)
                 </div>
             </div>
-            <div class="col">
+            <div class="col-md">
                 <br />
                 <b>Year Summary (inc @Model.SelectedDate)</b><br />
                 Net Pay&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: RM @Html.DisplayFor(model => model.summary.net)<br />
@@ -171,8 +215,5 @@
             </div>
         </div>
         <br />
-        <div>
-            <a class="btn btn-secondary" asp-page="./Salary">Back to List</a>
-        </div>
 </div>
 <br />

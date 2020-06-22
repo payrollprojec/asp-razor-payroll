@@ -37,18 +37,6 @@ namespace PayrollAppRazorPages.Pages.Manage.Salaries
         [BindProperty]
         public List<StaffSalaryExtra> StaffSalaryExtrasDuct { get; set; }
 
-        private static int WeekDaysInMonth(int year, int month)
-        {
-            int days = DateTime.DaysInMonth(year, month);
-            List<DateTime> dates = new List<DateTime>();
-            for (int i = 1; i <= days; i++)
-            {
-                dates.Add(new DateTime(year, month, i));
-            }
-
-            int weekDays = dates.Where(d => d.DayOfWeek < DayOfWeek.Friday).Count();
-            return weekDays;
-        }
         public async Task<IActionResult> OnGetAsync(int? id)
         {
             if (id == null)
@@ -65,16 +53,19 @@ namespace PayrollAppRazorPages.Pages.Manage.Salaries
             applicationUser = await _userManager.Users.Include(u => u.StaffData).Where(u => u.Id == StaffSalary.staffID).SingleOrDefaultAsync();
             SelectedDate = DateTime.Parse(StaffSalary.Year.ToString() + "-" + StaffSalary.Month.ToString() + "-01").ToString("MMMM yyyy");
             // get working days of this month
-            WeekdaysCount = WeekDaysInMonth(StaffSalary.Year, StaffSalary.Month);
+            WeekdaysCount = _context.WeekDaysInMonth(StaffSalary.Year, StaffSalary.Month);
+            var HolidaysCount = await _context.Holiday.Where(h => h.HolidayDate.Value.Year == StaffSalary.Year && h.HolidayDate.Value.Month == StaffSalary.Month).ToListAsync();
+            WeekdaysCount -= HolidaysCount.Count();
+
             UserAttendance = await _context.Attendance.Include(a => a.AttendanceStatus)
                 .Where(a => a.ApplicationUserId == StaffSalary.staffID && a.PunchDate.Value.Month == StaffSalary.Month && a.PunchDate.Value.Year == StaffSalary.Year)
                 .OrderBy(a => a.PunchDate).ToListAsync();
 
-            
-            StaffSalaryExtrasEarn = await _context.StaffSalaryExtra.Include(s => s.SalaryItem).Where(s => s.StaffSalaryId == StaffSalary.salaryID && s.SalaryItem.IsDeduction == false).ToListAsync();
-            StaffSalaryExtrasDuct = await _context.StaffSalaryExtra.Include(s => s.SalaryItem).Where(s => s.StaffSalaryId == StaffSalary.salaryID && s.SalaryItem.IsDeduction== true).ToListAsync();
 
-            
+            StaffSalaryExtrasEarn = await _context.StaffSalaryExtra.Include(s => s.SalaryItem).Where(s => s.StaffSalaryId == StaffSalary.salaryID && s.SalaryItem.IsDeduction == false).ToListAsync();
+            StaffSalaryExtrasDuct = await _context.StaffSalaryExtra.Include(s => s.SalaryItem).Where(s => s.StaffSalaryId == StaffSalary.salaryID && s.SalaryItem.IsDeduction == true).ToListAsync();
+
+
 
             return Page();
         }
@@ -92,7 +83,7 @@ namespace PayrollAppRazorPages.Pages.Manage.Salaries
                 }
                 applicationUser = await _userManager.Users.Include(u => u.StaffData).Where(u => u.Id == StaffSalary.staffID).SingleOrDefaultAsync();
                 SelectedDate = DateTime.Parse(StaffSalary.Year.ToString() + "-" + StaffSalary.Month.ToString() + "-01").ToString("MMMM yyyy");
-                WeekdaysCount = WeekDaysInMonth(StaffSalary.Year, StaffSalary.Month);
+                WeekdaysCount = _context.WeekDaysInMonth(StaffSalary.Year, StaffSalary.Month);
 
                 UserAttendance = await _context.Attendance.Include(a => a.AttendanceStatus)
                     .Where(a => a.ApplicationUserId == StaffSalary.staffID && a.PunchDate.Value.Month == StaffSalary.Month && a.PunchDate.Value.Year == StaffSalary.Year)
@@ -122,7 +113,7 @@ namespace PayrollAppRazorPages.Pages.Manage.Salaries
             }
             StatusMessage = "Staff Salary Details Updated.";
 
-            return RedirectToPage("./Details", new { Id = StaffSalary.salaryID});
+            return RedirectToPage("./Details", new { Id = StaffSalary.salaryID });
 
         }
         private bool StaffSalaryExists(int id)

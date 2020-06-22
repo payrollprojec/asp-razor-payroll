@@ -5,11 +5,14 @@
     Layout = "_Layout";
 }
 
-<br /><hr style="height:2px; color:black; background-color:black;" /><br />
+<br />
+<hr style="height:2px; color:black; background-color:black;" />
+<br />
 <h1 style="text-align: center;">V3X Malaysia Sdn. Bhd.</h1>
 <p style="text-align: center;">79A, Jalan Pulai 23, Taman Pulai Utama,</p>
 <p style="text-align: center;">81300 Skudai, Johor, Malaysia</p>
-<br /><hr style="height:2px; color:black; background-color:black;" />
+<br />
+<hr style="height:2px; color:black; background-color:black;" />
 <br />
 
 <style>
@@ -27,7 +30,7 @@
     }
 </style>
 <div class="slip container-fluid">
-    <div class="row">
+    <div class="row" style="padding-bottom:5px;">
         <div class="col"><h4>PAYSLIP FOR @Model.SelectedDate.ToUpper()</h4></div>
         <div class="col align-self-center text-right">
             <h4 class="small">Generated on @Model.StaffSalary.DateCreated.ToShortDateString()</h4>
@@ -59,7 +62,6 @@
             <br />
             @Html.DisplayNameFor(model => model.applicationUser.StaffData.TaxNo)&nbsp;&nbsp;:
             @Html.DisplayFor(model => model.applicationUser.StaffData.TaxNo)
-            <br />
         </div>
         <div class="col">
             @{
@@ -76,6 +78,8 @@
             }
             <br /><b>Attendance Record</b>
             <br />
+            Present: @dict["Present"]/@Model.WeekdaysCount<br />
+
             Absent: @dict["Absent"]
             <br />
             Leave : @dict["Leave"]
@@ -83,103 +87,151 @@
             Sick &nbsp;: @dict["Sick"]
         </div>
     </div>
-    <div class="row earn-duct">
+    <form method="post" oninput="calc()">
+        <div class="row earn-duct">
 
-        <div class="col border-right">
-            <br /><b>Earning</b>
-            <div class="form-group">
-                <label asp-for="StaffSalary.BasicSalary"></label>&nbsp;&nbsp;&nbsp;: RM
-                @Html.DisplayFor(model => model.StaffSalary.BasicSalary)
+            <div class="col border-right">
+                <br /><b>Earning</b>
+                <div class="form-group">
+                    <label asp-for="StaffSalary.BasicSalary"></label>&nbsp;&nbsp;&nbsp;: RM
+                    @Html.DisplayFor(model => model.StaffSalary.BasicSalary)
+                </div>
+                <div class="form-group" style="display: @(Model.StaffSalary.Allowances == 0? "none" :"block")">
+                    <label asp-for="StaffSalary.Allowances"></label>: RM
+                    @Html.DisplayFor(model => model.StaffSalary.Allowances)
+                </div>
+                <div class="form-group" style="display: @(Model.StaffSalary.Bonus == 0? "none" :"block")">
+                    <label asp-for="StaffSalary.Bonus"></label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: RM
+                    @Html.DisplayFor(model => model.StaffSalary.Bonus)
+                </div>
+                <div class="form-group" style="display: @(Model.StaffSalary.AdvSalaryPlus == 0? "none" :"block")">
+                    <label>Adv. Salary&nbsp;&nbsp;&nbsp;&nbsp;: RM</label>
+                    @Html.DisplayFor(model => model.StaffSalary.AdvSalaryPlus)
+                </div>
+
             </div>
-            <div class="form-group" style="display: @(Model.StaffSalary.Allowances == 0? "none" :"block")">
-                <label asp-for="StaffSalary.Allowances"></label>: RM
-                @Html.DisplayFor(model => model.StaffSalary.Allowances)
-            </div>
-            <div class="form-group" style="display: @(Model.StaffSalary.Bonus == 0? "none" :"block")">
-                <label asp-for="StaffSalary.Bonus"></label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: RM
-                @Html.DisplayFor(model => model.StaffSalary.Bonus)
-            </div>
-            <div class="form-group" style="display: @(Model.StaffSalary.AdvSalaryPlus == 0? "none" :"block")">
-                <label>Adv. Salary&nbsp;&nbsp;&nbsp;&nbsp;: RM</label>
-                @Html.DisplayFor(model => model.StaffSalary.AdvSalaryPlus)
+            <div class="col">
+                <br /><b>Deduction</b>
+                <div class="form-group" style="display: @(Model.StaffSalary.EPF == 0? "none" :"block")">
+                    <label asp-for="StaffSalary.EPF">EPF&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: RM</label>
+                    @Html.DisplayFor(model => model.StaffSalary.EPF)
+                </div>
+                <div class="form-group" style="display: @(Model.StaffSalary.SocsoRm == 0? "none" :"block")">
+                    <label asp-for="StaffSalary.SocsoRm">SOCSO&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: RM</label>
+                    @Html.DisplayFor(model => model.StaffSalary.SocsoRm)
+                </div>
+                <div class="form-group" style="display: @(Model.StaffSalary.EIS == 0? "none" :"block")">
+                    <label asp-for="StaffSalary.EIS">EIS&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: RM</label>
+                    @Html.DisplayFor(model => model.StaffSalary.EIS)
+                </div>
+                <div class="form-group" style="display: @(Model.StaffSalary.Tax == 0? "none" :"block")">
+                    <label asp-for="StaffSalary.Tax">TAX&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: RM</label>
+                    @Html.DisplayFor(model => model.StaffSalary.Tax)
+                </div>
+                <div class="form-group" style="display: @(Model.StaffSalary.AdvSalary == 0? "none" :"block")">
+                    <label asp-for="StaffSalary.AdvSalary">Adv. Salary: RM</label>
+                    @Html.DisplayFor(model => model.StaffSalary.AdvSalary)
+                </div>
+
+                <div class="form-group">
+                    <label>Absent&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: RM</label>
+                    @Html.DisplayFor(model => model.StaffSalary.Absent) (@dict["Absent"] days)
+                    <span asp-validation-for="StaffSalary.Absent" class="text-danger"></span>
+
+                </div>
             </div>
         </div>
-        <div class="col">
-            <br /><b>Deduction</b>
-            <div class="form-group" style="display: @(Model.StaffSalary.EPF == 0? "none" :"block")">
-                <label asp-for="StaffSalary.EPF">EPF&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: RM</label>
-                @Html.DisplayFor(model => model.StaffSalary.EPF)
-            </div>
-            <div class="form-group" style="display: @(Model.StaffSalary.SocsoRm == 0? "none" :"block")">
-                <label asp-for="StaffSalary.SocsoRm">SOCSO&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: RM</label>
-                @Html.DisplayFor(model => model.StaffSalary.SocsoRm)
-            </div>
-            <div class="form-group" style="display: @(Model.StaffSalary.EIS == 0? "none" :"block")">
-                <label asp-for="StaffSalary.EIS">EIS&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: RM</label>
-                @Html.DisplayFor(model => model.StaffSalary.EIS)
-            </div>
-            <div class="form-group" style="display: @(Model.StaffSalary.Tax == 0? "none" :"block")">
-                <label asp-for="StaffSalary.Tax">TAX&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: RM</label>
-                @Html.DisplayFor(model => model.StaffSalary.Tax)
-            </div>
-            <div class="form-group" style="display: @(Model.StaffSalary.AdvSalary == 0? "none" :"block")">
-                <label asp-for="StaffSalary.AdvSalary">Adv. Salary: RM</label>
-                @Html.DisplayFor(model => model.StaffSalary.AdvSalary)
-            </div>
-            <div class="form-group">
+        <div class="row earn-duct border-top">
+            <div class="col border-right">
+                <p><b>Extra Earnings</b></p>
                 @{
-                    var absent = Model.StaffSalary.BasicSalary / Model.WeekdaysCount * dict["Absent"];
+                    decimal extraEarns = 0;
+                    decimal extraDucts = 0;
                 }
-                <label>Absent&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: RM</label>
-                <span>@absent.ToString("0.00")</span> (@dict["Absent"] days)
-            </div>
-        </div>
-    </div>
-    <div class="row border-top border-bottom align-items-end">
+                @foreach (var item in Model.StaffSalaryExtras)
+                {
+                    @if (item.SalaryItem.IsDeduction == true)
+                    {
+                        continue;
+                    }
+                    extraEarns += item.Amount;
+                    <div class="form-group">
+                        <label>@Html.DisplayFor(modelItem => item.SalaryItem.Name): RM</label>
+                        @Html.DisplayFor(modelItem => item.Amount)
+                    </div>
 
-        <div class="col border-right"><br />
-            @{
-                var totalEarn = Model.StaffSalary.BasicSalary + Model.StaffSalary.Allowances + Model.StaffSalary.Bonus + Model.StaffSalary.AdvSalaryPlus;
-                var totalDeduct = Model.StaffSalary.EPF + Model.StaffSalary.SocsoRm + Model.StaffSalary.EIS + Model.StaffSalary.Tax + Model.StaffSalary.AdvSalary + absent;
+                }
+            </div>
+            <div class="col">
+                <p><b>Extra Deductions</b></p>
+                @foreach (var item in Model.StaffSalaryExtras)
+                {
+                    @if (item.SalaryItem.IsDeduction == false)
+                    {
+                        continue;
+                    }
+                    extraDucts += item.Amount;
+                    <div class="form-group">
+                        <label>@Html.DisplayFor(modelItem => item.SalaryItem.Name): RM</label>
+                        @Html.DisplayFor(modelItem => item.Amount)
+                    </div>
 
-                var net = totalEarn - totalDeduct;
-            }
-            Total Earning: RM @totalEarn.ToString("0.00")
-            <br />
-            <b>Net Pay&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: RM @net.ToString("0.00")</b>
-            <br />
-        </div>
-        <div class="col"><br />
-            Total Deduction: RM @totalDeduct.ToString("0.00")
-        </div>
+                }
 
-    </div>
-    <div class="row border-bottom">
-        <div class="col border-right">
-            <br />
-            <b>Employer Contribution</b>
-            <div>
-                <label asp-for="StaffSalary.EREPF">EPF&nbsp;&nbsp;: RM</label>
-                @Html.DisplayFor(model => model.StaffSalary.EREPF)
-            </div>
-            <div>
-                <label asp-for="StaffSalary.ERSocsoRm">SOCSO: RM</label>
-                @Html.DisplayFor(model => model.StaffSalary.ERSocsoRm)
-            </div>
-            <div>
-                <label asp-for="StaffSalary.EREIS">EIS&nbsp;&nbsp;: RM</label>
-                @Html.DisplayFor(model => model.StaffSalary.EREIS)
             </div>
         </div>
-        <div class="col">
-            <br />
-            <b>Year Summary (inc @Model.SelectedDate)</b><br />
-            Net Pay&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: RM @Html.DisplayFor(model => model.summary.net)<br />
-            E'E / E'R EPF &nbsp;: RM @Html.DisplayFor(model => model.summary.epf) / @Html.DisplayFor(model => model.summary.erepf)<br />
-            E'E / E'R SOCSO: RM @Html.DisplayFor(model => model.summary.socso) / @Html.DisplayFor(model => model.summary.ersocso)<br />
-            E'E / E'R EIS &nbsp;: RM @Html.DisplayFor(model => model.summary.eis) / @Html.DisplayFor(model => model.summary.ereis)<br />
-            TAX&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: RM @Model.summary.tax<br />
+        <div class="row border-top border-bottom align-items-end">
+
+            <div class="col border-right">
+                <br />
+                @{
+                    var totalEarn = Model.StaffSalary.BasicSalary + Model.StaffSalary.Allowances + Model.StaffSalary.Bonus + Model.StaffSalary.AdvSalaryPlus + extraEarns;
+                    var totalDeduct = Model.StaffSalary.EPF + Model.StaffSalary.SocsoRm + Model.StaffSalary.EIS + Model.StaffSalary.Tax + Model.StaffSalary.AdvSalary + Model.StaffSalary.Absent + extraDucts;
+                    var net = totalEarn - totalDeduct;
+                }
+                Total Earning: RM @totalEarn.ToString("0.00")
+                <br />
+                <b>Net Pay&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: RM @net.ToString("0.00")</b>
+
+
+            </div>
+            <div class="col">
+                <br />
+                Total Deduction: RM @totalDeduct.ToString("0.00")
+            </div>
+
         </div>
-    </div>
-    <br />
+        <div class="row border-bottom">
+            <div class="col border-right">
+                <br />
+                <b>Employer Contribution</b>
+                <div class="form-group">
+                    <label asp-for="StaffSalary.EREPF">EPF&nbsp;&nbsp;: RM</label>
+                    @Html.DisplayFor(model => model.StaffSalary.EREPF)
+                </div>
+                <div class="form-group">
+                    <label asp-for="StaffSalary.ERSocsoRm">SOCSO: RM</label>
+                    @Html.DisplayFor(model => model.StaffSalary.ERSocsoRm)
+                </div>
+                <div class="form-group">
+                    <label asp-for="StaffSalary.EREIS">EIS&nbsp;&nbsp;: RM</label>
+                    @Html.DisplayFor(model => model.StaffSalary.EREIS)
+                </div>
+            </div>
+            <div class="col">
+                <br />
+                <b>Year Summary (inc @Model.SelectedDate)</b><br />
+                Net Pay&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: RM @Html.DisplayFor(model => model.summary.net)<br />
+                E'E / E'R EPF &nbsp;: RM @Html.DisplayFor(model => model.summary.epf) / @Html.DisplayFor(model => model.summary.erepf)<br />
+                E'E / E'R SOCSO: RM @Html.DisplayFor(model => model.summary.socso) / @Html.DisplayFor(model => model.summary.ersocso)<br />
+                E'E / E'R EIS &nbsp;: RM @Html.DisplayFor(model => model.summary.eis) / @Html.DisplayFor(model => model.summary.ereis)<br />
+                TAX&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: RM @Model.summary.tax<br />
+            </div>
+        </div>
+        <br />
+        <div>
+
+        </div>
+    </form>
 </div>
+<br />

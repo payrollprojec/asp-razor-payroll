@@ -35,6 +35,8 @@ namespace PayrollAppRazorPages.Pages.Staff
         [BindProperty(SupportsGet = true)]
         public string SelectedYear { get; set; }
 
+        public IList<Holiday> SelectedMonHoliday { get; set; }
+
         public async Task<IActionResult> OnGetAsync()
         {
             applicationUser = await _userManager.GetUserAsync(User);  // User = logged in user (built in magic)
@@ -76,6 +78,10 @@ namespace PayrollAppRazorPages.Pages.Staff
                 SelectedMonth = DateTime.Now.Month.ToString();
                 SelectedYear = DateTime.Now.Year.ToString();
             }
+
+            SelectedMonHoliday = await _context.Holiday
+                .Where(a => a.HolidayDate.Value.Year == int.Parse(SelectedYear) && a.HolidayDate.Value.Month == int.Parse(SelectedMonth))
+                .OrderBy(a => a.HolidayDate).ToListAsync();
 
             UserAttendance = await _context.Attendance.Include(a => a.AttendanceStatus)
                 .Where(a => a.ApplicationUserId == applicationUser.Id && a.PunchDate.Value.Month == int.Parse(SelectedMonth) && a.PunchDate.Value.Year == int.Parse(SelectedYear))

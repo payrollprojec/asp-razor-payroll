@@ -46,6 +46,8 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Include="Pages\Manage\Attendances\Edit.cshtml" />
+    <None Include="Pages\Manage\Attendances\Index.cshtml" />
     <None Include="Pages\Manage\Salaries\SalaryPDF.cshtml" />
     <None Include="Pages\Manage\Salaries\SendEmail.cshtml" />
     <None Include="Pages\Manage\Salaries\SendEmailConfirmation.cshtml" />
