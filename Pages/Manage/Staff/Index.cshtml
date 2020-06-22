@@ -8,52 +8,56 @@
     <p>
         <a asp-page="Create">Create New Staff</a>
     </p>*@
-<div class="container row ">
-    <h4 class="col">Manage Staff</h4>
-    <p><a class="btn btn-info " asp-page="Create">Create New Staff</a></p>
-</div>
-<partial name="_StatusMessage" model="Model.StatusMessage" />
-<table class="table table-hover">
-    <thead class="thead-light">
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Users[0].UserName)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Users[0].FullName)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Users[0].Email)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Users[0].ICNo)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model.Users)
-        {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.UserName)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.FullName)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Email)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.ICNo)
-                </td>
-                <td>
-                    <a asp-page="./Edit" asp-route-id="@item.Id">Edit</a> |
-                    <a asp-page="./Details" asp-route-id="@item.Id">Details</a> |
-                    <a asp-page="./Delete" asp-route-id="@item.Id">Delete</a> |
-                    <a asp-page="./ResetPw" asp-route-id="@item.Id">Reset Password</a>
-                </td>
-            </tr>
-        }
-    </tbody>
-</table>
+    <div class="container row jumbotron" style="margin-left: 10px; background-color:lightcoral;">
+        <div class="container row ">
+            <h4 class="col" style="color: white;">Manage Staff</h4>
+            <p><a class="btn btn-light " asp-page="Create">Create New Staff</a></p>
+        </div>
+    </div>
+    <div style="padding: 0 55px; margin-top: -81px;">
+        <partial name="_StatusMessage" model="Model.StatusMessage" />
+        <table class="table table-hover">
+            <thead class="thead-light">
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Users[0].UserName)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Users[0].FullName)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Users[0].Email)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Users[0].ICNo)
+                    </th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.Users)
+                {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.UserName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.FullName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Email)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ICNo)
+                    </td>
+                    <td>
+                        <a asp-page="./Edit" asp-route-id="@item.Id">Edit</a> |
+                        <a asp-page="./Details" asp-route-id="@item.Id">Details</a> |
+                        <a asp-page="./Delete" asp-route-id="@item.Id">Delete</a> |
+                        <a asp-page="./ResetPw" asp-route-id="@item.Id">Reset Password</a>
+                    </td>
+                </tr>
+                }
+            </tbody>
+        </table>
+     </div>

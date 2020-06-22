@@ -15,57 +15,60 @@
             <input type="submit" value="Go" />
         </p>
     </form>*@
-<div class="row">
-    <div class="col-auto"><h4>Manage Attendance</h4></div><br />
-    <div class="col-auto">
-        <form class="form-inline">
-            <input id="name" class="form-control-sm mr-sm-3" type="text" asp-for="SearchString" placeholder="Search Name" />
-            <select class="form-control-sm mr-sm-3" asp-for="SelectedMonth" asp-items="Model.Months">
-            </select>
-            <select class="form-control-sm mr-sm-3" asp-for="SelectedYear" asp-items="Model.Years">
-            </select>
-            <input type="submit" value="Filter" />
-        </form>
-    </div>
-</div>
-<br />
+        <div class="container row">
+    <div class="container row jumbotron" style="margin-left: 10px; background-color:darkorange;">
+            <div class="col-auto" style="color: white;"><h4>Manage Attendance</h4></div><br />
+            <div class="col-auto">
+                <form class="form-inline">
+                    <input id="name" class="form-control-sm mr-sm-3" type="text" asp-for="SearchString" placeholder="Search Name" />
+                    <select class="form-control-sm mr-sm-3" asp-for="SelectedMonth" asp-items="Model.Months">
+                    </select>
+                    <select class="form-control-sm mr-sm-3" asp-for="SelectedYear" asp-items="Model.Years">
+                    </select>
+                    <input class="btn btn-light btn-sm" type="submit" value="Filter" />
+                </form>
+            </div>
+        </div>
+        </div>
 
-<table class="table table-hover" style="max-width:800px;">
-    <thead class="thead-light"s>
-        <tr>
-            <th>
-                Staff Name
-            </th>
-            <th class="text-center">
-                Days Recorded (@Model.SelectedDate)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model.UserAttendances)
-        {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Name)
-                </td>
-                <td class="text-center">
-                    @Html.DisplayFor(modelItem => item.DaysRecorded)
-                </td>
-                <td>
-                    @{
-                        var parms = new Dictionary<string, string>
-                                        {
-                            {"Id", item.Id },
-                            {"SelectedMonth", Model.SelectedMonth },
-                            {"SelectedYear", Model.SelectedYear }
-                        };
+        <div style="padding: 0 55px; margin-top: -81px;">
+            <table class="table table-hover" style="max-width:100%;">
+                <thead class="thead-light" s>
+                    <tr>
+                        <th>
+                            Staff Name
+                        </th>
+                        <th class="text-center">
+                            Days Recorded (@Model.SelectedDate)
+                        </th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.UserAttendances)
+                    {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Name)
+                        </td>
+                        <td class="text-center">
+                            @Html.DisplayFor(modelItem => item.DaysRecorded)
+                        </td>
+                        <td>
+                            @{
+                                var parms = new Dictionary<string, string>
+                                {
+                                {"Id", item.Id },
+                                {"SelectedMonth", Model.SelectedMonth },
+                                {"SelectedYear", Model.SelectedYear }
+                                };
+                            }
+                            @*                    <a asp-page="./Edit" asp-route-id="@item.Id">Edit</a>*@
+                            <a asp-page="./Edit" asp-all-route-data="parms">Edit</a>
+
+                        </td>
+                    </tr>
                     }
-                    @*                    <a asp-page="./Edit" asp-route-id="@item.Id">Edit</a>*@
-                    <a asp-page="./Edit" asp-all-route-data="parms">Edit</a>
-
-                </td>
-            </tr>
-        }
-    </tbody>
-</table>
+                </tbody>
+            </table>
+         </div>

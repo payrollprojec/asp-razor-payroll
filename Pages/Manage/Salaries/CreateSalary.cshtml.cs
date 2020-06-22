@@ -83,6 +83,7 @@ namespace PayrollAppRazorPages.Pages.Manage.Salaries
             SelectedDate = DateTime.Parse(SelectedYear + "-" + SelectedMonth + "-01").ToString("MMMM yyyy");
             // get working days of this month
             WeekdaysCount = WeekDaysInMonth(int.Parse(SelectedYear), int.Parse(SelectedMonth));
+            //var HolidaysCount = _context.Holiday.Where(h => h.HolidayDate.Value.)
             // get attendance for this month
             UserAttendance = await _context.Attendance.Include(a => a.AttendanceStatus)
                 .Where(a => a.ApplicationUserId == Id && a.PunchDate.Value.Month == int.Parse(SelectedMonth) && a.PunchDate.Value.Year == int.Parse(SelectedYear))

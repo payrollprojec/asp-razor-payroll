@@ -100,7 +100,9 @@ namespace PayrollAppRazorPages.Models
         [Column(TypeName = "decimal(18, 2)")]
         public decimal AdvSalary { get; set; }
 
-
+        [Display(Name = "Absent (RM)")]
+        [Column(TypeName = "decimal(18, 2)")]
+        public decimal Absent { get; set; }
         public int MailNum { get; set; }
     }
 }

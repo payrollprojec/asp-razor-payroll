@@ -130,8 +130,8 @@
                     <span asp-validation-for="StaffSalary.AdvSalary" class="text-danger"></span>
                 </div>
                 <div class="form-group">
-                    <label>Absent&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: RM</label>
-                    <span id="absent"></span> (@dict["Absent"] days)
+                    <label>Absent (@dict["Absent"]/@Model.WeekdaysCount): RM</label>
+                    <input id="absent" asp-for="StaffSalary.Absent" />
                 </div>
 
             </div>
@@ -253,6 +253,8 @@
 
     window.addEventListener('load', function () {
         console.log('loaded');
+        absent.value = `${(Math.round((+basic.value / +weekdayscount.value * +absentcount.value) * 100) / 100).toFixed(2)}`;
+
         calc();
     })
     function calc() {
@@ -264,9 +266,8 @@
             extraDucts += +allExtraDuct[i].value;
         }
         console.log(extraEarns, extraDucts);
-        absent.innerHTML = `${(Math.round((+basic.value / +weekdayscount.value * +absentcount.value) * 100) / 100).toFixed(2)}`;
         totalEarn.innerHTML = `${(Math.round((+basic.value + +allowance.value + +bonus.value + +adv2.value + +extraEarns) * 100) / 100).toFixed(2)}`;
-        totalDeduct.innerHTML = `${(Math.round((+epf.value + +socso.value + +eis.value + +tax.value + +adv.value + +absent.innerHTML + +extraDucts) * 100) / 100).toFixed(2)}`;
+        totalDeduct.innerHTML = `${(Math.round((+epf.value + +socso.value + +eis.value + +tax.value + +adv.value + +absent.value + +extraDucts) * 100) / 100).toFixed(2)}`;
         netPay.innerHTML = `${(Math.round((+totalEarn.innerHTML - +totalDeduct.innerHTML) * 100) / 100).toFixed(2)}`;
     }
     const extraEarnDiv = document.getElementById('extra-earn');

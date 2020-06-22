@@ -100,7 +100,7 @@ namespace PayrollAppRazorPages.Pages.Manage.Salaries
 
                 if (res == null)
                 {
-                    StaffSalary.Add(new ViewModel { Id = s.Id, Name = s.FullName, Summary = "Not Created", Mail = "", SalaryId = -1 });
+                    StaffSalary.Add(new ViewModel { Id = s.Id, Name = s.FullName, Summary = "Not Created", Mail = "Not Sent", SalaryId = -1 });
                 }
                 else
                 {

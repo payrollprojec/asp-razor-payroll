@@ -35,7 +35,7 @@ namespace PayrollAppRazorPages.Pages
         public Attendance TodayAttendance { get; set; }
         public Summary summary { get; set; }
         public IList<Holiday> Holiday { get; set; }
-        public string ComingHoliday { get; set;  }
+        public string ComingHoliday { get; set; }
         public class Summary
         {
             [Column(TypeName = "decimal(18, 2)")]
@@ -81,16 +81,28 @@ namespace PayrollAppRazorPages.Pages
             var todayMon = DateTime.Today.Month.ToString();
             var todayYear = DateTime.Today.Year.ToString();
 
-            Holiday = await _context.Holiday.OrderBy(a => a.HolidayDate).ToListAsync();
+            Holiday = await _context.Holiday.ToListAsync();
             if (Holiday.Count() == 0)
             {
                 ComingHoliday = "Not available yet.";
             }
             else
             {
-                var v = await _context.Holiday.Where(a => a.HolidayDate.Value.Month == int.Parse(todayMon)).SingleOrDefaultAsync();
+                var v = await _context.Holiday.Where(a => a.HolidayDate.Value.Month == int.Parse(todayMon) && a.HolidayDate.Value.Day >= int.Parse(todayDay)).SingleOrDefaultAsync();
                 if (v != null)
-                    ComingHoliday = v.HolidayDate + " " + v.HolidayDes;
+                    ComingHoliday = ((DateTime)v.HolidayDate).ToString("dd/MM/yyyy") + " - " + v.HolidayDes;
+                else
+                {
+                    int nextMon = int.Parse(todayMon) + 1;
+                    var v2 = await _context.Holiday.Where(a => a.HolidayDate.Value.Month == nextMon).SingleOrDefaultAsync();
+                    if(v2 != null)
+                    {
+                        ComingHoliday = ((DateTime)v2.HolidayDate).ToString("dd/MM/yyyy") + " - " + v2.HolidayDes;
+                    }
+                    else {
+                        ComingHoliday = "No coming holiday yet.";
+                    }
+                }
             }
 
             if (User.IsInRole("superadmin") || User.IsInRole("admin"))
@@ -120,7 +132,7 @@ namespace PayrollAppRazorPages.Pages
 
                 }
             }
-            
+
 
             if (User.IsInRole("staff"))
             {
