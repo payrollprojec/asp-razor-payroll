@@ -5,7 +5,7 @@
 }
 @{
     var parms = new Dictionary<string, string>
-    {
+{
     {"SelectedMonth", Model.SelectedMonth },
     {"SelectedYear", Model.SelectedYear }
     };
@@ -20,6 +20,7 @@
         position: sticky;
         top: 0;
     }
+
     #statusCount table {
         border: 1px solid #c85636;
     }
@@ -28,23 +29,22 @@
         max-width: 20px;
         text-align: center;
         color: #c85636;
-        border:1px solid #c85636;
+        border: 1px solid #c85636;
         /*color: white;*/
     }
 
     #statusCount td {
         text-align: center;
         border: 1px solid #c85636;
-    
     }
 </style>
 
 
 <div class="row">
-    <div  class="col">
+    <div class="col">
         <h4>Attendance for @Model.applicationUser.FullName (@Model.SelectedDate)</h4>
     </div>
-    
+
     <div class="col d-flex justify-content-end">
         <a class="btn btn-sceondary" asp-page="./Index" asp-all-route-data="parms">Back to List</a>
     </div>
@@ -81,41 +81,41 @@
         @if (Model.UserAttendance.Count == 0) { }
         else
         {
-        Dictionary<string, int>
-        dict = new Dictionary<string, int>
-        ();
-        dict.Add("Present", 0);
-        dict.Add("Absent", 0);
-        dict.Add("Leave", 0);
-        dict.Add("Sick", 0);
+            Dictionary<string, int>
+            dict = new Dictionary<string, int>
+            ();
+            dict.Add("Present", 0);
+            dict.Add("Absent", 0);
+            dict.Add("Leave", 0);
+            dict.Add("Sick", 0);
 
-        foreach (var item in Model.UserAttendance)
-        {
-        dict[item.AttendanceStatus.Status] += 1;
-        }
+            foreach (var item in Model.UserAttendance)
+            {
+                dict[item.AttendanceStatus.Status] += 1;
+            }
 
-        <div>
-            <table id="statusCount" class="table table-sm table-hover" style="background-color:white;padding:3px;">
-                <tbody>
-                    <tr>
-                        <th scope="row">Present</th>
-                        <td> @dict["Present"]/@Model.WeekdaysCount</td>
-                    </tr>
-                    <tr>
-                        <th scope="row">Absent</th>
-                        <td>@dict["Absent"]</td>
-                    </tr>
-                    <tr>
-                        <th scope="row">Leave</th>
-                        <td>@dict["Leave"]</td>
-                    </tr>
-                    <tr>
-                        <th scope="row">Sick</th>
-                        <td>@dict["Sick"]</td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
+            <div>
+                <table id="statusCount" class="table table-sm table-hover" style="background-color:white;padding:3px;">
+                    <tbody>
+                        <tr>
+                            <th scope="row">Present</th>
+                            <td> @dict["Present"]/@Model.WeekdaysCount</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Absent</th>
+                            <td>@dict["Absent"]</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Leave</th>
+                            <td>@dict["Leave"]</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Sick</th>
+                            <td>@dict["Sick"]</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
         }
     </div>
 </div>
@@ -236,50 +236,50 @@
     </thead>
     @foreach (List<DateTime> dts in datesPerWeek)
     {
-    <tr>
-        @foreach (DateTime dt in dts)
-        {
-        if (dt.Day == 1 && dt.DayOfWeek != DayOfWeek.Sunday)
-        {
-        int firstday = (int)dt.DayOfWeek;
-        for (int j = 0; j < firstday; j++)
-        {
-        <td style="background-color: grey;"></td>
-        }
-        }
-
-        <td style="@(Model.Days.Contains(((int)dt.DayOfWeek).ToString())? "background-color: salmon": ""); width: 75px; height: 80px; ">
-            <div class="row">
-                <div class="col">
-                    @dt.Day
-                </div>
-                <div class="col">
-                    @foreach (var att in Model.UserAttendance)
-                    {
-                    if (((DateTime)att.PunchDate).Date == dt.Date)
-                    {
-                    <span class="text-@(att.AttendanceStatus.Status == "Present"? "success":"warning")">@att.AttendanceStatus.Status</span><br />
-                    <form asp-page-handler="delete" method="post">
-                        <input type="hidden" asp-for="DeleteId" value="@att.Id" />
-                        <input type="hidden" asp-for="SelectedMonth" />
-                        <input type="hidden" asp-for="SelectedYear" />
-                        <button class="btn btn-link"><i class="far fa-trash-alt fa-fw"></i></button>
-                    </form>
-                    }
-                    }
-                </div>
-            </div>
-
-            @foreach (var hol in Model.Holidays)
+        <tr>
+            @foreach (DateTime dt in dts)
             {
-            if (((DateTime)hol.HolidayDate).Date == dt.Date)
-            {
-            <span class="small" style="word-break: break-all; color: #666">@hol.HolidayDes</span>
-            }
-            }
+                if (dt.Day == 1 && dt.DayOfWeek != DayOfWeek.Sunday)
+                {
+                    int firstday = (int)dt.DayOfWeek;
+                    for (int j = 0; j < firstday; j++)
+                    {
+                        <td style="background-color: grey;"></td>
+                    }
+                }
 
-        </td>
-        }
-    </tr>
+                <td style="@(Model.Days.Contains(((int)dt.DayOfWeek).ToString())? "background-color: salmon": ""); width: 75px; height: 80px; ">
+                    <div class="row">
+                        <div class="col">
+                            @dt.Day
+                        </div>
+                        <div class="col">
+                            @foreach (var att in Model.UserAttendance)
+                            {
+                                if (((DateTime)att.PunchDate).Date == dt.Date)
+                                {
+                                    <span class="text-@(att.AttendanceStatus.Status == "Present"? "success":"warning")">@att.AttendanceStatus.Status</span><br />
+                                    <form asp-page-handler="delete" method="post">
+                                        <input type="hidden" asp-for="DeleteId" value="@att.Id" />
+                                        <input type="hidden" asp-for="SelectedMonth" />
+                                        <input type="hidden" asp-for="SelectedYear" />
+                                        <button class="btn btn-link"><i class="far fa-trash-alt fa-fw"></i></button>
+                                    </form>
+                                }
+                            }
+                        </div>
+                    </div>
+
+                    @foreach (var hol in Model.Holidays)
+                    {
+                        if (((DateTime)hol.HolidayDate).Date == dt.Date)
+                        {
+                            <span class="small" style="word-break: break-all; color: #666">@hol.HolidayDes</span>
+                        }
+                    }
+
+                </td>
+            }
+        </tr>
     }
 </table>
