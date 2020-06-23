@@ -30,6 +30,8 @@ namespace PayrollAppRazorPages.Pages.DateSettings
         [BindProperty(SupportsGet = true)]
         public string SelectedYear { get; set; }
 
+        [TempData]
+        public string StatusMessage { get; set; }
         public IList<Holiday> Holiday { get;set; }
         public async Task OnGetAsync()
         {

@@ -6,7 +6,7 @@
 }
 
 <div class="container row jumbotron" style="margin-left: 10px; background-color:darkorange;color:white;">
-    <div class="container">
+    <div class="container row">
         <div class="col-auto text-white"><h4>Workday Settings</h4></div>
 
     </div>
@@ -15,14 +15,16 @@
 <div class="fancy-floating" style="padding: 0 55px; margin-top: -81px;">
     <div class="card" style="max-width:300px; border: 1px solid darkorange;">
         <partial name="_StatusMessage" model="Model.StatusMessage" />
-        <div asp-validation-summary="All" class="text-danger"></div>
         <form method="post">
             <div class="card-body">
+                <span class="small text-muted">Tick working days</span><br />
+                <div asp-validation-summary="All" class="text-danger"></div>
+
                 @for (var i = 0; i <= 6; i++)
                 {
-                <label>
-                    <input name="AreChecked" @(Model.Days.Contains(i.ToString())? "checked": "") type="checkbox" value="@i" /> @Days[i]
-                </label><br />
+                    <label>
+                        <input name="AreChecked" @(Model.Days.Contains(i.ToString()) ? "checked" : "") type="checkbox" value="@i" /> @Days[i]
+                    </label><br />
                 }
                 <hr />
                 <button class="btn btn-primary">Save</button>

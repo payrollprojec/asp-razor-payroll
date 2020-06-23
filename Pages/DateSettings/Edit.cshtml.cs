@@ -29,6 +29,8 @@ namespace PayrollAppRazorPages.Pages.DateSettings
         public Holiday Holiday { get; set; }
         public DateTime HolidayDate { get; set; }
 
+        [TempData]
+        public string StatusMessage { get; set; }
         public async Task<IActionResult> OnGetAsync(int? id)
         {
             if (id == null)
@@ -82,7 +84,7 @@ namespace PayrollAppRazorPages.Pages.DateSettings
                     throw;
                 }
             }
-
+            StatusMessage = "Updated Record.";
             return RedirectToPage("./Index");
         }
 

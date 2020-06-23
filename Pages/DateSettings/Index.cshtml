@@ -7,7 +7,7 @@
 <div class="container row jumbotron" style="margin-left: 10px; background-color:rgb(241, 181, 0);">
     <div class="container row">
         <div class="col-auto text-white"><h4>Holiday</h4></div>
-        <div class="col-auto">
+        <div class="col-auto" style="border: 1px solid rgb(241, 181, 0);">
             <form class="form-inline">
                 <select class="form-control-sm mr-sm-3" asp-for="SelectedMonth" asp-items="Model.Months">
                 </select>
@@ -22,48 +22,52 @@
         <div class="col d-flex justify-content-end">
             @if (User.IsInRole("superadmin") || User.IsInRole("admin"))
             {
-                <a class="btn btn-light" asp-page="Create">Create New Holiday</a>
+            <a class="btn btn-light" asp-page="Create">Create New Holiday</a>
             }
         </div>
     </div>
 </div>
 <div class="fancy-floating" style="padding: 0 55px; margin-top: -66px;">
-    <table class="table table-sm table-striped table-hover" style="background:white;">
-        <thead class="thead-light" >
-            <tr>
-                <th>Day of Week</th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Holiday[0].HolidayDate)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Holiday[0].HolidayDes)
-                </th>
-                <th></th>
+    <div class="card" style="border: 1px solid rgb(241, 181, 0);">
+        <partial name="_StatusMessage" model="Model.StatusMessage" />
+        <table class="table table-sm table-striped table-hover" style="background: white;">
+            <thead class="thead-light">
+                <tr>
+                    <th>Day of Week</th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Holiday[0].HolidayDate)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Holiday[0].HolidayDes)
+                    </th>
+                    <th></th>
 
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var item in Model.Holiday) {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.HolidayDate.Value.DayOfWeek)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.HolidayDate)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.HolidayDes)
-                </td>
-                <td>
-                    @if (User.IsInRole("superadmin") || User.IsInRole("admin"))
-                    {
-                    <a asp-page="./Edit" asp-route-id="@item.Id">Edit</a>  <span> | </span>
-                    <a asp-page="./Delete" asp-route-id="@item.Id">Delete</a>
-                    }
-                </td>
-            </tr>
-            }
-        </tbody>
-    </table>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.Holiday)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.HolidayDate.Value.DayOfWeek)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.HolidayDate)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.HolidayDes)
+                        </td>
+                        <td>
+                            @if (User.IsInRole("superadmin") || User.IsInRole("admin"))
+                            {
+                                <a asp-page="./Edit" asp-route-id="@item.Id">Edit</a> <span> | </span>
+                                <a asp-page="./Delete" asp-route-id="@item.Id">Delete</a>
+                            }
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
 </div>
-
+<br />

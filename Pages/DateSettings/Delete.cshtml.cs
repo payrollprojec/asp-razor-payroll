@@ -25,6 +25,8 @@ namespace PayrollAppRazorPages.Pages.DateSettings
         [BindProperty]
         public Holiday Holiday { get; set; }
 
+        [TempData]
+        public string StatusMessage { get; set; }
         public async Task<IActionResult> OnGetAsync(int? id)
         {
             if (id == null)
@@ -55,7 +57,7 @@ namespace PayrollAppRazorPages.Pages.DateSettings
                 _context.Holiday.Remove(Holiday);
                 await _context.SaveChangesAsync();
             }
-
+            StatusMessage = "Deleted Record.";
             return RedirectToPage("./Index");
         }
     }
