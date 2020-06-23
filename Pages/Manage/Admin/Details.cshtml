@@ -4,33 +4,33 @@
     ViewData["Title"] = "Admin Details";
 }
 
-<div class="card" style="max-width:900px;">
-    <h4 class="card-header">Admin Details - @Html.DisplayFor(model => model.applicationUser.UserName)</h4>
+<div class="card" style="max-width:500px; border-color:steelblue;">
+    <h4  class="card-header text-white" style="background-color:steelblue;">Admin Details - @Html.DisplayFor(model => model.applicationUser.UserName)</h4>
     <div class="card-body">
         <partial name="_StatusMessage" model="Model.StatusMessage" />
         <dl class="row">
-            <dt class="col-sm-2">
+            <dt class="col-sm-5">
                 @Html.DisplayNameFor(model => model.applicationUser.FullName)
             </dt>
-            <dd class="col-sm-10">
+            <dd class="col-sm-7">
                 @Html.DisplayFor(model => model.applicationUser.FullName)
             </dd>
-            <dt class="col-sm-2">
+            <dt class="col-sm-5">
                 @Html.DisplayNameFor(model => model.applicationUser.Email)
             </dt>
-            <dd class="col-sm-10">
+            <dd class="col-sm-7">
                 @Html.DisplayFor(model => model.applicationUser.Email)
             </dd>
-            <dt class="col-sm-2">
+            <dt class="col-sm-5">
                 @Html.DisplayNameFor(model => model.applicationUser.PhoneNumber)
             </dt>
-            <dd class="col-sm-10">
+            <dd class="col-sm-7">
                 @Html.DisplayFor(model => model.applicationUser.PhoneNumber)
             </dd>
-            <dt class="col-sm-2">
+            <dt class="col-sm-5">
                 @Html.DisplayNameFor(model => model.applicationUser.ICNo)
             </dt>
-            <dd class="col-sm-10">
+            <dd class="col-sm-7">
                 @Html.DisplayFor(model => model.applicationUser.ICNo)
             </dd>
         </dl>

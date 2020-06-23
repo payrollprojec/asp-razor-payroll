@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
@@ -24,7 +25,7 @@ namespace PayrollAppRazorPages.Pages.DateSettings
 
         public async Task OnGetAsync()
         {
-            HolidayList = await _context.Holiday.OrderBy(a => a.HolidayDate).ToListAsync();
+            HolidayList = await _context.Holiday.Where(a => a.HolidayDate.Value.Year == DateTime.Now.Year).OrderBy(a => a.HolidayDate).ToListAsync();
         }
 
         //For creating new holiday

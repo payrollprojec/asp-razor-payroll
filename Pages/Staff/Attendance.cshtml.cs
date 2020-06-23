@@ -36,7 +36,10 @@ namespace PayrollAppRazorPages.Pages.Staff
         public string SelectedYear { get; set; }
 
         public IList<Holiday> SelectedMonHoliday { get; set; }
-
+        public int WeekdaysCount { get; set; }
+        public string[] Days { get; set; }
+        public List<Holiday> Holidays { get; set; }
+        public string SelectedDate { get; private set; }
         public async Task<IActionResult> OnGetAsync()
         {
             applicationUser = await _userManager.GetUserAsync(User);  // User = logged in user (built in magic)
@@ -79,13 +82,20 @@ namespace PayrollAppRazorPages.Pages.Staff
                 SelectedYear = DateTime.Now.Year.ToString();
             }
 
-            SelectedMonHoliday = await _context.Holiday
-                .Where(a => a.HolidayDate.Value.Year == int.Parse(SelectedYear) && a.HolidayDate.Value.Month == int.Parse(SelectedMonth))
-                .OrderBy(a => a.HolidayDate).ToListAsync();
+            //SelectedMonHoliday = await _context.Holiday
+            //    .Where(a => a.HolidayDate.Value.Year == int.Parse(SelectedYear) && a.HolidayDate.Value.Month == int.Parse(SelectedMonth))
+            //    .OrderBy(a => a.HolidayDate).ToListAsync();
 
             UserAttendance = await _context.Attendance.Include(a => a.AttendanceStatus)
                 .Where(a => a.ApplicationUserId == applicationUser.Id && a.PunchDate.Value.Month == int.Parse(SelectedMonth) && a.PunchDate.Value.Year == int.Parse(SelectedYear))
                 .OrderBy(a => a.PunchDate).ToListAsync();
+
+            WeekdaysCount = _context.WeekDaysInMonth(int.Parse(SelectedYear), int.Parse(SelectedMonth));
+            GlobalSettings GlobalSettings = await _context.GlobalSettings.SingleOrDefaultAsync();
+            Days = GlobalSettings.NoWorkDays.Split(",");
+            Holidays = await _context.Holiday.Where(h => h.HolidayDate.Value.Year == int.Parse(SelectedYear) && h.HolidayDate.Value.Month == int.Parse(SelectedMonth)).ToListAsync();
+            WeekdaysCount = _context.WeekDaysInMonth(int.Parse(SelectedYear), int.Parse(SelectedMonth));
+            SelectedDate = DateTime.Parse(SelectedYear + "-" + SelectedMonth + "-01").ToString("MMMM yyyy");
             return Page();
         }
     }

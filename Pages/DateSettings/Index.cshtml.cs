@@ -31,11 +31,10 @@ namespace PayrollAppRazorPages.Pages.DateSettings
         public string SelectedYear { get; set; }
 
         public IList<Holiday> Holiday { get;set; }
-
         public async Task OnGetAsync()
         {
             // Deal with filter by date
-            string[] monthArr = new string[] { "All Month",  "January", "February", "March", "April", "May", "June",
+            string[] monthArr = new string[] { "All Months",  "January", "February", "March", "April", "May", "June",
                 "July", "August", "September", "October", "November", "December" };
             Months = new List<SelectListItem>();
             for (int i = 0; i < 13; i++)

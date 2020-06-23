@@ -33,18 +33,18 @@ namespace PayrollAppRazorPages.Pages.Manage.Attendances
         [BindProperty(SupportsGet = true)]
         public string SearchString { get; set; }
 
-        public IList<SelectListItem> Months{ get; set; }
+        public IList<SelectListItem> Months { get; set; }
         [BindProperty(SupportsGet = true)]
         public string SelectedMonth { get; set; }
 
         public SelectList Years { get; set; }
         [BindProperty(SupportsGet = true)]
-        public string SelectedYear{ get; set; }
+        public string SelectedYear { get; set; }
         public string SelectedDate { get; private set; }
         public IList<ApplicationUser> Users { get; set; }
 
         public IList<ViewModel> UserAttendances { get; set; }
-
+        public int WeekdaysCount { get; set; }
         public class ViewModel
         {
             public string Id { get; set; }
@@ -54,12 +54,12 @@ namespace PayrollAppRazorPages.Pages.Manage.Attendances
 
         public async Task OnGetAsync()
         {
-            string[] monthArr = new string[] { "January", "February", "March", "April", "May", "June", 
+            string[] monthArr = new string[] { "January", "February", "March", "April", "May", "June",
                 "July", "August", "September", "October", "November", "December" };
             Months = new List<SelectListItem>();
             for (int i = 0; i < 12; i++)
             {
-                Months.Add(new SelectListItem(monthArr[i], (i+1).ToString()));
+                Months.Add(new SelectListItem(monthArr[i], (i + 1).ToString()));
             }
             var yearLow = 2020;
             var yearNow = DateTime.Now.Year;
@@ -82,7 +82,9 @@ namespace PayrollAppRazorPages.Pages.Manage.Attendances
                 SelectedYear = DateTime.Now.Year.ToString();
             }
             SelectedDate = DateTime.Parse(SelectedYear + "-" + SelectedMonth + "-01").ToString("MMMM yyyy");
-
+            WeekdaysCount = _context.WeekDaysInMonth(int.Parse(SelectedYear), int.Parse(SelectedMonth));
+            //var HolidaysCount = await _context.Holiday.Where(h => h.HolidayDate.Value.Year == int.Parse(SelectedYear) && h.HolidayDate.Value.Month == int.Parse(SelectedMonth)).ToListAsync();
+            //WeekdaysCount -= HolidaysCount.Count();
             //var results = from c in _context.Users.AsNoTracking().Include(u => u.StaffData).AsNoTracking()
             //                join ur in _context.UserRoles.AsNoTracking() on c.Id equals ur.UserId
             //                join r in _context.Roles.AsNoTracking() on ur.RoleId equals r.Id

@@ -18,9 +18,9 @@
 
 
 <div class="row">
-    <div class="col-sm-5">
-        <div class="card">
-            <h4 class="card-header">Holiday</h4>
+    <div class="col-sm-5" >
+        <div class="card" style="border-color:rgb(241, 181, 0);">
+            <h4 class="card-header text-white" style="background-color:rgb(241, 181, 0);">Holiday</h4>
             <div class="card-body">
 
                 <form method="post">
@@ -38,6 +38,7 @@
                         <input asp-for="Holiday.HolidayDes" class="form-control" />
                         <span asp-validation-for="Holiday.HolidayDes" class="text-danger"></span>
                     </div>
+                    <br />
                     <div class="form-group">
                         <input type="submit" value="Create" class="btn btn-primary" />
                     </div>

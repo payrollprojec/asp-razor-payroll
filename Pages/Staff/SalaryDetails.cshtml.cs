@@ -91,8 +91,8 @@ namespace PayrollAppRazorPages.Pages.Staff
                 .Where(a => a.ApplicationUserId == StaffSalary.staffID && a.PunchDate.Value.Month == StaffSalary.Month && a.PunchDate.Value.Year == StaffSalary.Year)
                 .OrderBy(a => a.PunchDate).ToListAsync();
             WeekdaysCount = _context.WeekDaysInMonth(StaffSalary.Year, StaffSalary.Month);
-            var HolidaysCount = await _context.Holiday.Where(h => h.HolidayDate.Value.Year == StaffSalary.Year && h.HolidayDate.Value.Month == StaffSalary.Month).ToListAsync();
-            WeekdaysCount -= HolidaysCount.Count();
+            // var HolidaysCount = await _context.Holiday.Where(h => h.HolidayDate.Value.Year == StaffSalary.Year && h.HolidayDate.Value.Month == StaffSalary.Month).ToListAsync();
+            ///WeekdaysCount -= HolidaysCount.Count();
             UserAttendance = await _context.Attendance.Include(a => a.AttendanceStatus)
                 .Where(a => a.ApplicationUserId == StaffSalary.staffID && a.PunchDate.Value.Month == StaffSalary.Month && a.PunchDate.Value.Year == StaffSalary.Year)
                 .OrderBy(a => a.PunchDate).ToListAsync();

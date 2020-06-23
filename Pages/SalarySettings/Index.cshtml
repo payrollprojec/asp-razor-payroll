@@ -3,87 +3,108 @@
 
 @{
     ViewData["Title"] = "Index";
+    //for add or deduct salary button
+        var parms1 = new Dictionary<string, string>
+        {
+        {"Type", "add" }
+        };
+        var parms2 = new Dictionary<string, string>
+        {
+        {"Type", "deduct" }
+        };
+    
 }
-
-
 <partial name="_StatusMessage" model="Model.StatusMessage" />
 
 <div class="row">
     <div class="col-md border-right">
-        <div class="container row ">
-            <h4 class="col">Extra Salary Earnings</h4>
-            @{
-                var parms1 = new Dictionary<string, string>
-                    {
-                    {"Type", "add" }
-                };
-                var parms2 = new Dictionary<string, string>
-                    {
-                    {"Type", "deduct" }
-                };
-            }
-            <p><a class="btn btn-info " asp-page="Create" asp-all-route-data="parms1">Create New</a></p>
+        <div class="container row jumbotron" style="margin-left: 10px; background-color:#76c82f; max-height:165px;">
+            <div class="container row">
+                <div class="col-auto text-white"><h4>Extra Salary Earnings</h4></div>
+                <div class="col d-flex justify-content-end">
+                    <p><a class="btn btn-light " asp-page="Create" asp-all-route-data="parms1">Create New</a></p>
+                </div>
+            </div>
         </div>
-        <table class="table">
-            <thead class="thead-light">
-                <tr>
-                    <th>
-                        @Html.DisplayNameFor(model => model.SalaryItem[0].Name)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.SalaryItem[0].DefaultAmount)
-                    </th>
-                    <th></th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var item in Model.SalaryItem)
-                {
-                    @if (item.IsDeduction == true)
-                    {
-                        continue;
-                    }
-                    <tr>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Name)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.DefaultAmount)
-                        </td>
-                        <td>
-                            <a asp-page="./Edit" asp-route-id="@item.Id">Edit</a> |
-                            <a asp-page="./Delete" asp-route-id="@item.Id">Delete</a>
-                        </td>
-                    </tr>
-                }
-            </tbody>
-        </table>
-    </div>
-    <div class="col-md">
-        <div class="container row ">
-            <h4 class="col">Extra Salary Deductions</h4>
-            <p><a class="btn btn-info " asp-page="Create" asp-all-route-data="parms2">Create New</a></p>
-        </div>
+        @*end header*@
 
-        <table class="table">
-            <thead class="thead-light">
-                <tr>
-                    <th>
-                        @Html.DisplayNameFor(model => model.SalaryItem[0].Name)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.SalaryItem[0].DefaultAmount)
-                    </th>
-                    <th></th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var item in Model.SalaryItem)
-                {
+        <div class="fancy-floating" style="padding: 0 55px; margin-top: -81px;">
+            <table class="table" style="background-color:white;">
+                <thead class="thead-light" >
+                    <tr>
+                        <th>
+                            @Html.DisplayNameFor(model => model.SalaryItem[0].Name)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.SalaryItem[0].DefaultAmount)
+                        </th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @{
+                        bool found1 = false;
+                    }
+                    @foreach (var item in Model.SalaryItem)
+                    {
+                        @if (item.IsDeduction == true)
+                        {
+                            continue;
+                        } found1 = true;
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Name)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.DefaultAmount)
+                            </td>
+                            <td>
+                                <a asp-page="./Edit" asp-route-id="@item.Id">Edit</a> |
+                                <a asp-page="./Delete" asp-route-id="@item.Id">Delete</a>
+                            </td>
+                        </tr>
+                    }
+                    @if (!found1)
+                    {
+                        <tr><td colspan="3">No record.</td></tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+        @*end table 1*@
+    </div>
+    
+    <div class="col-md">
+        <div class="container row jumbotron" style="margin-left: 10px;background-color:#76c82f; max-height:165px;">
+            <h4 class="col-auto text-white">Extra Salary Deductions</h4>
+            <div class="col d-flex justify-content-end">
+                <a class="btn btn-light " asp-page="Create" asp-all-route-data="parms2">Create New</a>
+            </div>
+        </div>
+        <div class="fancy-floating" style="padding: 0 55px; margin-top: -81px;">
+            <table class="table" style="background-color:white;">
+                <thead class="thead-light">
+                    <tr>
+                        <th>
+                            @Html.DisplayNameFor(model => model.SalaryItem[0].Name)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.SalaryItem[0].DefaultAmount)
+                        </th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @{ 
+                        bool found = false;
+                    }
+                    @foreach (var item in Model.SalaryItem)
+                    {
                     @if (item.IsDeduction == false)
                     {
-                        continue;
+                    continue;
                     }
+                        found = true;
                     <tr>
                         <td>
                             @Html.DisplayFor(modelItem => item.Name)
@@ -96,9 +117,15 @@
                             <a asp-page="./Delete" asp-route-id="@item.Id">Delete</a>
                         </td>
                     </tr>
-                }
-            </tbody>
-        </table>
+                    }
+                    @if (!found)
+                    { 
+                            <tr><td colspan="3">No record.</td></tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+        @*end table 2*@
     </div>
 </div>
 

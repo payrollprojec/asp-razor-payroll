@@ -53,6 +53,10 @@ namespace PayrollAppRazorPages.Pages.Manage.Attendances
         public DateTime MaxDate { get; set; }
         [TempData]
         public string StatusMessage { get; set; }
+        public string[] Days { get; set; }
+        public List<Holiday> Holidays { get; set; }
+        public int WeekdaysCount { get; set; }
+
         public async Task<IActionResult> OnGetAsync(string Id)
         {
             applicationUser = await _userManager.FindByIdAsync(Id);
@@ -86,10 +90,21 @@ namespace PayrollAppRazorPages.Pages.Manage.Attendances
                 .OrderBy(a => a.PunchDate).ToListAsync();
 
             if (UserAttendance.Count() != 0 && UserAttendance.Last().PunchDate.HasValue)
+            {
                 MaxDate = UserAttendance.Last().PunchDate.Value.AddDays(1);
+                if (MaxDate.Month > int.Parse(SelectedMonth))
+                {
+                    MaxDate = MaxDate.AddDays(-1);
+                }
+            }
 
             else
                 MaxDate = DateTime.Parse(SelectedYear + "-" + SelectedMonth + "-01");
+
+            GlobalSettings GlobalSettings = await _context.GlobalSettings.SingleOrDefaultAsync();
+            Days = GlobalSettings.NoWorkDays.Split(",");
+            Holidays = await _context.Holiday.Where(h => h.HolidayDate.Value.Year == int.Parse(SelectedYear) && h.HolidayDate.Value.Month == int.Parse(SelectedMonth)).ToListAsync();
+            WeekdaysCount = _context.WeekDaysInMonth(int.Parse(SelectedYear), int.Parse(SelectedMonth));
             return Page();
         }
 
@@ -120,9 +135,21 @@ namespace PayrollAppRazorPages.Pages.Manage.Attendances
                 .Where(a => a.ApplicationUserId == Input.Id && a.PunchDate.Value.Month == int.Parse(SelectedMonth) && a.PunchDate.Value.Year == int.Parse(SelectedYear))
                 .OrderBy(a => a.PunchDate).ToListAsync();
             if (UserAttendance.Count() != 0 && UserAttendance.Last().PunchDate.HasValue)
+            {
                 MaxDate = UserAttendance.Last().PunchDate.Value.AddDays(1);
+                if (MaxDate.Month > int.Parse(SelectedMonth))
+                {
+                    MaxDate = MaxDate.AddDays(-1);
+                }
+            }
             else
                 MaxDate = DateTime.Parse(SelectedYear + "-" + SelectedMonth + "-01");
+
+            GlobalSettings GlobalSettings = await _context.GlobalSettings.SingleOrDefaultAsync();
+            Days = GlobalSettings.NoWorkDays.Split(",");
+            Holidays = await _context.Holiday.Where(h => h.HolidayDate.Value.Year == int.Parse(SelectedYear) && h.HolidayDate.Value.Month == int.Parse(SelectedMonth)).ToListAsync();
+            WeekdaysCount = _context.WeekDaysInMonth(int.Parse(SelectedYear), int.Parse(SelectedMonth));
+
             if (!ModelState.IsValid)
             {
                 return Page();
@@ -143,7 +170,7 @@ namespace PayrollAppRazorPages.Pages.Manage.Attendances
                 PunchDate = Input.PunchDate,
                 AttendanceStatusId = SelectedStatusId
             };
-
+            
             _context.Attendance.Add(attendance);
             await _context.SaveChangesAsync();
             StatusMessage = "Attendance has been added";

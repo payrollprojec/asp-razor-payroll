@@ -149,7 +149,7 @@
                             <select onchange="setDefault(this.parentNode)" class="form-control-sm mr-sm-3" asp-for="EarnSelect[i]" asp-items="Model.ExtraEarnItems">
                                 <option value="0">Select Item</option>
                             </select>
-                            RM: <input class="earn" asp-for="StaffSalaryExtras[i].Amount" />
+                            RM: <input style="display: @(Model.EarnSelect[i] == ""? "none": "block")" class="earn" asp-for="StaffSalaryExtras[i].Amount" />
                             <input type="hidden" class="salaryitemid" asp-for="StaffSalaryExtras[i].SalaryItemId" />
                             <span asp-validation-for="StaffSalaryExtras[i].Amount" class="text-danger"></span>
                         </div>
@@ -167,7 +167,7 @@
                             <select onchange="setDefault(this.parentNode)" class="form-control-sm mr-sm-3" asp-for="EarnSelect[i]" asp-items="Model.ExtraDeductItems">
                                 <option value="0">Select Item</option>
                             </select>
-                            RM: <input class="duct" asp-for="StaffSalaryExtras[i].Amount" />
+                            RM: <input class="duct" style="display: @(Model.EarnSelect[i] == ""? "none": "block")" asp-for="StaffSalaryExtras[i].Amount" />
                             <input type="hidden" class="salaryitemid" asp-for="StaffSalaryExtras[i].SalaryItemId" />
                             <span asp-validation-for="StaffSalaryExtras[i].Amount" class="text-danger"></span>
                         </div>
@@ -279,7 +279,14 @@
     function setDefault(e) {
         let val = e.querySelector('select').value;
         let inp = e.querySelector('input');
-        let def = parseFloat(val.split(',')[1]);
+        console.log(val);
+        if (val == "0") {
+            inp.style.display = "none";
+        }
+        else {
+            inp.style.display = "inline-block";
+        }
+        let def = parseFloat(val.split(',')[1]).toFixed(2);
         if (isNaN(def))
             def = 0;
         let id = e.querySelector('.salaryitemid');

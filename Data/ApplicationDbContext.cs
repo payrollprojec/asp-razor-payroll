@@ -34,21 +34,50 @@ namespace PayrollAppRazorPages.Data
         public int WeekDaysInMonth(int year, int month)
         {
             GlobalSettings g = GlobalSettings.SingleOrDefault();
-            string[] noWorkDaysString = g.NoWorkDays.Split(",");
-            List<int> noWorkDays = new List<int>();
-            for (int i = 0; i < noWorkDaysString.Length; i++)
+            if (!string.IsNullOrEmpty(g.NoWorkDays))
             {
-                noWorkDays.Add(int.Parse(noWorkDaysString[i]));
-            }
-            int days = DateTime.DaysInMonth(year, month);
-            List<DateTime> dates = new List<DateTime>();
-            for (int i = 1; i <= days; i++)
-            {
-                dates.Add(new DateTime(year, month, i));
-            }
+                string[] noWorkDaysString = g.NoWorkDays.Split(",");
+                List<int> noWorkDays = new List<int>();
+                for (int i = 0; i < noWorkDaysString.Length; i++)
+                {
+                    noWorkDays.Add(int.Parse(noWorkDaysString[i]));
+                }
+                int days = DateTime.DaysInMonth(year, month);
+                List<DateTime> dates = new List<DateTime>();
+                for (int i = 1; i <= days; i++)
+                {
+                    dates.Add(new DateTime(year, month, i));
+                }
 
-            int weekDays = dates.Where(d => !noWorkDays.Contains((int)d.DayOfWeek)).Count();
-            return weekDays;
+                int weekDays = dates.Where(d => !noWorkDays.Contains((int)d.DayOfWeek)).Count();
+                List<Holiday> Holidays = Holiday.Where(h => h.HolidayDate.Value.Year == year && h.HolidayDate.Value.Month == month).ToList();
+                foreach (Holiday h in Holidays)
+                {
+                    if (noWorkDays.Contains((int) ((DateTime)h.HolidayDate).DayOfWeek))
+                    {
+                        continue;
+                    }
+                    weekDays -= 1;
+                }
+                return weekDays;
+            }
+            // if NoWorkDay empty, return count of all dates
+            else
+            {
+                int days = DateTime.DaysInMonth(year, month);
+                List<DateTime> dates = new List<DateTime>();
+                for (int i = 1; i <= days; i++)
+                {
+                    dates.Add(new DateTime(year, month, i));
+                }
+
+                int weekDays = dates.Count();
+                List<Holiday> Holidays = Holiday.Where(h => h.HolidayDate.Value.Year == year && h.HolidayDate.Value.Month == month).ToList();
+
+                weekDays -= Holidays.Count();
+
+                return weekDays;
+            }   
         }
     }
 }

@@ -4084,6 +4084,7 @@ C:\Users\Wen\source\repos\PayrollAppRazorPages5-final4\obj\Debug\netcoreapp3.1\R
 C:\Users\Wen\source\repos\PayrollAppRazorPages5-final4\obj\Debug\netcoreapp3.1\Razor\Pages\Staff\SalaryPDF.cshtml.g.cs
 C:\Users\Wen\source\repos\PayrollAppRazorPages5-final4\obj\Debug\netcoreapp3.1\Razor\Pages\Staff\TestPdf.cshtml.g.cs
 C:\Users\Wen\source\repos\PayrollAppRazorPages5-final4\obj\Debug\netcoreapp3.1\Razor\Pages\TestSendMail.cshtml.g.cs
+C:\Users\Wen\source\repos\PayrollAppRazorPages5-final4\obj\Debug\netcoreapp3.1\Razor\Pages\WorkDaySettings.cshtml.g.cs
 C:\Users\Wen\source\repos\PayrollAppRazorPages5-final4\obj\Debug\netcoreapp3.1\Razor\Pages\_SideNav.cshtml.g.cs
 C:\Users\Wen\source\repos\PayrollAppRazorPages5-final4\obj\Debug\netcoreapp3.1\Razor\Pages\_ViewImports.cshtml.g.cs
 C:\Users\Wen\source\repos\PayrollAppRazorPages5-final4\obj\Debug\netcoreapp3.1\Razor\Pages\_ViewStart.cshtml.g.cs
@@ -4096,4 +4097,3 @@ C:\Users\Wen\source\repos\PayrollAppRazorPages5-final4\obj\Debug\netcoreapp3.1\s
 C:\Users\Wen\source\repos\PayrollAppRazorPages5-final4\obj\Debug\netcoreapp3.1\PayrollAppRazorPages.dll
 C:\Users\Wen\source\repos\PayrollAppRazorPages5-final4\obj\Debug\netcoreapp3.1\PayrollAppRazorPages.pdb
 C:\Users\Wen\source\repos\PayrollAppRazorPages5-final4\obj\Debug\netcoreapp3.1\PayrollAppRazorPages.genruntimeconfig.cache
-C:\Users\Wen\source\repos\PayrollAppRazorPages5-final4\obj\Debug\netcoreapp3.1\Razor\Pages\WorkDaySettings.cshtml.g.cs
