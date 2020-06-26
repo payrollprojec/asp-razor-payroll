@@ -16,6 +16,7 @@ namespace PayrollAppRazorPages.Models
 
         [Display(Name = "Amount")]
         [Column(TypeName = "decimal(18, 2)")]
+        [Required]
         public decimal Amount { get; set; }
     }
 }

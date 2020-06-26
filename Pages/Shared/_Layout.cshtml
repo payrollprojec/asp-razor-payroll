@@ -30,14 +30,36 @@
             .sidebar-item {
                 position: relative;
             }
+
             .fancy-floating {
                 margin-top: 0 !important;
                 padding: 0 !important;
+                overflow: auto;
             }
+
             header {
                 position: relative !important;
                 width: 100%;
             }
+
+            .fancy-floating .card {
+                border: none !important;
+            }
+        }
+
+        @@media (max-width: 577px) {
+            .side {
+                display: none;
+            }
+
+            .hide-top {
+                display: block !important;
+                color: white !important;
+            }
+
+                .hide-top .nav-item > .nav-link {
+                    color: white;
+                }
         }
 
         html, body, .main, main {
@@ -68,30 +90,32 @@
             border-right: 0.1px solid #e1e1e1;
         }
 
-        .side .nav-item > .nav-link {
-            color: #666;
-        }
+            .side .nav-item > .nav-link {
+                color: #666;
+            }
 
-        .side .nav-item > .nav-link.active {
-            background-color: rgba(104, 15, 19, 1) !important;
-            color: white;
-        }
+                .side .nav-item > .nav-link.active {
+                    background-color: rgba(104, 15, 19, 1) !important;
+                    color: white;
+                }
 
-        .side .nav-item > a.nav-link:hover {
-            color: white;
-            background-color: rgba(125, 30, 34, 0.80);
-        }
-        .earn-duct .form-group{
+            .side .nav-item > a.nav-link:hover {
+                color: white;
+                background-color: rgba(125, 30, 34, 0.80);
+            }
+
+        .earn-duct .form-group {
             margin-bottom: 0;
         }
-
     </style>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.0-2/css/all.min.css" integrity="sha256-46r060N2LrChLLb5zowXQ72/iKKNiw/lAmygmHExk/o=" crossorigin="anonymous" />
 
 </head>
-
+@{ 
+    var actionName = ViewContext.RouteData.Values["page"].ToString();
+}
 <body>
-    <header>
+    <header class="d-print-none">
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-dark bg-dark box-shadow">
             <div class="container-fluid">
                 <a class="navbar-brand" asp-area="" asp-page="/Index">Payroll App</a>
@@ -105,9 +129,38 @@
                         <li class="nav-item">
                             <a class="nav-link text-light" asp-area="" asp-page="/Index">Home</a>
                         </li>
-                        @*<li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-page="/Privacy">Privacy</a>
-                            </li>*@
+
+                    </ul>
+                    <ul class="nav nav-pills flex-column hide-top" style="display: none">
+
+                        @if (User.IsInRole("superadmin") || User.IsInRole("admin"))
+                        {
+                            <li class="nav-item"><a class="nav-link @(actionName == "/Index" ? "active":"")" asp-page="/Index"><i class="fas fa-tachometer-alt fa-fw"></i>  Dashboard</a></li>
+                            @if (User.IsInRole("superadmin"))
+                            {
+                                <li class="nav-item"><a class="nav-link @(actionName.Contains("/Manage/Admin") ? "active":"")" asp-page="/Manage/Admin/Index"><i class="fas fa-user-tie fa-fw"></i>  Manage Admin</a></li>
+                            }
+                            <li class="nav-item"><a class="nav-link @(actionName.Contains("/Manage/Staff") ? "active":"")" asp-page="/Manage/Staff/Index"><i class="fas fa-users fa-fw"></i>  Manage Staff</a></li>
+                            <li><br /></li>
+                            <li class="nav-item"><a class="nav-link @(actionName.Contains("/Manage/Salaries") ? "active":"")" asp-page="/Manage/Salaries/Index"><i class="fas fa-file-invoice-dollar fa-fw"></i> Manage Salaries</a></li>
+                            <li class="nav-item"><a class="nav-link @(actionName.Contains("/Manage/Attendances") ? "active":"")" asp-page="/Manage/Attendances/Index"><i class="fas fa-clipboard-list fa-fw"></i> Manage Attendance</a></li>
+                            <li><br /></li>
+
+                            <li class="nav-item"><a class="nav-link @(actionName.Contains("/SalarySettings") ? "active":"")" asp-page="/SalarySettings/Index"><i class="fas fa-sliders-h fa-fw"></i> Salary Settings</a></li>
+                            <li class="nav-item"><a class="nav-link @(actionName.Contains("/DateSettings") ? "active":"")" asp-page="/DateSettings/Index"><i class="fas fa-calendar-day fa-fw"></i> Holiday Settings</a></li>
+                            <li class="nav-item"><a class="nav-link @(actionName.Contains("/WorkDaySettings") ? "active":"")" asp-page="/WorkDaySettings"><i class="fas fa-briefcase fa-fw"></i> Workday Settings</a></li>
+
+
+                        }
+
+                        @if (User.IsInRole("staff"))
+                        {
+                            <li class="nav-item"><a class="nav-link @(actionName == "/Index" ? "active":"")" asp-page="/Index"><i class="fas fa-tachometer-alt fa-fw"></i> Dashboard</a></li>
+                            <li class="nav-item"><a class="nav-link @(actionName.Contains("/Staff/Attendance") ? "active":"")" asp-page="/Staff/Attendance"><i class="fas fa-clipboard-list fa-fw"></i> Check Attendance</a></li>
+                            <li class="nav-item"><a class="nav-link @(actionName.Contains("/Staff/Salary") ? "active":"")" asp-page="/Staff/Salary"><i class="fas fa-file-invoice-dollar fa-fw"></i> Check Salary</a></li>
+                            <li class="nav-item"><a class="nav-link @(actionName.Contains("/DateSettings/Index") ? "active":"")" asp-page="/DateSettings/Index"><i class="fas fa-calendar-day fa-fw"></i> Check Holiday</a></li>
+
+                        }
                     </ul>
                 </div>
             </div>

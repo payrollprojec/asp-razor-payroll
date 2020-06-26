@@ -1,6 +1,6 @@
 ﻿using System;
-using System.IO;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
@@ -9,14 +9,11 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using PayrollAppRazorPages.Models;
-using jsreport.AspNetCore;
-using jsreport.Types;
-using System.ComponentModel.DataAnnotations.Schema;
+using SelectPdf;
 
 namespace PayrollAppRazorPages.Pages.Manage.Salaries
 {
-    [Authorize(Roles = "superadmin,admin")]
-    [MiddlewareFilter(typeof(JsReportPipeline))]
+    
     public class SalaryPDFModel : PageModel
     {
         private readonly UserManager<ApplicationUser> _userManager;
@@ -28,89 +25,43 @@ namespace PayrollAppRazorPages.Pages.Manage.Salaries
             _userManager = userManager;
             _context = context;
         }
-
-        public ApplicationUser applicationUser { get; set; }
-        public StaffSalary StaffSalary { get; set; }
-        public string SalaryDate { get; set; }
-        public string SelectedDate { get; set; }
-        public int WeekdaysCount { get; set; }
-        public int wdc { get; set; }
-        public List<Attendance> UserAttendance { get; set; }
-        public List<StaffSalaryExtra> StaffSalaryExtras { get; set; }
-
-        public Summary summary { get; set; }
-        public class Summary
+        [BindProperty(SupportsGet = true)]
+        public string guid { get; set; }
+        public async Task<IActionResult> OnGetAsync(int id)
         {
-            [Column(TypeName = "decimal(18, 2)")]
-            public decimal net { get; set; }
-            [Column(TypeName = "decimal(18, 2)")]
-            public decimal epf { get; set; }
-            [Column(TypeName = "decimal(18, 2)")]
-            public decimal erepf { get; set; }
-            [Column(TypeName = "decimal(18, 2)")]
-            public decimal socso { get; set; }
-            [Column(TypeName = "decimal(18, 2)")]
-            public decimal ersocso { get; set; }
-            [Column(TypeName = "decimal(18, 2)")]
-            public decimal eis { get; set; }
-            [Column(TypeName = "decimal(18, 2)")]
-            public decimal ereis { get; set; }
-            [Column(TypeName = "decimal(18, 2)")]
-            public decimal tax { get; set; }
-        }
-        public async Task<IActionResult> OnGetAsync(int? id)
-        {
-            if (id == null)
+            var applicationUser = await _userManager.GetUserAsync(User);
+
+            if (applicationUser == null)
             {
-                return NotFound();
+                applicationUser = await _context.Users.Where(u => u.Id == guid).SingleOrDefaultAsync();
+
+                if (applicationUser == null)
+                    return Redirect("/Identity/Account/Login");
+
             }
 
-            StaffSalary = await _context.StaffSalary.FirstOrDefaultAsync(m => m.salaryID == id);
-
-            if (StaffSalary == null)
+            bool allowed = false;
+            var roles = await _userManager.GetRolesAsync(applicationUser);
+            if (roles[0] == "superadmin" || roles[0] == "admin")
             {
-                return NotFound();
+                allowed = true;
             }
-            applicationUser = await _userManager.Users.Include(u => u.StaffData).Where(u => u.Id == StaffSalary.staffID).SingleOrDefaultAsync();
-            SelectedDate = DateTime.Parse(StaffSalary.Year.ToString() + "-" + StaffSalary.Month.ToString() + "-01").ToString("MMMM yyyy");
-            // get working days of this month
-            WeekdaysCount = _context.WeekDaysInMonth(StaffSalary.Year, StaffSalary.Month);
-            //var HolidaysCount = await _context.Holiday.Where(h => h.HolidayDate.Value.Year == StaffSalary.Year && h.HolidayDate.Value.Month == StaffSalary.Month).ToListAsync();
-            //WeekdaysCount -= HolidaysCount.Count();
-            UserAttendance = await _context.Attendance.Include(a => a.AttendanceStatus)
-                .Where(a => a.ApplicationUserId == StaffSalary.staffID && a.PunchDate.Value.Month == StaffSalary.Month && a.PunchDate.Value.Year == StaffSalary.Year)
-                .OrderBy(a => a.PunchDate).ToListAsync();
-            StaffSalaryExtras = await _context.StaffSalaryExtra.Include(s => s.SalaryItem).Where(s => s.StaffSalaryId == StaffSalary.salaryID).ToListAsync();
-            summary = new Summary();
-            var SummaryList = await _context.StaffSalary.Include(ss => ss.StaffSalaryExtras).ThenInclude(extra => extra.SalaryItem).Where(ss => ss.staffID == StaffSalary.staffID && ss.Year == StaffSalary.Year && ss.Month <= StaffSalary.Month).ToListAsync();
-            foreach (var v in SummaryList)
+            var StaffSalary = await _context.StaffSalary.FirstOrDefaultAsync(m => m.salaryID == id);
+            if (StaffSalary == null) return NotFound();
+            if (!allowed && StaffSalary.staffID != applicationUser.Id)
             {
-                decimal extraEarns = 0;
-                decimal extraDucts = 0;
-                foreach (var j in v.StaffSalaryExtras)
-                {
-                    if (j.SalaryItem.IsDeduction == false)
-                        extraEarns += j.Amount;
-                    else
-                        extraDucts += j.Amount;
-                }
-                //wdc = WeekDaysInMonth(v.Year, v.Month);
-                //var ac = await _context.Attendance
-                //.Where(a => a.ApplicationUserId == v.staffID && a.PunchDate.Value.Month == v.Month && a.PunchDate.Value.Year == v.Year && a.AttendanceStatusId == 2)
-                //.OrderBy(a => a.PunchDate).ToListAsync();
-                //summary.net += v.BasicSalary / wdc * (wdc - ac.Count()) + v.Allowances + extraEarns + v.Bonus + v.AdvSalaryPlus - extraDucts - v.EPF - v.SocsoRm - v.EIS - v.Tax - v.AdvSalary;
-                summary.net += v.BasicSalary - v.Absent + v.Allowances + extraEarns + v.Bonus + v.AdvSalaryPlus - extraDucts - v.EPF - v.SocsoRm - v.EIS - v.Tax - v.AdvSalary;
-                summary.epf += v.EPF;
-                summary.erepf += v.EREPF;
-                summary.socso += v.SocsoRm;
-                summary.ersocso += v.ERSocsoRm;
-                summary.eis += v.EIS;
-                summary.ereis += v.EREIS;
-                summary.tax += v.Tax;
+                return Redirect("/Identity/Account/Login");
             }
-            HttpContext.JsReportFeature().Recipe(Recipe.ChromePdf);
+            HtmlToPdf converter = new HtmlToPdf();
+            PdfDocument doc = converter.ConvertUrl("https://localhost:44379/Manage/Salaries/GetSalaryForPdf?id=" + id + "&guid=" + applicationUser.Id);
+            //PdfDocument doc = converter.ConvertUrl("https://localhost:44379/Manage/Salaries/GetSalaryForPdf?id=69&guid=9be835d3-4326-4e4f-82ee-c1e487d139fc");
+            MemoryStream pdfStream = new MemoryStream();
 
-            return Page();
+
+            doc.Save(pdfStream);
+            pdfStream.Position = 0;
+            doc.Close();
+            return File(pdfStream.ToArray(), "application/pdf");
         }
     }
 }

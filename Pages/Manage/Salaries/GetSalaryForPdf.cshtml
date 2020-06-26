@@ -1,26 +1,43 @@
-﻿@page "{Id}"
-@model PayrollAppRazorPages.Pages.Manage.Salary.DetailsModel
+﻿@page
+@model PayrollAppRazorPages.Pages.Manage.Salaries.GetSalaryForPdfModel
 @{
-    ViewData["Title"] = "Details";
+    ViewData["Title"] = "SalaryPDF";
+    Layout = "_Layout";
 }
+
+<br />
+<hr style="height:2px; color:black; background-color:black;" />
+<br />
+<h1 style="text-align: center;">V3X Malaysia Sdn. Bhd.</h1>
+<p style="text-align: center;">79A, Jalan Pulai 23, Taman Pulai Utama,</p>
+<p style="text-align: center;">81300 Skudai, Johor, Malaysia</p>
+<br />
+<hr style="height:2px; color:black; background-color:black;" />
+<br />
+
 <style>
+    body {
+        background: white;
+    }
+
     .slip {
         font-family: Consolas, monospace;
         border: solid 1px;
-        padding:20px;
+        padding: 20px;
     }
 
     span.text-danger {
         display: block;
     }
+    .d-print-none {
+        display: none;
+    }
 </style>
 <div class="slip container-fluid">
-    <div class="row">
+    <div class="row" style="padding-bottom:5px;">
         <div class="col"><h4>PAYSLIP FOR @Model.SelectedDate.ToUpper()</h4></div>
         <div class="col align-self-center text-right">
             <h4 class="small">Generated on @Model.StaffSalary.DateCreated.ToShortDateString()</h4>
-            <a class="btn btn-light" asp-page="./SalaryPDF" target="_blank" asp-route-id="@Model.StaffSalary.salaryID">Print PDF</a>
-            <a class="btn btn-light" asp-page="./SendEmail" asp-route-id="@Model.StaffSalary.salaryID">Send Email</a>
         </div>
     </div>
 
@@ -65,6 +82,8 @@
             }
             <br /><b>Attendance Record</b>
             <br />
+            Present: @dict["Present"]/@Model.WeekdaysCount<br />
+
             Absent: @dict["Absent"]
             <br />
             Leave : @dict["Leave"]
@@ -73,74 +92,115 @@
         </div>
     </div>
     <form method="post" oninput="calc()">
-        <div class="row">
+        <div class="row earn-duct">
 
             <div class="col border-right">
                 <br /><b>Earning</b>
-                <div asp-validation-summary="All" class="text-danger"></div>
                 <div class="form-group">
                     <label asp-for="StaffSalary.BasicSalary"></label>&nbsp;&nbsp;&nbsp;: RM
                     @Html.DisplayFor(model => model.StaffSalary.BasicSalary)
                 </div>
-                <div class="form-group">
+                <div class="form-group" style="display: @(Model.StaffSalary.Allowances == 0? "none" :"block")">
                     <label asp-for="StaffSalary.Allowances"></label>: RM
                     @Html.DisplayFor(model => model.StaffSalary.Allowances)
                 </div>
-                <div class="form-group">
+                <div class="form-group" style="display: @(Model.StaffSalary.Bonus == 0? "none" :"block")">
                     <label asp-for="StaffSalary.Bonus"></label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: RM
                     @Html.DisplayFor(model => model.StaffSalary.Bonus)
                 </div>
-                <div class="form-group">
+                <div class="form-group" style="display: @(Model.StaffSalary.AdvSalaryPlus == 0? "none" :"block")">
                     <label>Adv. Salary&nbsp;&nbsp;&nbsp;&nbsp;: RM</label>
                     @Html.DisplayFor(model => model.StaffSalary.AdvSalaryPlus)
                 </div>
+
             </div>
             <div class="col">
                 <br /><b>Deduction</b>
-                <div class="form-group">
+                <div class="form-group" style="display: @(Model.StaffSalary.EPF == 0? "none" :"block")">
                     <label asp-for="StaffSalary.EPF">EPF&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: RM</label>
                     @Html.DisplayFor(model => model.StaffSalary.EPF)
                 </div>
-                <div class="form-group">
+                <div class="form-group" style="display: @(Model.StaffSalary.SocsoRm == 0? "none" :"block")">
                     <label asp-for="StaffSalary.SocsoRm">SOCSO&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: RM</label>
                     @Html.DisplayFor(model => model.StaffSalary.SocsoRm)
                 </div>
-                <div class="form-group">
+                <div class="form-group" style="display: @(Model.StaffSalary.EIS == 0? "none" :"block")">
                     <label asp-for="StaffSalary.EIS">EIS&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: RM</label>
                     @Html.DisplayFor(model => model.StaffSalary.EIS)
                 </div>
-                <div class="form-group">
+                <div class="form-group" style="display: @(Model.StaffSalary.Tax == 0? "none" :"block")">
                     <label asp-for="StaffSalary.Tax">TAX&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: RM</label>
                     @Html.DisplayFor(model => model.StaffSalary.Tax)
                 </div>
-                <div class="form-group">
+                <div class="form-group" style="display: @(Model.StaffSalary.AdvSalary == 0? "none" :"block")">
                     <label asp-for="StaffSalary.AdvSalary">Adv. Salary: RM</label>
                     @Html.DisplayFor(model => model.StaffSalary.AdvSalary)
                 </div>
+
                 <div class="form-group">
-                    @{
-                        var absent = Model.StaffSalary.BasicSalary / Model.WeekdaysCount * dict["Absent"];
-                    }
                     <label>Absent&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: RM</label>
-                    <span>@absent.ToString("0.00")</span> (@dict["Absent"] days)
+                    @Html.DisplayFor(model => model.StaffSalary.Absent) (@dict["Absent"] days)
+                    <span asp-validation-for="StaffSalary.Absent" class="text-danger"></span>
+
                 </div>
             </div>
         </div>
-        <div class="row border-bottom align-items-end">
+        <div class="row earn-duct border-top">
+            <div class="col border-right">
+                <p><b>Extra Earnings</b></p>
+                @{
+                    decimal extraEarns = 0;
+                    decimal extraDucts = 0;
+                }
+                @foreach (var item in Model.StaffSalaryExtras)
+                {
+                    @if (item.SalaryItem.IsDeduction == true)
+                    {
+                        continue;
+                    }
+                    extraEarns += item.Amount;
+                    <div class="form-group">
+                        <label>@Html.DisplayFor(modelItem => item.SalaryItem.Name): RM</label>
+                        @Html.DisplayFor(modelItem => item.Amount)
+                    </div>
+
+                }
+            </div>
+            <div class="col">
+                <p><b>Extra Deductions</b></p>
+                @foreach (var item in Model.StaffSalaryExtras)
+                {
+                    @if (item.SalaryItem.IsDeduction == false)
+                    {
+                        continue;
+                    }
+                    extraDucts += item.Amount;
+                    <div class="form-group">
+                        <label>@Html.DisplayFor(modelItem => item.SalaryItem.Name): RM</label>
+                        @Html.DisplayFor(modelItem => item.Amount)
+                    </div>
+
+                }
+
+            </div>
+        </div>
+        <div class="row border-top border-bottom align-items-end">
 
             <div class="col border-right">
+                <br />
                 @{
-                    var totalEarn = Model.StaffSalary.BasicSalary + Model.StaffSalary.Allowances + Model.StaffSalary.Bonus + Model.StaffSalary.AdvSalaryPlus;
-                    var totalDeduct = Model.StaffSalary.EPF + Model.StaffSalary.SocsoRm + Model.StaffSalary.EIS + Model.StaffSalary.Tax + Model.StaffSalary.AdvSalary + absent;
+                    var totalEarn = Model.StaffSalary.BasicSalary + Model.StaffSalary.Allowances + Model.StaffSalary.Bonus + Model.StaffSalary.AdvSalaryPlus + extraEarns;
+                    var totalDeduct = Model.StaffSalary.EPF + Model.StaffSalary.SocsoRm + Model.StaffSalary.EIS + Model.StaffSalary.Tax + Model.StaffSalary.AdvSalary + Model.StaffSalary.Absent + extraDucts;
                     var net = totalEarn - totalDeduct;
                 }
                 Total Earning: RM @totalEarn.ToString("0.00")
                 <br />
-                Net Pay&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: RM @net.ToString("0.00")
+                <b>Net Pay&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: RM @net.ToString("0.00")</b>
 
 
             </div>
             <div class="col">
+                <br />
                 Total Deduction: RM @totalDeduct.ToString("0.00")
             </div>
 
@@ -174,15 +234,8 @@
         </div>
         <br />
         <div>
-            <a class="btn btn-info" asp-page="./Edit" asp-route-id="@Model.StaffSalary.salaryID">Edit </a>
-            @{
-                var parms = new Dictionary<string, string>
-{
-                    {"SelectedMonth", Model.StaffSalary.Month.ToString() },
-                    {"SelectedYear", Model.StaffSalary.Year.ToString() }
-                };
-            }
-            <a class="btn btn-secondary" asp-page="./Index" asp-all-route-data="parms">Back to List</a>
+
         </div>
     </form>
 </div>
+<br />

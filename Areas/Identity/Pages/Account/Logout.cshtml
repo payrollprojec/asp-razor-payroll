@@ -4,7 +4,22 @@
     ViewData["Title"] = "Log out";
 }
 
-        <br /><br /><br />  @*Temporary fix*@
+<br />
+<br />
+<br />  @*Temporary fix*@
 
-        <h1>@ViewData["Title"]</h1>
-        <p>You have successfully logged out of the application.</p>
+<h1>@ViewData["Title"]</h1>
+<p>You have successfully logged out of the application.</p>
+<p>Redirecting back to login page in <span id="countdown">3</span>s</p>
+<script>
+    window.addEventListener('load', function () {
+        setTimeout(function () { window.location = "./Login"; }, 3000)
+        var p = document.getElementById('countdown');
+        var sec = 3;
+        setInterval(function () {
+            if (sec > 0)
+                sec = sec - 1;
+            p.innerHTML = (sec);
+        }, 1000);
+    });
+</script>

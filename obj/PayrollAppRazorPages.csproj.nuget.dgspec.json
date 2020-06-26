@@ -74,21 +74,9 @@
               "target": "Package",
               "version": "[4.5.1-alpha001, )"
             },
-            "iTextSharp": {
+            "Select.HtmlToPdf.NetCore": {
               "target": "Package",
-              "version": "[5.5.13.1, )"
-            },
-            "jsreport.AspNetCore": {
-              "target": "Package",
-              "version": "[2.1.0, )"
-            },
-            "jsreport.Binary": {
-              "target": "Package",
-              "version": "[2.7.1, )"
-            },
-            "jsreport.Local": {
-              "target": "Package",
-              "version": "[2.2.2, )"
+              "version": "[20.1.0, )"
             }
           },
           "imports": [

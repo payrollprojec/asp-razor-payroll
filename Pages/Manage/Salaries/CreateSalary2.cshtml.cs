@@ -6,19 +6,21 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using PayrollAppRazorPages.Data;
 using PayrollAppRazorPages.Models;
 
-namespace PayrollAppRazorPages.Pages.Manage.Salary
+namespace PayrollAppRazorPages.Pages.Manage.Salaries
 {
-    [Authorize(Roles ="superadmin,admin")]
-    public class CreateSalaryModel : PageModel
+    [Authorize(Roles = "superadmin,admin")]
+    public class CreateSalaryModel2 : PageModel
     {
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly ApplicationDbContext _context;
-
-        public CreateSalaryModel(UserManager<ApplicationUser> userManager, ApplicationDbContext context)
+        [TempData]
+        public string StatusMessage { get; set; }
+        public CreateSalaryModel2(UserManager<ApplicationUser> userManager, ApplicationDbContext context)
         {
             _userManager = userManager;
             _context = context;
@@ -30,24 +32,23 @@ namespace PayrollAppRazorPages.Pages.Manage.Salary
         public string SelectedYear { get; set; }
         public string SelectedDate { get; set; }
         public int WeekdaysCount { get; set; }
+        [BindProperty]
+        public int ExtraEarnCount { get; set; } // not used
         public List<Attendance> UserAttendance { get; set; }
-
+        [BindProperty]
+        public StaffSalaryExtra[] StaffSalaryExtras { get; set; }
+        public IList<SelectListItem> ExtraEarnItems { get; set; }
+        public IList<SelectListItem> ExtraDeductItems { get; set; }
+        public Dictionary<int, decimal> ItemsDefaultAmounts { get; set; }
+        public List<SalaryItem> SalaryItem { get; set; }
         [BindProperty]
         public StaffSalary StaffSalary { get; set; }
         public StaffSalary AdvSalaryPur { get; set; }
         public ApplicationUser applicationUser { get; set; }
-        private static int WeekDaysInMonth(int year, int month)
-        {
-            int days = DateTime.DaysInMonth(year, month);
-            List<DateTime> dates = new List<DateTime>();
-            for (int i = 1; i <= days; i++)
-            {
-                dates.Add(new DateTime(year, month, i));
-            }
-
-            int weekDays = dates.Where(d => d.DayOfWeek < DayOfWeek.Friday).Count();
-            return weekDays;
-        }
+        //[BindProperty]
+        //public List<string> EarnSelect { get; set; }
+        //[BindProperty]
+        //public List<string> DeductSelect { get; set; }
         public async Task<IActionResult> OnGetAsync(string Id)
         {
             //applicationUser = await _userManager.FindByIdAsync(Id);
@@ -70,7 +71,10 @@ namespace PayrollAppRazorPages.Pages.Manage.Salary
             }
             SelectedDate = DateTime.Parse(SelectedYear + "-" + SelectedMonth + "-01").ToString("MMMM yyyy");
             // get working days of this month
-            WeekdaysCount = WeekDaysInMonth(int.Parse(SelectedYear), int.Parse(SelectedMonth));
+            WeekdaysCount = _context.WeekDaysInMonth(int.Parse(SelectedYear), int.Parse(SelectedMonth));
+            //var HolidaysCount = await _context.Holiday.Where(h => h.HolidayDate.Value.Year == int.Parse(SelectedYear) && h.HolidayDate.Value.Month == int.Parse(SelectedMonth)).ToListAsync();
+            //WeekdaysCount -= HolidaysCount.Count();
+
             // get attendance for this month
             UserAttendance = await _context.Attendance.Include(a => a.AttendanceStatus)
                 .Where(a => a.ApplicationUserId == Id && a.PunchDate.Value.Month == int.Parse(SelectedMonth) && a.PunchDate.Value.Year == int.Parse(SelectedYear))
@@ -78,13 +82,13 @@ namespace PayrollAppRazorPages.Pages.Manage.Salary
 
             // Get the advance salary from last month
             // If the current month is Jan shift the year backward and change the month to Dec
-            if(int.Parse(SelectedMonth) == 1)
+            if (int.Parse(SelectedMonth) == 1)
             {
-                AdvSalaryPur = await _context.StaffSalary.Where(s => s.staffID == Id && s.Month == 12 && s.Year == int.Parse(SelectedYear)-1).SingleOrDefaultAsync();
+                AdvSalaryPur = await _context.StaffSalary.Where(s => s.staffID == Id && s.Month == 12 && s.Year == int.Parse(SelectedYear) - 1).SingleOrDefaultAsync();
             }
             else
             {
-                AdvSalaryPur = await _context.StaffSalary.Where(s => s.staffID == Id && s.Month == int.Parse(SelectedMonth)-1 && s.Year == int.Parse(SelectedYear)).SingleOrDefaultAsync();
+                AdvSalaryPur = await _context.StaffSalary.Where(s => s.staffID == Id && s.Month == int.Parse(SelectedMonth) - 1 && s.Year == int.Parse(SelectedYear)).SingleOrDefaultAsync();
             }
 
             // initialize a new salary object with staff data default salary info
@@ -105,13 +109,37 @@ namespace PayrollAppRazorPages.Pages.Manage.Salary
                 Month = int.Parse(SelectedMonth),
                 Year = int.Parse(SelectedYear)
             };
-
+            ExtraEarnCount = 5;
+            SalaryItem = await _context.SalaryItem.ToListAsync();
+            ExtraEarnItems = new List<SelectListItem>();
+            ExtraDeductItems = new List<SelectListItem>();
+            ExtraEarnItems.Add(new SelectListItem("Select item", "0"));
+            ExtraDeductItems.Add(new SelectListItem("Select item", "0"));
+            ItemsDefaultAmounts = new Dictionary<int, decimal>();
+            foreach (var v in SalaryItem)
+            {
+                if (v.IsDeduction == false)
+                {
+                    ExtraEarnItems.Add(new SelectListItem(v.Name, v.Id.ToString()));
+                }
+                else
+                {
+                    ExtraDeductItems.Add(new SelectListItem(v.Name, v.Id.ToString()));
+                }
+                ItemsDefaultAmounts.Add( v.Id, v.DefaultAmount );
+            }
             return Page();
         }
 
         public async Task<IActionResult> OnPostAsync()
         {
-            
+            for (int i = 0; i < 10; i++)
+            {
+                if (StaffSalaryExtras[i].SalaryItemId == 0)
+                {
+                    ModelState.Remove("StaffSalaryExtras[" + i + "].Amount");
+                }
+            }
             ModelState.Remove("StaffSalary.staff");
             if (!ModelState.IsValid)
             {
@@ -135,19 +163,51 @@ namespace PayrollAppRazorPages.Pages.Manage.Salary
                 }
                 SelectedDate = DateTime.Parse(SelectedYear + "-" + SelectedMonth + "-01").ToString("MMMM yyyy");
                 // get attendance for this month
-                WeekdaysCount = WeekDaysInMonth(StaffSalary.Year, StaffSalary.Month);
+                WeekdaysCount = _context.WeekDaysInMonth(StaffSalary.Year, StaffSalary.Month);
 
                 UserAttendance = await _context.Attendance.Include(a => a.AttendanceStatus)
                     .Where(a => a.ApplicationUserId == StaffSalary.staffID && a.PunchDate.Value.Month == int.Parse(SelectedMonth) && a.PunchDate.Value.Year == int.Parse(SelectedYear))
                     .OrderBy(a => a.PunchDate).ToListAsync();
+
+                ExtraEarnCount = 5;
+                SalaryItem = await _context.SalaryItem.ToListAsync();
+                ExtraEarnItems = new List<SelectListItem>();
+                ExtraDeductItems = new List<SelectListItem>();
+                ExtraEarnItems.Add(new SelectListItem("Select item", "0"));
+                ExtraDeductItems.Add(new SelectListItem("Select item", "0"));
+                ItemsDefaultAmounts = new Dictionary<int, decimal>();
+
+                foreach (var v in SalaryItem)
+                {
+                    if (v.IsDeduction == false)
+                    {
+                        ExtraEarnItems.Add(new SelectListItem(v.Name, v.Id.ToString()));
+                    }
+                    else
+                    {
+                        ExtraDeductItems.Add(new SelectListItem(v.Name, v.Id.ToString()));
+                    }
+                    ItemsDefaultAmounts.Add(v.Id, v.DefaultAmount);
+
+                }
+
                 return Page();
             }
             StaffSalary.MailNum = 0;
             StaffSalary.DateCreated = DateTime.Now;
             _context.StaffSalary.Add(StaffSalary);
             await _context.SaveChangesAsync();
+            foreach (var v in StaffSalaryExtras)
+            {
+                if (v.SalaryItemId == 0) continue;
+                v.StaffSalaryId = StaffSalary.salaryID;
+                await _context.StaffSalaryExtra.AddAsync(v);
+                await _context.SaveChangesAsync();
+            }
 
-            return RedirectToPage("./Index", new { SelectedMonth, SelectedYear});
+
+            StatusMessage = "Staff Salary Created.";
+            return RedirectToPage("./Index", new { SelectedMonth, SelectedYear });
         }
     }
 }

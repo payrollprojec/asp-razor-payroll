@@ -1,7 +1,7 @@
-﻿@page "{Id}"
-@model PayrollAppRazorPages.Pages.Manage.Salary.EditModel
+﻿@page "{Id}/{SelectedMonth}/{SelectedYear}"
+@model PayrollAppRazorPages.Pages.Manage.Salaries.CreateSalaryModel2
 @{
-    ViewData["Title"] = "Edit";
+    ViewData["Title"] = "CreateSalary";
 }
 
 <style>
@@ -10,14 +10,11 @@
         border: solid 1px;
         padding: 20px;
     }
-    span.text-danger {
-        display: block;
-    }
 </style>
 <div class="slip container-fluid">
     <div class="row">
         <div class="col"><h4>PAYSLIP FOR @Model.SelectedDate.ToUpper()</h4></div>
-        <div class="col align-self-center text-right"><h4 class="small">Generated on @Model.StaffSalary.DateCreated.ToShortDateString()</h4></div>
+        <div class="col align-self-center text-right"><h4 class="small">Generated on @DateTime.Now.ToShortDateString()</h4></div>
     </div>
 
     <div class="row border-bottom border-top">
@@ -61,6 +58,7 @@
             }
             <br /><b>Attendance Record</b>
             <br />
+            Present: @dict["Present"]/@Model.WeekdaysCount<br />
             Absent: @dict["Absent"]
             <br />
             Leave : @dict["Leave"]
@@ -94,6 +92,13 @@
                     <input id="adv2" asp-for="StaffSalary.AdvSalaryPlus" />
                     <span asp-validation-for="StaffSalary.AdvSalaryPlus" class="text-danger"></span>
                 </div>
+
+
+                @*<div class="form-group text-center">
+                        <button type="button" class="btn btn-outline-primary" onclick="Earning()">Add</button>
+                        <button type="button" class="btn btn-outline-danger" onclick="RemoveEarn()">Remove</button>
+
+                    </div>*@
             </div>
             <div class="col">
                 <br /><b>Deduction</b>
@@ -101,6 +106,9 @@
                     <label asp-for="StaffSalary.EPF">EPF&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: RM</label>
                     <input id="epf" asp-for="StaffSalary.EPF" />
                     <span asp-validation-for="StaffSalary.EPF" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <input id="socsoc" type="hidden" asp-for="StaffSalary.Socso" />
                 </div>
                 <div class="form-group">
                     <label asp-for="StaffSalary.SocsoRm">SOCSO&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: RM</label>
@@ -123,25 +131,57 @@
                     <span asp-validation-for="StaffSalary.AdvSalary" class="text-danger"></span>
                 </div>
                 <div class="form-group">
-                    <label>Absent&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: RM</label>
-                    <span id="absent"></span> (@dict["Absent"] days)
+                    <label>Absent (@dict["Absent"]/@Model.WeekdaysCount): RM</label>
+                    <input id="absent" asp-for="StaffSalary.Absent" />
+                    <span asp-validation-for="StaffSalary.Absent" class="text-danger"></span>
+
+                </div>
+
+            </div>
+        </div>
+        <div class="row border-top">
+            <div class="col border-right">
+                <p><b>Extra Earnings</b></p>
+                <div id="extra-earn">
+                    @for (int i = 0; i < 5; i++)
+                    {
+                        <div class="form-group" id="earn-@i">
+                            <select onchange="setDefault(this.parentNode)" class="form-control-sm mr-sm-3" asp-for="StaffSalaryExtras[i].SalaryItemId" asp-items="Model.ExtraEarnItems">
+                            </select>
+                            RM: <input class="earn" style="display:@(Model.StaffSalaryExtras == null || Model.StaffSalaryExtras[i].SalaryItemId == 0? "none": "inline-block")"  asp-for="StaffSalaryExtras[i].Amount" />
+                            <span asp-validation-for="StaffSalaryExtras[i].Amount" class="text-danger"></span>
+                        </div>
+                    }
+                </div>
+            </div>
+            <div class="col">
+                <p><b>Extra Deductions</b></p>
+
+
+                <div id="extra-deduct">
+                    @for (int i = 5; i < 10; i++)
+                    {
+                        <div class="form-group" id="deduct-@i">
+                            <select onchange="setDefault(this.parentNode)" class="form-control-sm mr-sm-3" asp-for="StaffSalaryExtras[i].SalaryItemId" asp-items="Model.ExtraDeductItems">
+                            </select>
+                            RM: <input class="duct" style="display:@(Model.StaffSalaryExtras == null ||Model.StaffSalaryExtras[i].SalaryItemId == 0? "none": "inline-block")" asp-for="StaffSalaryExtras[i].Amount" />
+                            <span asp-validation-for="StaffSalaryExtras[i].Amount" class="text-danger"></span>
+                        </div>
+                    }
                 </div>
             </div>
         </div>
-        <div class="form-group">
-            <input id="weekdayscount" type="hidden" value="@Model.WeekdaysCount" />
-        </div>
-        <div class="form-group">
-            <input id="absentcount" type="hidden" value="@dict["Absent"]" />
-        </div>
-        <div class="row border-bottom align-items-end">
+        <input id="weekdayscount" type="hidden" value="@Model.WeekdaysCount" />
+        <input id="absentcount" type="hidden" value="@dict["Absent"]" />
+        <div class="row border-top border-bottom align-items-end">
             <div class="col border-right">
+                <br />
                 Total Earning: RM <span id="totalEarn"></span><br />
-                Net Pay&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: RM <span id="netPay"></span>
-
+                <b>Net Pay&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: RM <span id="netPay"></span></b>
 
             </div>
             <div class="col">
+                <br />
                 Total Deduction: RM <span id="totalDeduct"></span>
             </div>
 
@@ -151,41 +191,47 @@
                 <br /><b>Employer Contribution</b>
                 <div class="form-group">
                     <label asp-for="StaffSalary.EREPF">EPF&nbsp;&nbsp;: RM</label>
-                    <input id="epf" asp-for="StaffSalary.EREPF" />
+                    <input asp-for="StaffSalary.EREPF" />
                     <span asp-validation-for="StaffSalary.EREPF" class="text-danger"></span>
                 </div>
                 <div class="form-group">
                     <label asp-for="StaffSalary.ERSocsoRm">SOCSO: RM</label>
-                    <input id="socso" asp-for="StaffSalary.ERSocsoRm" />
+                    <input asp-for="StaffSalary.ERSocsoRm" />
                     <span asp-validation-for="StaffSalary.ERSocsoRm" class="text-danger"></span>
                 </div>
                 <div class="form-group">
                     <label asp-for="StaffSalary.EREIS">EIS&nbsp;&nbsp;: RM</label>
-                    <input id="eis" asp-for="StaffSalary.EREIS" />
+                    <input asp-for="StaffSalary.EREIS" />
                     <span asp-validation-for="StaffSalary.EREIS" class="text-danger"></span>
                 </div>
                 <input type="hidden" asp-for="StaffSalary.staffID" />
                 <input type="hidden" asp-for="StaffSalary.Month" />
                 <input type="hidden" asp-for="StaffSalary.Year" />
-                <input type="hidden" asp-for="StaffSalary.MailNum" />
-                <input type="hidden" asp-for="StaffSalary.DateCreated" />
-                <input type="hidden" asp-for="StaffSalary.salaryID" />
             </div>
             <div class="col">
             </div>
         </div>
         <br />
-        <input class="btn btn-primary" type="submit" value="Save" />
-        <a class="btn btn-secondary" asp-page="./Details" asp-route-id="@Model.StaffSalary.salaryID">Cancel</a>
+        <div>
+            <input class="btn btn-info" type="submit" value="Create" />
+            @{
+                var parms = new Dictionary<string, string> {
+                {"SelectedMonth", Model.StaffSalary.Month.ToString() },
+                {"SelectedYear", Model.StaffSalary.Year.ToString() }
+            };
+            }
+            <a class="btn btn-secondary" asp-page="./Index" asp-all-route-data="parms">Back to List</a>
+        </div>
     </form>
 </div>
+<br />
+
 
 <script>
     const basic = document.getElementById('basic');
     const allowance = document.getElementById('allowance');
     const bonus = document.getElementById('bonus');
     const adv2 = document.getElementById('adv2');
-
     const epf = document.getElementById('epf');
     const socso = document.getElementById('socso');
     const eis = document.getElementById('eis');
@@ -197,14 +243,58 @@
     const totalEarn = document.getElementById('totalEarn');
     const totalDeduct = document.getElementById('totalDeduct');
     const netPay = document.getElementById('netPay');
+    const allExtraEarn = document.getElementsByClassName('earn');
+    const allExtraDuct = document.getElementsByClassName('duct');
+    var earnForm = [];
+    for (let i = 0; i < 5; i++) {
+        earnForm.push(document.getElementById(`earn-${i}`));
+    }
+
     window.addEventListener('load', function () {
-        console.log('loaded')
+        console.log('loaded');
+        absent.value = `${(Math.round((+basic.value / +weekdayscount.value * +absentcount.value) * 100) / 100).toFixed(2)}`;
+
         calc();
     })
     function calc() {
-        absent.innerHTML = `${(Math.round((+basic.value / +weekdayscount.value * +absentcount.value) * 100) / 100).toFixed(2)}`;
-        totalEarn.innerHTML = `${(Math.round((+basic.value + +allowance.value + +bonus.value + +adv2.value) * 100) / 100).toFixed(2)}`;
-        totalDeduct.innerHTML = `${(Math.round((+epf.value + +socso.value + +eis.value + +tax.value + +adv.value + +absent.innerHTML) * 100) / 100).toFixed(2)}`;
+        let extraEarns = 0;
+        let extraDucts = 0;
+        for (let i = 0; i < allExtraEarn.length; i++) {
+            //console.log(allExtraEarn[i].value);
+            extraEarns += +allExtraEarn[i].value;
+            extraDucts += +allExtraDuct[i].value;
+        }
+        console.log(extraEarns, extraDucts);
+        totalEarn.innerHTML = `${(Math.round((+basic.value + +allowance.value + +bonus.value + +adv2.value + +extraEarns) * 100) / 100).toFixed(2)}`;
+        totalDeduct.innerHTML = `${(Math.round((+epf.value + +socso.value + +eis.value + +tax.value + +adv.value + +absent.value + +extraDucts) * 100) / 100).toFixed(2)}`;
         netPay.innerHTML = `${(Math.round((+totalEarn.innerHTML - +totalDeduct.innerHTML) * 100) / 100).toFixed(2)}`;
+    }
+    const extraEarnDiv = document.getElementById('extra-earn');
+    const extraDeductDiv = document.getElementById('extra-deduct');
+
+    function setDefault(e) {
+        let val = e.querySelector('select').value;
+        let inp = e.querySelector('input');
+        console.log(val);
+        if (val == "0") {
+            inp.value = "";
+            inp.style.display = "none";
+        }
+        else {
+            inp.value = collection[val];
+            inp.style.display = "inline-block";
+
+        }
+        calc();
+    }
+    var collection = {
+        @foreach (KeyValuePair<int, decimal> entry in Model.ItemsDefaultAmounts)
+        {
+            @Html.Raw(entry.Key + ":" + entry.Value + ",")
+        }
+    }
+    console.log(collection);
+    function Deduct() {
+        console.log("bye");
     }
 </script>

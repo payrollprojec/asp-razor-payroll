@@ -20,7 +20,7 @@
         <div class="col"><h4>PAYSLIP FOR @Model.SelectedDate.ToUpper()</h4></div>
         <div class="col align-self-center text-right">
             <h4 class="small">Generated on @Model.StaffSalary.DateCreated.ToShortDateString()</h4>
-            <a class="btn btn-sm btn-warning" asp-page="./SalaryPDF" target="_blank" asp-route-id="@Model.StaffSalary.salaryID">Print PDF</a>
+            <a class="btn btn-sm btn-warning" asp-page="/Manage/Salaries/SalaryPDF" target="_blank" asp-route-id="@Model.StaffSalary.salaryID">Print PDF</a>
         </div>
     </div>
 

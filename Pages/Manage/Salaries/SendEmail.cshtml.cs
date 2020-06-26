@@ -150,7 +150,8 @@ namespace PayrollAppRazorPages.Pages.Manage.Salaries
                             "<tr>" +
                             "<td colspan='2'>" +
                             "For more information, please visit: <br><b>" +
-                            "https://localhost:44379/Staff/SalaryDetails/" + id + "?key=" + applicationUser.Id + "</b><br>" +
+                            //"https://localhost:44379/Staff/SalaryDetails/" + id + "?key=" + applicationUser.Id + "</b><br>" +
+                            "https://localhost:44379/Manage/Salaries/SalaryPDF?id=" + id + "&guid=" + applicationUser.Id + "</b><br>" +
                             "Sent on - " + DateTime.Now.ToString("dddd, dd MMMM yyyy h:mm:ss tt") + // insert different string so gmail wont trim email content
                             "</td>" +
                             "</tr></table>";

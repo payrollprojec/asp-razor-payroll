@@ -14,9 +14,9 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using PayrollAppRazorPages.Models;
 using Microsoft.CodeAnalysis.Options;
-using jsreport.AspNetCore;
-using jsreport.Local;
-using jsreport.Binary;
+//using jsreport.AspNetCore;
+//using jsreport.Local;
+//using jsreport.Binary;
 
 namespace PayrollAppRazorPages
 {
@@ -39,10 +39,10 @@ namespace PayrollAppRazorPages
                 .AddRoles<IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>();
             services.AddRazorPages();
-            services.AddJsReport(new LocalReporting()
-                .UseBinary(JsReportBinary.GetBinary())
-                .AsUtility()
-                .Create());
+            //services.AddJsReport(new LocalReporting()
+            //    .UseBinary(JsReportBinary.GetBinary())
+            //    .AsUtility()
+            //    .Create());
             services.Configure<IdentityOptions>(options =>
             {
                 // Password settings.
